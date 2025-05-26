@@ -10,8 +10,11 @@ if project_root not in sys.path:
 
 from utils.hash import x64hash128
 from utils.versionInfo import get_version_info
-
+from utils.presets import get_method,get_options
 def enhanced_fp(method,language) -> dict:
+    info = get_options(method)
+    other_info = get_method(method)
+    capiInfo = get_version_info(other_info['api_url'], other_info['site_key'])
     bda ={
     "webgl_extensions": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode",
     "webgl_extensions_hash": "7300c23f4e6fa34e534fc99c1b628588",
@@ -33,6 +36,7 @@ def enhanced_fp(method,language) -> dict:
     "webgl_fsi_params": "0,31,30,0,31,30,0,31,30",
     "webgl_hash_webgl": "827faf6526791e64ca17cf99fab352c9",
     "user_agent_data_brands": "Chromium,Google Chrome,Not.A/Brand",
+    
     "user_agent_data_mobile": False,
     "navigator_connection_downlink": 1.45,
     "navigator_connection_downlink_max": None,
@@ -77,20 +81,16 @@ def enhanced_fp(method,language) -> dict:
     "headless_browser_nightmare_js": False,
     "headless_browser_generic": 4,
     "1l2l5234ar2": str(int(time.time())*1000)+"⁣",
-    "document__referrer": "https://www.roblox.com/login",
-    "window__ancestor_origins": [
-        "https://www.roblox.com"
-    ],
-    "window__tree_index": [
-        1
-    ],
-    "window__tree_structure": "[[],[]]",
-    "window__location_href": "https://www.roblox.com/arkose/iframe",
-    "client_config__sitedata_location_href": "https://www.roblox.com/arkose/iframe",
-    "client_config__language": language,
+    "document__referrer": info['document__referrer'],
+    "window__ancestor_origins": info['window__ancestor_origins'],
+    "window__tree_index": info['window__tree_index'],
+    "window__tree_structure": info['window__tree_structure'],
+    "window__location_href": info['window__location_href'] if "roblox" not in method else info['client_config__sitedata_location_href'],
+    "client_config__sitedata_location_href": info['client_config__sitedata_location_href'],
+    "client_config__language": other_info['language'],
     "client_config__surl": "https://arkoselabs.roblox.com",
-    "c8480e29a": "82e587de59c07c4a379a6cc646c0e644⁢",
-    "client_config__triggered_inline": False,
+    "c8480e29a": info['c8480e29a'],
+    "client_config__triggered_inline": info['client_config__triggered_inline'],
     "mobile_sdk__is_sdk": False,
     "audio_fingerprint": "124.04347527516074",
     "navigator_battery_charging": True,
@@ -106,7 +106,7 @@ def enhanced_fp(method,language) -> dict:
     "screen_orientation": "landscape-primary",
     "rtc_peer_connection": 5,
     "4b4b269e68": str(uuid.uuid4()),
-    "6a62b2a558": "745e193c1520ec3cb6c909140e7bf18c",
+    "6a62b2a558": capiInfo[1],
     "is_keyless": False,
     "c2d2015": "29d13b1af8803cb86c2697345d7ea9eb",
     "43f2d94": "63a34c42b4221e3d98b70281ab5e6160",
