@@ -1,4 +1,4 @@
-from versionInfo import get_version_info
+from utils.versionInfo import get_version_info
 from typing import Optional, Dict, Any
 import hashlib
 def get_method(method):
