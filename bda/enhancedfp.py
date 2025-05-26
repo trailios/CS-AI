@@ -36,7 +36,6 @@ def enhanced_fp(method,language) -> dict:
     "webgl_fsi_params": "0,31,30,0,31,30,0,31,30",
     "webgl_hash_webgl": "827faf6526791e64ca17cf99fab352c9",
     "user_agent_data_brands": "Chromium,Google Chrome,Not.A/Brand",
-    
     "user_agent_data_mobile": False,
     "navigator_connection_downlink": 1.45,
     "navigator_connection_downlink_max": None,
