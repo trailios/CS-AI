@@ -12,7 +12,7 @@ from utils.hash import x64hash128
 from utils.versionInfo import get_version_info
 from utils.presets import get_method, get_options
 
-# list of files in fpData folder
+
 fingerprints: List[str] = os.listdir("fpData")
 def convert_to_dict(data_list):
     result = {}
@@ -20,7 +20,7 @@ def convert_to_dict(data_list):
         key = item["key"]
         value = item["value"]
         if isinstance(value, list) and all(isinstance(i, dict) and "key" in i and "value" in i for i in value):
-            # Recursively convert nested list of key-value pairs
+           
             result[key] = convert_to_dict(value)
         else:
             result[key] = value
