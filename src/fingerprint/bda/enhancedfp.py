@@ -3,7 +3,8 @@ import os
 import uuid
 import time
 import random
-
+from typing import Dict, Any, List
+import json
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
@@ -12,9 +13,26 @@ from src.utils.hash import x64hash128
 from src.utils.versionInfo import get_version_info
 from src.utils.presets import get_method, get_options
 
-
+# list of files in fpData folder
+fingerprints: List[str] = os.listdir("fpData")
+def convert_to_json(data: Dict[str, Any]):
+    jsonInfo = {}
+    for a in data:
+        jsonInfo[a["key"]] = a["value"]
+    return jsonInfo
+        
+def fetch_random_fingerprint():
+    with open("fpData" + random.choice(fingerprints), "r", encoding="utf-8") as f:
+        realfingerprint = json.load()
+        return convert_to_json(realfingerprint)
+def fetch_random_enhanced_fingerprint(data):
+    enhanced_fp_entry = next((item for item in data if item["key"] == "enhanced_fp"), None)
+    if enhanced_fp_entry:
+       enhanced_fp_values = {item["key"]: item["value"] for item in enhanced_fp_entry["value"]}
+       return enhanced_fp_values
 def enhanced_fp(method) -> dict:
     info = get_options(method)
+
     other_info = get_method(method)
     capiInfo = get_version_info(other_info["service_url"], other_info["public_key"])
     bda = {
