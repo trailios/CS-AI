@@ -1,0 +1,428 @@
+[
+  {
+    "key": "api_type",
+    "value": "js"
+  },
+  {
+    "key": "f",
+    "value": "5690c84c950a2d939e2871aed4b3e251"
+  },
+  {
+    "key": "n",
+    "value": "MTc0NjU0NTU5Nw=="
+  },
+  {
+    "key": "wh",
+    "value": "2f4a542b2c111c1c2b464e1b06f41371|aaa2cb5dab36bb54caa4c93c5a48103b"
+  },
+  {
+    "key": "enhanced_fp",
+    "value": [
+      {
+        "key": "webgl_extensions",
+        "value": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_float_blend;EXT_texture_filter_anisotropic;EXT_sRGB;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float_linear;OES_vertex_array_object;WEBGL_compressed_texture_astc;WEBGL_compressed_texture_etc;WEBGL_compressed_texture_etc1;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_lose_context;WEBGL_multi_draw"
+      },
+      {
+        "key": "webgl_extensions_hash",
+        "value": "9b1c7af5b46900effd650896011a7f31"
+      },
+      {
+        "key": "webgl_renderer",
+        "value": "WebKit WebGL"
+      },
+      {
+        "key": "webgl_vendor",
+        "value": "WebKit"
+      },
+      {
+        "key": "webgl_version",
+        "value": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+      },
+      {
+        "key": "webgl_shading_language_version",
+        "value": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+      },
+      {
+        "key": "webgl_aliased_line_width_range",
+        "value": "[1, 4095.9375]"
+      },
+      {
+        "key": "webgl_aliased_point_size_range",
+        "value": "[1, 1024]"
+      },
+      {
+        "key": "webgl_antialiasing",
+        "value": "yes"
+      },
+      {
+        "key": "webgl_bits",
+        "value": "8,8,24,8,8,0"
+      },
+      {
+        "key": "webgl_max_params",
+        "value": "16,96,4096,4096,16383,16,4096,31,32,16,4096"
+      },
+      {
+        "key": "webgl_max_viewport_dims",
+        "value": "[16383, 16383]"
+      },
+      {
+        "key": "webgl_unmasked_vendor",
+        "value": "ARM"
+      },
+      {
+        "key": "webgl_unmasked_renderer",
+        "value": "Mali-G57 MC2"
+      },
+      {
+        "key": "webgl_vsf_params",
+        "value": "23,127,127,10,15,15,10,15,15"
+      },
+      {
+        "key": "webgl_vsi_params",
+        "value": "0,31,30,0,15,14,0,15,14"
+      },
+      {
+        "key": "webgl_fsf_params",
+        "value": "23,127,127,10,15,15,10,15,15"
+      },
+      {
+        "key": "webgl_fsi_params",
+        "value": "0,31,30,0,15,14,0,15,14"
+      },
+      {
+        "key": "webgl_hash_webgl",
+        "value": "3a8f27c2f56449cd4c66c360591cae0b"
+      },
+      {
+        "key": "user_agent_data_brands",
+        "value": "Google Chrome,Not-A.Brand,Chromium"
+      },
+      {
+        "key": "user_agent_data_mobile",
+        "value": true
+      },
+      {
+        "key": "navigator_connection_downlink",
+        "value": 1.7
+      },
+      {
+        "key": "navigator_connection_downlink_max",
+        "value": 100
+      },
+      {
+        "key": "network_info_rtt",
+        "value": 200
+      },
+      {
+        "key": "network_info_save_data",
+        "value": false
+      },
+      {
+        "key": "network_info_rtt_type",
+        "value": "cellular"
+      },
+      {
+        "key": "screen_pixel_depth",
+        "value": 24
+      },
+      {
+        "key": "navigator_device_memory",
+        "value": 4
+      },
+      {
+        "key": "navigator_pdf_viewer_enabled",
+        "value": false
+      },
+      {
+        "key": "navigator_languages",
+        "value": "en-US,it-IT,it,en"
+      },
+      {
+        "key": "window_inner_width",
+        "value": 980
+      },
+      {
+        "key": "window_inner_height",
+        "value": 1846
+      },
+      {
+        "key": "window_outer_width",
+        "value": 360
+      },
+      {
+        "key": "window_outer_height",
+        "value": 678
+      },
+      {
+        "key": "browser_detection_firefox",
+        "value": false
+      },
+      {
+        "key": "browser_detection_brave",
+        "value": false
+      },
+      {
+        "key": "browser_api_checks",
+        "value": [
+          "permission_status: true",
+          "eye_dropper: false",
+          "audio_data: true",
+          "writable_stream: true",
+          "css_style_rule: true",
+          "navigator_ua: true",
+          "barcode_detector: true",
+          "display_names: true",
+          "contacts_manager: false",
+          "svg_discard_element: false",
+          "usb: defined",
+          "media_device: defined",
+          "playback_quality: true"
+        ]
+      },
+      {
+        "key": "browser_object_checks",
+        "value": "554838a8451ac36cb977e719e9d6623c"
+      },
+      {
+        "key": "29s83ih9",
+        "value": "68934a3e9455fa72420237eb05902327\u2063"
+      },
+      {
+        "key": "audio_codecs",
+        "value": "{\"ogg\":\"probably\",\"mp3\":\"probably\",\"wav\":\"probably\",\"m4a\":\"maybe\",\"aac\":\"probably\"}"
+      },
+      {
+        "key": "audio_codecs_extended_hash",
+        "value": "805036349642e2569ec299baed02315b"
+      },
+      {
+        "key": "video_codecs",
+        "value": "{\"ogg\":\"\",\"h264\":\"probably\",\"webm\":\"probably\",\"mpeg4v\":\"\",\"mpeg4a\":\"\",\"theora\":\"\"}"
+      },
+      {
+        "key": "video_codecs_extended_hash",
+        "value": "5648501a58d24ea22ce3773cc234e563"
+      },
+      {
+        "key": "media_query_dark_mode",
+        "value": true
+      },
+      {
+        "key": "css_media_queries",
+        "value": 0
+      },
+      {
+        "key": "css_color_gamut",
+        "value": "srgb"
+      },
+      {
+        "key": "css_contrast",
+        "value": "no-preference"
+      },
+      {
+        "key": "css_monochrome",
+        "value": false
+      },
+      {
+        "key": "css_pointer",
+        "value": "coarse"
+      },
+      {
+        "key": "css_grid_support",
+        "value": false
+      },
+      {
+        "key": "headless_browser_phantom",
+        "value": false
+      },
+      {
+        "key": "headless_browser_selenium",
+        "value": false
+      },
+      {
+        "key": "headless_browser_nightmare_js",
+        "value": false
+      },
+      {
+        "key": "headless_browser_generic",
+        "value": 4
+      },
+      {
+        "key": "1l2l5234ar2",
+        "value": "1746545596000\u2063"
+      },
+      {
+        "key": "document__referrer",
+        "value": "https://traili.services/"
+      },
+      {
+        "key": "window__ancestor_origins",
+        "value": []
+      },
+      {
+        "key": "window__tree_index",
+        "value": []
+      },
+      {
+        "key": "window__tree_structure",
+        "value": "[]"
+      },
+      {
+        "key": "window__location_href",
+        "value": "https://traili.services/"
+      },
+      {
+        "key": "client_config__sitedata_location_href",
+        "value": "https://traili.services/"
+      },
+      {
+        "key": "client_config__language",
+        "value": "en-US"
+      },
+      {
+        "key": "client_config__surl",
+        "value": "https://traili.services/client-api.arkoselabs.com"
+      },
+      {
+        "key": "c8480e29a",
+        "value": "f5acef6858e55cf4c2d81633bca3322a\u2062"
+      },
+      {
+        "key": "client_config__triggered_inline",
+        "value": false
+      },
+      {
+        "key": "mobile_sdk__is_sdk",
+        "value": false
+      },
+      {
+        "key": "audio_fingerprint",
+        "value": "124.08072766105033"
+      },
+      {
+        "key": "navigator_battery_charging",
+        "value": true
+      },
+      {
+        "key": "media_device_kinds",
+        "value": null
+      },
+      {
+        "key": "media_devices_hash",
+        "value": null
+      },
+      {
+        "key": "navigator_permissions_hash",
+        "value": null
+      },
+      {
+        "key": "math_fingerprint",
+        "value": "0ce80c69b75667d69baedc0a70c82da7"
+      },
+      {
+        "key": "supported_math_functions",
+        "value": "67d1759d7e92844d98045708c0a91c2f"
+      },
+      {
+        "key": "screen_orientation",
+        "value": "portrait-primary"
+      },
+      {
+        "key": "rtc_peer_connection",
+        "value": 5
+      },
+      {
+        "key": "4b4b269e68",
+        "value": "5c1e8da7-89bd-4337-80d8-ff78da802a2d"
+      },
+      {
+        "key": "6a62b2a558",
+        "value": "9e04fe5120461d0d467a7f0eba7fb7f1"
+      },
+      {
+        "key": "is_keyless",
+        "value": false
+      },
+      {
+        "key": "c2d2015",
+        "value": "29d13b1af8803cb86c2697345d7ea9eb"
+      },
+      {
+        "key": "43f2d94",
+        "value": false
+      },
+      {
+        "key": "20c15922",
+        "value": true
+      },
+      {
+        "key": "4f59ca8",
+        "value": null
+      },
+      {
+        "key": "3ea7194",
+        "value": {
+          "supported": true,
+          "formats": [
+            "HDR10",
+            "HLG"
+          ],
+          "isHDR": false
+        }
+      },
+      {
+        "key": "05d3d24",
+        "value": "30f12f4677251e68c364bc939216d69b"
+      },
+      {
+        "key": "4ca87df3d1",
+        "value": "Ow=="
+      },
+      {
+        "key": "867e25e5d4",
+        "value": "Ow=="
+      },
+      {
+        "key": "d4a306884c",
+        "value": "Ow=="
+      }
+    ]
+  },
+  {
+    "key": "fe",
+    "value": [
+      "DNT:1",
+      "L:en-US",
+      "D:24",
+      "PR:2",
+      "S:806,360",
+      "AS:806,360",
+      "TO:-120",
+      "SS:true",
+      "LS:true",
+      "IDB:true",
+      "B:false",
+      "ODB:false",
+      "CPUC:unknown",
+      "PK:Linux armv81",
+      "CFP:1829161101",
+      "FR:false",
+      "FOS:false",
+      "FB:false",
+      "JSF:Arial,Courier,Courier New,Georgia,Helvetica,Monaco,Palatino,Tahoma,Times,Times New Roman,Verdana",
+      "P:",
+      "T:5,true,true",
+      "H:8",
+      "SWF:false"
+    ]
+  },
+  {
+    "key": "ife_hash",
+    "value": "351893ab7b90858df12693cb75d762c0"
+  },
+  {
+    "key": "jsbd",
+    "value": "{\"HL\":2,\"NCE\":true,\"DT\":\"\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
+  }
+]
