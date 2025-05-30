@@ -5,26 +5,31 @@ import time
 import random
 from typing import Dict, Any, List
 import json
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
-
-from src.utils.hash import x64hash128
-from src.utils.versionInfo import get_version_info
-from src.utils.presets import get_method, get_options
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+from utils.hash import x64hash128
+from utils.versionInfo import get_version_info
+from utils.presets import get_method, get_options
 
 # list of files in fpData folder
 fingerprints: List[str] = os.listdir("fpData")
-def convert_to_json(data: Dict[str, Any]):
-    jsonInfo = {}
-    for a in data:
-        jsonInfo[a["key"]] = a["value"]
-    return jsonInfo
+def convert_to_dict(data_list):
+    result = {}
+    for item in data_list:
+        key = item["key"]
+        value = item["value"]
+        if isinstance(value, list) and all(isinstance(i, dict) and "key" in i and "value" in i for i in value):
+            # Recursively convert nested list of key-value pairs
+            result[key] = convert_to_dict(value)
+        else:
+            result[key] = value
+    return result
         
 def fetch_random_fingerprint():
-    with open("fpData" + random.choice(fingerprints), "r", encoding="utf-8") as f:
-        realfingerprint = json.load()
-        return convert_to_json(realfingerprint)
+    with open("fpData/" + random.choice(fingerprints), "r", encoding="utf-8") as f:
+        realfingerprint = json.load(f)
+        return realfingerprint
 def fetch_random_enhanced_fingerprint(data):
     enhanced_fp_entry = next((item for item in data if item["key"] == "enhanced_fp"), None)
     if enhanced_fp_entry:
@@ -32,11 +37,13 @@ def fetch_random_enhanced_fingerprint(data):
        return enhanced_fp_values
 def enhanced_fp(method) -> dict:
     info = get_options(method)
-
     other_info = get_method(method)
     capiInfo = get_version_info(other_info["service_url"], other_info["public_key"])
+    nonFormatted = fetch_random_fingerprint()
+    arkoseBda = convert_to_dict(nonFormatted)
+    enhanced_fp_data = fetch_random_enhanced_fingerprint(nonFormatted)
     bda = {
-        "webgl_extensions": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode",
+        "webgl_extensions": enhanced_fp_data['webgl_extensions'],
         "webgl_extensions_hash": "7300c23f4e6fa34e534fc99c1b628588",
         "webgl_renderer": "WebKit WebGL",
         "webgl_vendor": "WebKit",
