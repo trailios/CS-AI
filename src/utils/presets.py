@@ -371,6 +371,3 @@ def get_options(method) -> None:
     return options
 
 
-print(
-    get_options("roblox_login")
-)  # This will print the options for the 'roblox_signup' method
