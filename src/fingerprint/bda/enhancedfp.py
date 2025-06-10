@@ -149,5 +149,5 @@ def enhanced_fp(method) -> dict:
     nonFormat = []
     for k,v in bda.items():
         nonFormat.append({"key": k, "value": v})
-    return {"formatted":json.dumps(nonFormat,indent=4, separators=(",", ": "), ensure_ascii=False),"realBdaUsed":arkoseBda,"nonFormatted":bda}
+    return {"formatted":nonFormat,"realBdaUsed":arkoseBda,"nonFormatted":bda}
 
