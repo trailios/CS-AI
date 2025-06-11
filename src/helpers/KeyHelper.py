@@ -7,14 +7,18 @@ from contextlib import closing
 from dataclasses import dataclass
 import os
 
+
 class KeyNotFoundError(Exception):
     pass
+
 
 class InvalidOperationError(Exception):
     pass
 
+
 class DatabaseError(Exception):
     pass
+
 
 @dataclass
 class Key:
@@ -24,8 +28,9 @@ class Key:
     solved: int
     total_requests: int
 
+
 class Database:
-    def __init__(self, db_path='db/keys.db'):
+    def __init__(self, db_path="db/keys.db"):
         self.db_path = db_path
         try:
             self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
@@ -66,6 +71,7 @@ class Database:
         except sqlite3.DatabaseError as e:
             raise DatabaseError(f"Error fetching data: {str(e)}")
 
+
 class KeyManager:
     def __init__(self, db: Database):
         self.db = db
@@ -77,10 +83,13 @@ class KeyManager:
         timestamp = int(time.time())
 
         try:
-            self.db.execute_query("""
+            self.db.execute_query(
+                """
                 INSERT INTO keys (key, timestamp, bought, solved, total_requests)
                 VALUES (?, ?, ?, ?, ?)
-            """, (hashed_key, timestamp, bought, 0, 0))
+            """,
+                (hashed_key, timestamp, bought, 0, 0),
+            )
         except DatabaseError as e:
             raise DatabaseError(f"Failed to generate new key: {str(e)}")
 
@@ -102,21 +111,26 @@ class KeyManager:
     def update_key_balance(self, key: str, amount: int, operation: str):
         hashed_key = self._hash_key(key)
         key_data = self.get_key_data(key)
-        
-        if operation not in ['add', 'remove']:
-            raise InvalidOperationError(f"Invalid operation: {operation}. Use 'add' or 'remove'.")
-        
-        if operation == 'add':
+
+        if operation not in ["add", "remove"]:
+            raise InvalidOperationError(
+                f"Invalid operation: {operation}. Use 'add' or 'remove'."
+            )
+
+        if operation == "add":
             new_balance = key_data.bought + amount
-        elif operation == 'remove':
+        elif operation == "remove":
             new_balance = max(0, key_data.bought - amount)
 
         try:
-            self.db.execute_query("""
+            self.db.execute_query(
+                """
                 UPDATE keys
                 SET bought = ?
                 WHERE key = ?
-            """, (new_balance, hashed_key))
+            """,
+                (new_balance, hashed_key),
+            )
         except DatabaseError as e:
             raise DatabaseError(f"Failed to update balance for key {key}: {str(e)}")
 
@@ -131,8 +145,9 @@ class KeyManager:
         result = self.db.fetch_all("SELECT * FROM keys")
         return {row[0]: Key(*row) for row in result}
 
+
 class KeyService:
-    def __init__(self, db_path='db/keys.db'):
+    def __init__(self, db_path="db/keys.db"):
         self.db = Database(db_path)
         self.key_manager = KeyManager(self.db)
 
@@ -144,13 +159,13 @@ class KeyService:
 
     def add_balance(self, key: str, amount: int):
         try:
-            self.key_manager.update_key_balance(key, amount, 'add')
+            self.key_manager.update_key_balance(key, amount, "add")
         except (KeyNotFoundError, InvalidOperationError, DatabaseError) as e:
             raise e
 
     def remove_balance(self, key: str, amount: int):
         try:
-            self.key_manager.update_key_balance(key, amount, 'remove')
+            self.key_manager.update_key_balance(key, amount, "remove")
         except (KeyNotFoundError, InvalidOperationError, DatabaseError) as e:
             raise e
 
@@ -165,4 +180,3 @@ class KeyService:
             return self.key_manager.list_keys()
         except DatabaseError as e:
             raise DatabaseError(f"Error retrieving keys: {str(e)}")
-

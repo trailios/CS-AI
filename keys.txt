@@ -1,1 +1,0 @@
-#Hashed_KEY,TIMESTAMP,bought,solved,requests
