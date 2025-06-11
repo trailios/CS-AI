@@ -141,6 +141,7 @@ def enhanced_fp(method) -> dict:
         "client_config__triggered_inline": info["client_config__triggered_inline"],
         "mobile_sdk__is_sdk": False,
         "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
+        "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
         "navigator_battery_charging": True,
         "media_device_kinds": ["audioinput", "videoinput", "audiooutput"],
         "media_devices_hash": "199eba60310b53c200cc783906883c67",
@@ -158,6 +159,8 @@ def enhanced_fp(method) -> dict:
         "4f59ca8": None,
         "3ea7194": {"supported": True, "formats": ["HDR10", "HLG"], "isHDR": False},
         "05d3d24": "7bd8fe2b950ecd77778f4bf4c2c1b213",
+        "speech_default_voice": enhanced_fp_data.get("speech_default_voice", "Microsoft Hedda - German (Germany) || de-DE"),
+        "speech_voices_hash": enhanced_fp_data.get("speech_default_voice", "f8224b0bd046a07df30c0549fd055803"),
         "speech_default_voice": enhanced_fp_data["speech_default_voice"],
         "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
@@ -165,7 +168,7 @@ def enhanced_fp(method) -> dict:
         "867e25e5d4": "Ow==",
         "d4a306884c": "Ow==",
     }
-
+   
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
     nonFormat = []
@@ -180,4 +183,3 @@ def enhanced_fp(method) -> dict:
     }
 
 
-print(enhanced_fp("roblox_login"))
