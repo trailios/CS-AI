@@ -5,6 +5,7 @@ import time
 import random
 from typing import Dict, Any, List
 import json
+
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
@@ -14,27 +15,40 @@ from utils.presets import get_method, get_options
 
 
 fingerprints: List[str] = os.listdir("fpData")
+
+
 def convert_to_dict(data_list):
-    result = {}
+    result: Dict[str, Any] = {}
     for item in data_list:
         key = item["key"]
         value = item["value"]
-        if isinstance(value, list) and all(isinstance(i, dict) and "key" in i and "value" in i for i in value):
-           
+        if isinstance(value, list) and all(
+            isinstance(i, dict) and "key" in i and "value" in i for i in value
+        ):
+
             result[key] = convert_to_dict(value)
         else:
             result[key] = value
     return result
-        
+
+
 def fetch_random_fingerprint():
     with open("fpData/" + random.choice(fingerprints), "r", encoding="utf-8") as f:
         realfingerprint = json.load(f)
         return realfingerprint
+
+
 def fetch_random_enhanced_fingerprint(data):
-    enhanced_fp_entry = next((item for item in data if item["key"] == "enhanced_fp"), None)
+    enhanced_fp_entry = next(
+        (item for item in data if item["key"] == "enhanced_fp"), None
+    )
     if enhanced_fp_entry:
-       enhanced_fp_values = {item["key"]: item["value"] for item in enhanced_fp_entry["value"]}
-       return enhanced_fp_values
+        enhanced_fp_values = {
+            item["key"]: item["value"] for item in enhanced_fp_entry["value"]
+        }
+        return enhanced_fp_values
+
+
 def enhanced_fp(method) -> dict:
     info = get_options(method)
     other_info = get_method(method)
@@ -43,25 +57,31 @@ def enhanced_fp(method) -> dict:
     arkoseBda = convert_to_dict(nonFormatted)
     enhanced_fp_data = fetch_random_enhanced_fingerprint(nonFormatted)
     bda = {
-        "webgl_extensions": enhanced_fp_data['webgl_extensions'],
-        "webgl_extensions_hash": enhanced_fp_data['webgl_extensions_hash'],
-        "webgl_renderer": enhanced_fp_data['webgl_renderer'],
-        "webgl_vendor": enhanced_fp_data['webgl_vendor'],
-        "webgl_version": enhanced_fp_data['webgl_version'],
-        "webgl_shading_language_version":  enhanced_fp_data['webgl_shading_language_version'],
-        "webgl_aliased_line_width_range": enhanced_fp_data['webgl_aliased_line_width_range'],
-        "webgl_aliased_point_size_range": enhanced_fp_data['webgl_aliased_point_size_range'],
-        "webgl_antialiasing": enhanced_fp_data['webgl_antialiasing'],
-        "webgl_bits": enhanced_fp_data['webgl_bits'],
-        "webgl_max_params": enhanced_fp_data['webgl_max_params'],
-        "webgl_max_viewport_dims": enhanced_fp_data['webgl_max_viewport_dims'],
-        "webgl_unmasked_vendor": enhanced_fp_data['webgl_unmasked_vendor'],
-        "webgl_unmasked_renderer": enhanced_fp_data['webgl_unmasked_renderer'],
-        "webgl_vsf_params": enhanced_fp_data['webgl_vsf_params'],
-        "webgl_vsi_params": enhanced_fp_data['webgl_vsi_params'],
-        "webgl_fsf_params": enhanced_fp_data['webgl_fsf_params'],
-        "webgl_fsi_params": enhanced_fp_data['webgl_fsi_params'],
-        "webgl_hash_webgl": enhanced_fp_data['webgl_hash_webgl'],
+        "webgl_extensions": enhanced_fp_data["webgl_extensions"],
+        "webgl_extensions_hash": enhanced_fp_data["webgl_extensions_hash"],
+        "webgl_renderer": enhanced_fp_data["webgl_renderer"],
+        "webgl_vendor": enhanced_fp_data["webgl_vendor"],
+        "webgl_version": enhanced_fp_data["webgl_version"],
+        "webgl_shading_language_version": enhanced_fp_data[
+            "webgl_shading_language_version"
+        ],
+        "webgl_aliased_line_width_range": enhanced_fp_data[
+            "webgl_aliased_line_width_range"
+        ],
+        "webgl_aliased_point_size_range": enhanced_fp_data[
+            "webgl_aliased_point_size_range"
+        ],
+        "webgl_antialiasing": enhanced_fp_data["webgl_antialiasing"],
+        "webgl_bits": enhanced_fp_data["webgl_bits"],
+        "webgl_max_params": enhanced_fp_data["webgl_max_params"],
+        "webgl_max_viewport_dims": enhanced_fp_data["webgl_max_viewport_dims"],
+        "webgl_unmasked_vendor": enhanced_fp_data["webgl_unmasked_vendor"],
+        "webgl_unmasked_renderer": enhanced_fp_data["webgl_unmasked_renderer"],
+        "webgl_vsf_params": enhanced_fp_data["webgl_vsf_params"],
+        "webgl_vsi_params": enhanced_fp_data["webgl_vsi_params"],
+        "webgl_fsf_params": enhanced_fp_data["webgl_fsf_params"],
+        "webgl_fsi_params": enhanced_fp_data["webgl_fsi_params"],
+        "webgl_hash_webgl": enhanced_fp_data["webgl_hash_webgl"],
         "user_agent_data_brands": "Chromium,Google Chrome,Not.A/Brand",
         "user_agent_data_mobile": False,
         "navigator_connection_downlink": 1.45,
@@ -96,10 +116,10 @@ def enhanced_fp(method) -> dict:
         ],
         "browser_object_checks": "554838a8451ac36cb977e719e9d6623c",
         "29s83ih9": "68934a3e9455fa72420237eb05902327⁣",
-        "audio_codecs": enhanced_fp_data['audio_codecs'],
-        "audio_codecs_extended_hash": enhanced_fp_data['audio_codecs_extended_hash'],
-        "video_codecs": enhanced_fp_data['video_codecs'],
-        "video_codecs_extended_hash": enhanced_fp_data['video_codecs_extended_hash'],
+        "audio_codecs": enhanced_fp_data["audio_codecs"],
+        "audio_codecs_extended_hash": enhanced_fp_data["audio_codecs_extended_hash"],
+        "video_codecs": enhanced_fp_data["video_codecs"],
+        "video_codecs_extended_hash": enhanced_fp_data["video_codecs_extended_hash"],
         "media_query_dark_mode": False,
         "f9bf2db": '{"pc":"no-preference","ah":"hover","ap":"fine","p":"fine","h":"hover","u":"fast","prm":"no-preference","prt":"no-preference","s":"enabled","fc":"none"}',
         "headless_browser_phantom": True,
@@ -112,13 +132,15 @@ def enhanced_fp(method) -> dict:
         "window__tree_index": info["window__tree_index"],
         "window__tree_structure": info["window__tree_structure"],
         "window__location_href": info["window__location_href"],
-        "client_config__sitedata_location_href": info["client_config__sitedata_location_href"],
+        "client_config__sitedata_location_href": info[
+            "client_config__sitedata_location_href"
+        ],
         "client_config__language": other_info["language"],
         "client_config__surl": other_info["service_url"],
         "c8480e29a": info["c8480e29a"],
         "client_config__triggered_inline": info["client_config__triggered_inline"],
         "mobile_sdk__is_sdk": False,
-        "audio_fingerprint": info["audio_fingerprint"],
+        "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
         "navigator_battery_charging": True,
         "media_device_kinds": ["audioinput", "videoinput", "audiooutput"],
         "media_devices_hash": "199eba60310b53c200cc783906883c67",
@@ -136,8 +158,8 @@ def enhanced_fp(method) -> dict:
         "4f59ca8": None,
         "3ea7194": {"supported": True, "formats": ["HDR10", "HLG"], "isHDR": False},
         "05d3d24": "7bd8fe2b950ecd77778f4bf4c2c1b213",
-        "speech_default_voice": info["speech_default_voice"],
-        "speech_voices_hash": info["speech_voices_hash"],
+        "speech_default_voice": enhanced_fp_data["speech_default_voice"],
+        "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
         "4ca87df3d1": "Ow==",
         "867e25e5d4": "Ow==",
@@ -147,8 +169,15 @@ def enhanced_fp(method) -> dict:
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
     nonFormat = []
-    for k,v in bda.items():
+    for k, v in bda.items():
         nonFormat.append({"key": k, "value": v})
-    return {"formatted":json.dumps(nonFormat,indent=4, separators=(",", ": "), ensure_ascii=False),"realBdaUsed":arkoseBda,"nonFormatted":bda}
+    return {
+        "formatted": json.dumps(
+            nonFormat, indent=4, separators=(",", ": "), ensure_ascii=False
+        ),
+        "realBdaUsed": arkoseBda,
+        "nonFormatted": bda,
+    }
+
 
 print(enhanced_fp("roblox_login"))

@@ -116,9 +116,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "twitter":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -137,9 +137,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
 
     elif method == "twitter_unlock":
         siteKey = get_method(method)["public_key"]
@@ -159,9 +159,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "roblox_signup":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -180,9 +180,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "roblox_login":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -200,9 +200,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "roblox_join" or method == "roblox_follow":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -214,16 +214,16 @@ def get_options(method) -> None:
             "window__tree_index": [1, 0],
             "window__tree_structure": "[[],[[]]]",
             # "window__location_href": f"https://arkoselabs.roblox.com/v2/{capi_version}/enforcement.{enforcement_hash}.html",
-            "client_config__sitedata_location_href": "https://www.roblox.com/de/arkose/iframe",
+            "client_config__sitedata_location_href": "https://www.roblox.com/arkose/iframe",
             "client_config__language": None,
             "client_config__surl": "https://arkoselabs.roblox.com",
             "c8480e29a": str(hashing("https://arkoselabs.roblox.com")) + "\u2062",
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "ea":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -241,9 +241,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "github-signup":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -262,9 +262,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "asurion":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -282,9 +282,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "demo":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -302,9 +302,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "roblox_wall":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -323,9 +323,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "airbnb-register":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -343,9 +343,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     elif method == "battle.net":
         siteKey = get_method(method)["public_key"]
         options = {
@@ -363,9 +363,9 @@ def get_options(method) -> None:
             "client_config__triggered_inline": False,
         }
         capi_version = get_version_info(options["client_config__surl"], siteKey)
-        options[
-            "window__location_href"
-        ] = f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        options["window__location_href"] = (
+            f"{options['client_config__surl']}/v2/{capi_version[0]}/enforcement.{capi_version[1]}.html"
+        )
     else:
         raise Exception("Invalid method")
     return options
