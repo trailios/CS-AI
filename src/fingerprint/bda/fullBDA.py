@@ -67,6 +67,6 @@ def returnBDA(proxy,method):
 }
     bdaList = [{"key": k, "value": v} for k, v in BDA.items()]
 
-    return json.dumps(bdaList,indent=4, separators=(",", ": "))
+    return json.dumps(bdaList,indent=4, separators=(",", ": "),ensure_ascii=False)#.replace('\u2062',"⁣").replace('\u2063',"⁣")
 
 print(returnBDA("eee",'roblox_login'))

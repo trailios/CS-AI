@@ -9,7 +9,7 @@
     },
     {
         "key": "n",
-        "value": "MTc0OTM5ODU5MQ=="
+        "value": "MTc0OTczOTc2NA=="
     },
     {
         "key": "wh",
@@ -104,7 +104,7 @@
             },
             {
                 "key": "navigator_connection_downlink",
-                "value": 1.15
+                "value": 7.75
             },
             {
                 "key": "navigator_connection_downlink_max",
@@ -112,7 +112,7 @@
             },
             {
                 "key": "network_info_rtt",
-                "value": 550
+                "value": 100
             },
             {
                 "key": "network_info_save_data",
@@ -230,7 +230,7 @@
             },
             {
                 "key": "1l2l5234ar2",
-                "value": "1749398591276⁣"
+                "value": "1749739763790⁣"
             },
             {
                 "key": "document__referrer",
@@ -297,8 +297,8 @@
                 "value": null
             },
             {
-                "key": "navigator_permissions_hash",
-                "value": "67419471976a14a1430378465782c62d"
+                "key": "1f220c9",
+                "value": "fa78ee51d01829ce47c1807813ddbfba"
             },
             {
                 "key": "math_fingerprint",
@@ -318,11 +318,11 @@
             },
             {
                 "key": "4b4b269e68",
-                "value": "852303f1-0f59-4706-a0cf-7223b627a16b"
+                "value": "a684769b-f189-44c0-92f2-3b8a34653f72"
             },
             {
                 "key": "6a62b2a558",
-                "value": "745e193c1520ec3cb6c909140e7bf18c"
+                "value": "df45d93b7883fed1e47dedac58c1d924"
             },
             {
                 "key": "is_keyless",
@@ -334,7 +334,7 @@
             },
             {
                 "key": "43f2d94",
-                "value": false
+                "value": []
             },
             {
                 "key": "20c15922",

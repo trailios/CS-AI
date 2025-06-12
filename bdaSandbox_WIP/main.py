@@ -1,10 +1,10 @@
 import json
 
 # Load JSON data
-with open("bdaSandbox_WIP/realBDA.json", "r") as realBDA:
+with open("bdaSandbox_WIP/realBDA.json", "r",encoding='utf-8') as realBDA:
     realBDAData = json.load(realBDA)
 
-with open("bdaSandbox_WIP/gennedBDA.json", "r") as gennedBDA:
+with open("bdaSandbox_WIP/gennedBDA.json", "r",encoding='utf-8') as gennedBDA:
     gennedBDAData = json.load(gennedBDA)
 
 # Extract enhanced_fp block
