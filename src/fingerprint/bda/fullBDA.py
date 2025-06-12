@@ -23,7 +23,7 @@ def returnBDA(proxy,method):
     TO = getIpInfo(proxy)
     BDA = {
     "api_type": "js",
-    "f": "a99d2a2aa41c00e4169ea2746848efc4",
+    "f": "a99d2a2aa41c00e4169ea2746848efc4", # eh ehm.. FIX THIS.
     "n": b64encode(str(int(time.time())).encode('utf-8')).decode('utf-8'),
     "wh": "6e783395340e2dddfb86bc8a7f040a3c|cc7fecdd5c8bec57541ae802c7648eed",
     "enhanced_fp":enhanced_fp['nonFormatted'],
