@@ -65,6 +65,8 @@ def returnBDA(proxy,method):
     "ife_hash": x64hash128(", ".join(data_entries), 38),
     "jsbd": "{\"HL\":2,\"NCE\":true,\"DT\":\"Challenge\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
 }
-    return json.dumps(BDA,indent=4, separators=(",", ": "))
+    bdaList = [{"key": k, "value": v} for k, v in BDA.items()]
+
+    return json.dumps(bdaList,indent=4, separators=(",", ": "))
 
 print(returnBDA("eee",'roblox_login'))
