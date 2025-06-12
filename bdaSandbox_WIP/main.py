@@ -51,11 +51,15 @@ for key in set(genned_keys).intersection(real_keys):
         print(f"  Real:    {realEFP[key]}")
         print(f"  Genned:  {gennedEFP[key]}")
 
-# Save real_keys as realOrder.json outside bdaSandbox_WIP
+# ✅ Save ordered key-value dictionary to JSON
+ordered_realEFP = {key: realEFP[key] for key in real_keys if key in realEFP}
+
+# Output path
 output_path = os.path.abspath(os.path.join("src", "fingerprint", "bda", "realOrder.json"))
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+# Save full ordered dict
 with open(output_path, "w", encoding="utf-8") as f:
-    json.dump(real_keys, f, indent=4, ensure_ascii=False)
+    json.dump(ordered_realEFP, f, indent=4, ensure_ascii=False)
 
-print(f"\n✅ realOrder.json saved to: {output_path}")
+print(f"\n✅ realOrder.json (ordered key-values) saved to: {output_path}")
