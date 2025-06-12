@@ -1,5 +1,4 @@
-from src import internal_session
-
+from curl_cffi import requests as internal_session
 def get_version_info(apiurl, sitekey):
     captchadata = internal_session.get(
         f"{apiurl}/v2/{sitekey}/api.js"
