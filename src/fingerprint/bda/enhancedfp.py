@@ -164,7 +164,7 @@ def enhanced_fp(method) -> dict:
         "05d3d24": "7bd8fe2b950ecd77778f4bf4c2c1b213",
         "speech_default_voice": enhanced_fp_data.get("speech_default_voice", "Microsoft Hedda - German (Germany) || de-DE"),
         "speech_voices_hash": enhanced_fp_data.get("speech_default_voice", "f8224b0bd046a07df30c0549fd055803"),
-        "speech_default_voice": enhanced_fp_data["speech_default_voice"],
+        "speech_default_voice": enhanced_fp_data.get("speech_default_voice",None),
         "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
         "4ca87df3d1": "Ow==",
