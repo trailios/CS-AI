@@ -6,14 +6,15 @@ import random
 from typing import Dict, Any, List
 import json
 
+
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
 from utils.hash import x64hash128
 from utils.versionInfo import get_version_info
 from utils.presets import get_method, get_options
-
-
+from fingerprint.bda.ordering import reorder_bda
 fingerprints: List[str] = os.listdir("fpData")
 
 
@@ -79,6 +80,7 @@ def enhanced_fp(method) -> dict:
         "webgl_unmasked_renderer": enhanced_fp_data["webgl_unmasked_renderer"],
         "webgl_vsf_params": enhanced_fp_data["webgl_vsf_params"],
         "webgl_vsi_params": enhanced_fp_data["webgl_vsi_params"],
+        "1f220c9":"4265a56c672d7e6aa6193578832fbe69",
         "webgl_fsf_params": enhanced_fp_data["webgl_fsf_params"],
         "webgl_fsi_params": enhanced_fp_data["webgl_fsi_params"],
         "webgl_hash_webgl": enhanced_fp_data["webgl_hash_webgl"],
@@ -114,6 +116,7 @@ def enhanced_fp(method) -> dict:
             "media_device: defined",
             "playback_quality: True",
         ],
+        
         "browser_object_checks": "554838a8451ac36cb977e719e9d6623c",
         "29s83ih9": "68934a3e9455fa72420237eb05902327⁣",
         "audio_codecs": enhanced_fp_data["audio_codecs"],
@@ -145,7 +148,7 @@ def enhanced_fp(method) -> dict:
         "navigator_battery_charging": True,
         "media_device_kinds": ["audioinput", "videoinput", "audiooutput"],
         "media_devices_hash": "199eba60310b53c200cc783906883c67",
-        "navigator_permissions_hash": "67419471976a14a1430378465782c62d",
+        #"navigator_permissions_hash": "67419471976a14a1430378465782c62d",
         "math_fingerprint": "0ce80c69b75667d69baedc0a70c82da7",
         "supported_math_functions": "67d1759d7e92844d98045708c0a91c2f",
         "screen_orientation": "landscape-primary",
@@ -171,6 +174,7 @@ def enhanced_fp(method) -> dict:
    
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
+    bda = reorder_bda(bda)
     nonFormat = []
     for k, v in bda.items():
         nonFormat.append({"key": k, "value": v})
