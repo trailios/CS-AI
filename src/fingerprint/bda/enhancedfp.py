@@ -6,14 +6,15 @@ import random
 from typing import Dict, Any, List
 import json
 
+
 src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
 from utils.hash import x64hash128
 from utils.versionInfo import get_version_info
 from utils.presets import get_method, get_options
-
-
+from fingerprint.bda.ordering import reorder_bda
 fingerprints: List[str] = os.listdir("fpData")
 
 
@@ -79,6 +80,7 @@ def enhanced_fp(method) -> dict:
         "webgl_unmasked_renderer": enhanced_fp_data["webgl_unmasked_renderer"],
         "webgl_vsf_params": enhanced_fp_data["webgl_vsf_params"],
         "webgl_vsi_params": enhanced_fp_data["webgl_vsi_params"],
+        "1f220c9":"4265a56c672d7e6aa6193578832fbe69",
         "webgl_fsf_params": enhanced_fp_data["webgl_fsf_params"],
         "webgl_fsi_params": enhanced_fp_data["webgl_fsi_params"],
         "webgl_hash_webgl": enhanced_fp_data["webgl_hash_webgl"],
@@ -114,6 +116,7 @@ def enhanced_fp(method) -> dict:
             "media_device: defined",
             "playback_quality: True",
         ],
+        
         "browser_object_checks": "554838a8451ac36cb977e719e9d6623c",
         "29s83ih9": "68934a3e9455fa72420237eb05902327⁣",
         "audio_codecs": enhanced_fp_data["audio_codecs"],
@@ -122,7 +125,7 @@ def enhanced_fp(method) -> dict:
         "video_codecs_extended_hash": enhanced_fp_data["video_codecs_extended_hash"],
         "media_query_dark_mode": False,
         "f9bf2db": '{"pc":"no-preference","ah":"hover","ap":"fine","p":"fine","h":"hover","u":"fast","prm":"no-preference","prt":"no-preference","s":"enabled","fc":"none"}',
-        "headless_browser_phantom": True,
+        "headless_browser_phantom": False,
         "headless_browser_selenium": False,
         "headless_browser_nightmare_js": False,
         "headless_browser_generic": 4,
@@ -145,7 +148,7 @@ def enhanced_fp(method) -> dict:
         "navigator_battery_charging": True,
         "media_device_kinds": ["audioinput", "videoinput", "audiooutput"],
         "media_devices_hash": "199eba60310b53c200cc783906883c67",
-        "navigator_permissions_hash": "67419471976a14a1430378465782c62d",
+        #"navigator_permissions_hash": "67419471976a14a1430378465782c62d",
         "math_fingerprint": "0ce80c69b75667d69baedc0a70c82da7",
         "supported_math_functions": "67d1759d7e92844d98045708c0a91c2f",
         "screen_orientation": "landscape-primary",
@@ -154,14 +157,14 @@ def enhanced_fp(method) -> dict:
         "6a62b2a558": capiInfo[1],
         "is_keyless": False,
         "c2d2015": "29d13b1af8803cb86c2697345d7ea9eb",
-        "43f2d94": "63a34c42b4221e3d98b70281ab5e6160",
+        "43f2d94": [],
         "20c15922": True,
         "4f59ca8": None,
         "3ea7194": {"supported": True, "formats": ["HDR10", "HLG"], "isHDR": False},
         "05d3d24": "7bd8fe2b950ecd77778f4bf4c2c1b213",
         "speech_default_voice": enhanced_fp_data.get("speech_default_voice", "Microsoft Hedda - German (Germany) || de-DE"),
         "speech_voices_hash": enhanced_fp_data.get("speech_default_voice", "f8224b0bd046a07df30c0549fd055803"),
-        "speech_default_voice": enhanced_fp_data["speech_default_voice"],
+        "speech_default_voice": enhanced_fp_data.get("speech_default_voice",None),
         "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
         "4ca87df3d1": "Ow==",
@@ -171,15 +174,9 @@ def enhanced_fp(method) -> dict:
    
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
+    bda = reorder_bda(bda)
     nonFormat = []
     for k, v in bda.items():
         nonFormat.append({"key": k, "value": v})
-    return {
-        "formatted": json.dumps(
-            nonFormat, indent=4, separators=(",", ": "), ensure_ascii=False
-        ),
-        "realBdaUsed": arkoseBda,
-        "nonFormatted": bda,
-    }
-
+    return {"formatted":nonFormat,"realBdaUsed":arkoseBda,"nonFormatted":bda}
 
