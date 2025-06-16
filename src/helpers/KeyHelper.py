@@ -6,6 +6,7 @@ from hashlib import sha256
 from contextlib import closing
 from dataclasses import dataclass
 
+
 class KeyNotFoundError(Exception):
     pass
 

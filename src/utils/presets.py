@@ -369,5 +369,3 @@ def get_options(method) -> None:
     else:
         raise Exception("Invalid method")
     return options
-
-
