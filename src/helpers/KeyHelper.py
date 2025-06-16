@@ -5,8 +5,6 @@ import random
 from hashlib import sha256
 from contextlib import closing
 from dataclasses import dataclass
-import os
-
 
 class KeyNotFoundError(Exception):
     pass
