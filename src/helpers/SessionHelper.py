@@ -1,7 +1,6 @@
 from curl_cffi.requests import ThreadType, RequestParams
-from curl_cffi import Curl, requests
+from curl_cffi import Curl, requests, CurlHttpVersion, Response
 from typing import Optional, Unpack
-
 
 class Session(requests.Session):
     def __init__(
@@ -20,24 +19,24 @@ class Session(requests.Session):
             **kwargs,
         )
 
-    def post(self, url: str, **kwargs: Unpack[RequestParams]):
+    def post(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().post(url, **kwargs)
 
-    def get(self, url: str, **kwargs: Unpack[RequestParams]):
+    def get(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().get(url, **kwargs)
 
-    def options(self, url: str, **kwargs: Unpack[RequestParams]):
+    def options(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().options(url, **kwargs)
 
-    def patch(self, url: str, **kwargs: Unpack[RequestParams]):
+    def patch(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().patch(url, **kwargs)
 
-    def head(self, url: str, **kwargs: Unpack[RequestParams]):
+    def head(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().head(url, **kwargs)
 
 
 if __name__ == "__main__":
-    session: Session = Session(impersonate="chrome")
+    session: Session = Session(impersonate="chrome136")
 
     print(session.impersonate)
 

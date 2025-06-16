@@ -1,5 +1,6 @@
 from src.helpers.KeyHelper import KeyService
 from src.helpers.SessionHelper import Session
+from src.helpers.ProxyHelper import Proxy
 
 key_service = KeyService()
 internal_session = Session(impersonate="chrome")
@@ -18,3 +19,5 @@ internal_session.headers = {
     "sec-fetch-site": "same-site",
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
 }
+
+Proxy = Proxy
