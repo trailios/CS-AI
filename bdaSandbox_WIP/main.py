@@ -2,18 +2,22 @@ import json
 import os
 
 # Load JSON data
-with open("bdaSandbox_WIP/realBDA.json", "r", encoding='utf-8') as realBDA:
+with open("bdaSandbox_WIP/realBDA.json", "r", encoding="utf-8") as realBDA:
     realBDAData = json.load(realBDA)
 
-with open("bdaSandbox_WIP/gennedBDA.json", "r", encoding='utf-8') as gennedBDA:
+with open("bdaSandbox_WIP/gennedBDA.json", "r", encoding="utf-8") as gennedBDA:
     gennedBDAData = json.load(gennedBDA)
+
 
 # Extract enhanced_fp block
 def fetch_random_enhanced_fingerprint(data):
-    enhanced_fp_entry = next((item for item in data if item["key"] == "enhanced_fp"), None)
+    enhanced_fp_entry = next(
+        (item for item in data if item["key"] == "enhanced_fp"), None
+    )
     if enhanced_fp_entry:
         return {item["key"]: item["value"] for item in enhanced_fp_entry["value"]}
     return {}
+
 
 gennedEFP = fetch_random_enhanced_fingerprint(gennedBDAData)
 realEFP = fetch_random_enhanced_fingerprint(realBDAData)
@@ -55,7 +59,9 @@ for key in set(genned_keys).intersection(real_keys):
 ordered_realEFP = {key: realEFP[key] for key in real_keys if key in realEFP}
 
 # Output path
-output_path = os.path.abspath(os.path.join("src", "fingerprint", "bda", "realOrder.json"))
+output_path = os.path.abspath(
+    os.path.join("src", "fingerprint", "bda", "realOrder.json")
+)
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Save full ordered dict
