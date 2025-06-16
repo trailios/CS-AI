@@ -3,40 +3,87 @@ import os
 import uuid
 import time
 import random
+from typing import Dict, Any, List
+import json
 
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
 
-from src.utils.hash import x64hash128
-from src.utils.versionInfo import get_version_info
-from src.utils.presets import get_method, get_options
+src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+from utils.hash import x64hash128
+from utils.versionInfo import get_version_info
+from utils.presets import get_method, get_options
+from fingerprint.bda.ordering import reorder_bda
+fingerprints: List[str] = os.listdir("fpData")
+
+
+def convert_to_dict(data_list):
+    result: Dict[str, Any] = {}
+    for item in data_list:
+        key = item["key"]
+        value = item["value"]
+        if isinstance(value, list) and all(
+            isinstance(i, dict) and "key" in i and "value" in i for i in value
+        ):
+
+            result[key] = convert_to_dict(value)
+        else:
+            result[key] = value
+    return result
+
+
+def fetch_random_fingerprint():
+    with open("fpData/" + random.choice(fingerprints), "r", encoding="utf-8") as f:
+        realfingerprint = json.load(f)
+        return realfingerprint
+
+
+def fetch_random_enhanced_fingerprint(data):
+    enhanced_fp_entry = next(
+        (item for item in data if item["key"] == "enhanced_fp"), None
+    )
+    if enhanced_fp_entry:
+        enhanced_fp_values = {
+            item["key"]: item["value"] for item in enhanced_fp_entry["value"]
+        }
+        return enhanced_fp_values
 
 
 def enhanced_fp(method) -> dict:
     info = get_options(method)
     other_info = get_method(method)
     capiInfo = get_version_info(other_info["service_url"], other_info["public_key"])
+    nonFormatted = fetch_random_fingerprint()
+    arkoseBda = convert_to_dict(nonFormatted)
+    enhanced_fp_data = fetch_random_enhanced_fingerprint(nonFormatted)
     bda = {
-        "webgl_extensions": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode",
-        "webgl_extensions_hash": "7300c23f4e6fa34e534fc99c1b628588",
-        "webgl_renderer": "WebKit WebGL",
-        "webgl_vendor": "WebKit",
-        "webgl_version": "WebGL 1.0 (OpenGL ES 2.0 Chromium)",
-        "webgl_shading_language_version": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)",
-        "webgl_aliased_line_width_range": "[1, 1]",
-        "webgl_aliased_point_size_range": "[1, 1024]",
-        "webgl_antialiasing": "yes",
-        "webgl_bits": "8,8,24,8,8,0",
-        "webgl_max_params": "16,32,16384,1024,16384,16,16384,30,16,16,4096",
-        "webgl_max_viewport_dims": "[32767, 32767]",
-        "webgl_unmasked_vendor": "Google Inc. (Intel)",
-        "webgl_unmasked_renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x00009A78) Direct3D11 vs_5_0 ps_5_0, D3D11)",
-        "webgl_vsf_params": "23,127,127,23,127,127,23,127,127",
-        "webgl_vsi_params": "0,31,30,0,31,30,0,31,30",
-        "webgl_fsf_params": "23,127,127,23,127,127,23,127,127",
-        "webgl_fsi_params": "0,31,30,0,31,30,0,31,30",
-        "webgl_hash_webgl": "827faf6526791e64ca17cf99fab352c9",
+        "webgl_extensions": enhanced_fp_data["webgl_extensions"],
+        "webgl_extensions_hash": enhanced_fp_data["webgl_extensions_hash"],
+        "webgl_renderer": enhanced_fp_data["webgl_renderer"],
+        "webgl_vendor": enhanced_fp_data["webgl_vendor"],
+        "webgl_version": enhanced_fp_data["webgl_version"],
+        "webgl_shading_language_version": enhanced_fp_data[
+            "webgl_shading_language_version"
+        ],
+        "webgl_aliased_line_width_range": enhanced_fp_data[
+            "webgl_aliased_line_width_range"
+        ],
+        "webgl_aliased_point_size_range": enhanced_fp_data[
+            "webgl_aliased_point_size_range"
+        ],
+        "webgl_antialiasing": enhanced_fp_data["webgl_antialiasing"],
+        "webgl_bits": enhanced_fp_data["webgl_bits"],
+        "webgl_max_params": enhanced_fp_data["webgl_max_params"],
+        "webgl_max_viewport_dims": enhanced_fp_data["webgl_max_viewport_dims"],
+        "webgl_unmasked_vendor": enhanced_fp_data["webgl_unmasked_vendor"],
+        "webgl_unmasked_renderer": enhanced_fp_data["webgl_unmasked_renderer"],
+        "webgl_vsf_params": enhanced_fp_data["webgl_vsf_params"],
+        "webgl_vsi_params": enhanced_fp_data["webgl_vsi_params"],
+        "1f220c9":"4265a56c672d7e6aa6193578832fbe69",
+        "webgl_fsf_params": enhanced_fp_data["webgl_fsf_params"],
+        "webgl_fsi_params": enhanced_fp_data["webgl_fsi_params"],
+        "webgl_hash_webgl": enhanced_fp_data["webgl_hash_webgl"],
         "user_agent_data_brands": "Chromium,Google Chrome,Not.A/Brand",
         "user_agent_data_mobile": False,
         "navigator_connection_downlink": 1.45,
@@ -69,15 +116,16 @@ def enhanced_fp(method) -> dict:
             "media_device: defined",
             "playback_quality: True",
         ],
+        
         "browser_object_checks": "554838a8451ac36cb977e719e9d6623c",
         "29s83ih9": "68934a3e9455fa72420237eb05902327⁣",
-        "audio_codecs": '{"ogg":"probably","mp3":"probably","wav":"probably","m4a":"maybe","aac":"probably"}',
-        "audio_codecs_extended_hash": "805036349642e2569ec299baed02315b",
-        "video_codecs": '{"ogg":"","h264":"probably","webm":"probably","mpeg4v":"","mpeg4a":"","theora":""}',
-        "video_codecs_extended_hash": "67b509547efe3423d32a3a70a2553c16",
+        "audio_codecs": enhanced_fp_data["audio_codecs"],
+        "audio_codecs_extended_hash": enhanced_fp_data["audio_codecs_extended_hash"],
+        "video_codecs": enhanced_fp_data["video_codecs"],
+        "video_codecs_extended_hash": enhanced_fp_data["video_codecs_extended_hash"],
         "media_query_dark_mode": False,
         "f9bf2db": '{"pc":"no-preference","ah":"hover","ap":"fine","p":"fine","h":"hover","u":"fast","prm":"no-preference","prt":"no-preference","s":"enabled","fc":"none"}',
-        "headless_browser_phantom": True,
+        "headless_browser_phantom": False,
         "headless_browser_selenium": False,
         "headless_browser_nightmare_js": False,
         "headless_browser_generic": 4,
@@ -95,11 +143,12 @@ def enhanced_fp(method) -> dict:
         "c8480e29a": info["c8480e29a"],
         "client_config__triggered_inline": info["client_config__triggered_inline"],
         "mobile_sdk__is_sdk": False,
-        "audio_fingerprint": "124.04347527516074",
+        "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
+        "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
         "navigator_battery_charging": True,
         "media_device_kinds": ["audioinput", "videoinput", "audiooutput"],
         "media_devices_hash": "199eba60310b53c200cc783906883c67",
-        "navigator_permissions_hash": "67419471976a14a1430378465782c62d",
+        #"navigator_permissions_hash": "67419471976a14a1430378465782c62d",
         "math_fingerprint": "0ce80c69b75667d69baedc0a70c82da7",
         "supported_math_functions": "67d1759d7e92844d98045708c0a91c2f",
         "screen_orientation": "landscape-primary",
@@ -108,22 +157,26 @@ def enhanced_fp(method) -> dict:
         "6a62b2a558": capiInfo[1],
         "is_keyless": False,
         "c2d2015": "29d13b1af8803cb86c2697345d7ea9eb",
-        "43f2d94": "63a34c42b4221e3d98b70281ab5e6160",
+        "43f2d94": [],
         "20c15922": True,
         "4f59ca8": None,
         "3ea7194": {"supported": True, "formats": ["HDR10", "HLG"], "isHDR": False},
         "05d3d24": "7bd8fe2b950ecd77778f4bf4c2c1b213",
-        "speech_default_voice": "Microsoft David - English (United States) || en-US",
-        "speech_voices_hash": "8802d9ff13748d5fd79c166e266ad4a2",
+        "speech_default_voice": enhanced_fp_data.get("speech_default_voice", "Microsoft Hedda - German (Germany) || de-DE"),
+        "speech_voices_hash": enhanced_fp_data.get("speech_default_voice", "f8224b0bd046a07df30c0549fd055803"),
+        "speech_default_voice": enhanced_fp_data.get("speech_default_voice",None),
+        "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
         "4ca87df3d1": "Ow==",
         "867e25e5d4": "Ow==",
         "d4a306884c": "Ow==",
     }
-
+   
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
-    return bda
+    bda = reorder_bda(bda)
+    nonFormat = []
+    for k, v in bda.items():
+        nonFormat.append({"key": k, "value": v})
+    return {"formatted":nonFormat,"realBdaUsed":arkoseBda,"nonFormatted":bda}
 
-
-print(enhanced_fp("roblox_login"))
