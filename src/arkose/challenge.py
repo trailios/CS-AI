@@ -10,3 +10,5 @@ class Challenge:
 
         self.session.headers = Headers
         self.session.proxies = Proxy.dict()
+
+# Soon
