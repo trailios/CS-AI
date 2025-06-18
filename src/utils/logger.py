@@ -56,18 +56,24 @@ class Logger:
         getattr(self.logger, level.name.lower())(msg)
 
     def solved_captcha(self, token: str, waves: Any, variant: str):
-        self._log_captcha(LogLevel.SUCCESS, {
-            "token": token,
-            "waves": waves,
-            "variant": variant,
-        })
+        self._log_captcha(
+            LogLevel.SUCCESS,
+            {
+                "token": token,
+                "waves": waves,
+                "variant": variant,
+            },
+        )
 
     def failed_captcha(self, token: str, waves: Any, variant: str):
-        self._log_captcha(LogLevel.ERROR, {
-            "token": token,
-            "waves": waves,
-            "variant": variant,
-        })
+        self._log_captcha(
+            LogLevel.ERROR,
+            {
+                "token": token,
+                "waves": waves,
+                "variant": variant,
+            },
+        )
 
     def log_info(self, message: str):
         self.logger.info(message)

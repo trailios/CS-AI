@@ -1,9 +1,12 @@
 from itertools import cycle
 from typing import Union
 
-def xor_cipher(data: Union[bytes, bytearray], key: Union[str, bytes, bytearray]) -> bytes:
+
+def xor_cipher(
+    data: Union[bytes, bytearray], key: Union[str, bytes, bytearray]
+) -> bytes:
     if isinstance(key, str):
-        key_bytes = key.encode('utf-8')
+        key_bytes = key.encode("utf-8")
     elif isinstance(key, (bytes, bytearray)):
         key_bytes = bytes(key)
     else:
