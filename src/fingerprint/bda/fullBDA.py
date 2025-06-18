@@ -1,20 +1,12 @@
-import sys
-import os
-import uuid
 import time
-import random
-from typing import Dict, Any, List
-from base64 import b64encode
 import json
 
-src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-if src_path not in sys.path:
-    sys.path.insert(0, src_path)
-from utils.hash import x64hash128
-from utils.versionInfo import get_version_info
-from utils.presets import get_method, get_options
-from fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
-from utils.ipIntelligence import getIpInfo
+from base64 import b64encode
+
+from src.utils.hash import x64hash128
+from src.fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
+from src.utils.ipIntelligence import getIpInfo
+from src.helpers.ProxyHelper import Proxy
 
 
 def getCFP(bda):
@@ -31,7 +23,7 @@ def prepare_fingerprint_data(fingerprint: dict) -> str:
     return ";".join(formatted_data)
 
 
-def returnBDA(proxy, method):
+def returnBDA(proxy: Proxy, method: str):
     enhanced_fp = fetchEnhanced_fp(method)
     CFP = getCFP(enhanced_fp["realBdaUsed"])
     TO = getIpInfo(proxy)
