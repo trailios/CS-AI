@@ -7,8 +7,10 @@ def xor_cipher(
 ) -> bytes:
     if isinstance(key, str):
         key_bytes = key.encode("utf-8")
+
     elif isinstance(key, (bytes, bytearray)):
         key_bytes = bytes(key)
+
     else:
         raise TypeError("Key must be str, bytes, or bytearray")
 
@@ -25,6 +27,5 @@ def xor_cipher(
     return bytes(result)
 
 
-# Aliases for clarity
 encrypt = xor_cipher
 decrypt = xor_cipher
