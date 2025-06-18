@@ -3,4 +3,4 @@
 
 SYNTAX USE FUCKING CLASSES
 
-"I have classes, but now... I love them." - traili
+"I hated classes, but now... I love them." - traili
