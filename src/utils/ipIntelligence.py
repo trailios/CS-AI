@@ -1,19 +1,20 @@
 import requests
 import pytz
+
 from datetime import datetime
 
+from src.helpers.ProxyHelper import Proxy
 
-def getIpInfo(proxy: str) -> int:
+
+def getIpInfo(proxy: Proxy) -> int:
     try:
-        proxy_dict = {"http": f"http://{proxy}", "https": f"http://{proxy}"}
-
         response = requests.get(
-            "https://api.ipify.org/?format=json", proxies=proxy_dict, timeout=10
+            "https://api.ipify.org/?format=json", proxies=proxy.dict(), timeout=10
         ).json()
         ip_address = response.get("ip", "")
 
         geo_data = requests.get(
-            f"https://ipinfo.io/{ip_address}/json", proxies=proxy_dict, timeout=10
+            f"https://ipinfo.io/{ip_address}/json", proxies=proxy.dict(), timeout=10
         ).json()
 
         timezone_str = geo_data.get("timezone", "America/New_York")

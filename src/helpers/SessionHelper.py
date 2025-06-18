@@ -2,6 +2,7 @@ from curl_cffi.requests import ThreadType, RequestParams
 from curl_cffi import Curl, requests, CurlHttpVersion, Response
 from typing import Optional, Unpack
 
+
 class Session(requests.Session):
     def __init__(
         self,
