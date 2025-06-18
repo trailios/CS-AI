@@ -1,4 +1,4 @@
 # CS-AI
 
 
-sex
+SYNTAX USE FUCKING CLASSES
