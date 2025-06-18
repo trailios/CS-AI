@@ -1,7 +1,7 @@
 from curl_cffi import requests as internal_session
 
 
-def get_version_info(apiurl, sitekey):
+def get_version_info(apiurl: str, sitekey: str):
     captchadata = internal_session.get(f"{apiurl}/v2/{sitekey}/api.js").text.split(
         "/enforcement."
     )

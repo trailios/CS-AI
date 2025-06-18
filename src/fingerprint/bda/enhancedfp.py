@@ -1,4 +1,3 @@
-import sys
 import os
 import uuid
 import time
@@ -8,15 +7,10 @@ import json
 
 from typing import Dict, Any, List
 
-
-src_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-
-if src_path not in sys.path:
-    sys.path.insert(0, src_path)
-from utils.hash import x64hash128
-from utils.versionInfo import get_version_info
-from utils.presets import get_method, get_options
-from fingerprint.bda.ordering import reorder_bda
+from src.utils.hash import x64hash128
+from src.utils.versionInfo import get_version_info
+from src.utils.presets import get_method, get_options
+from src.fingerprint.bda.ordering import reorder_bda
 
 fingerprints: List[str] = os.listdir("fpData")
 
