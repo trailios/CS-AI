@@ -6,7 +6,6 @@ from enum import IntEnum
 BrowserLiteral = Literal[
     "edge99",
     "edge101",
-    
     "chrome99",
     "chrome100",
     "chrome101",
@@ -23,7 +22,6 @@ BrowserLiteral = Literal[
     "chrome136",
     "chrome99_android",
     "chrome131_android",
-    
     "safari153",
     "safari155",
     "safari170",
@@ -32,11 +30,9 @@ BrowserLiteral = Literal[
     "safari180_ios",
     "safari184",
     "safari184_ios",
-    
     "firefox133",
     "firefox135",
     "tor145",
-    
     "chrome",
     "edge",
     "safari",
@@ -44,6 +40,7 @@ BrowserLiteral = Literal[
     "chrome_android",
     "firefox",
 ]
+
 
 class HttpVersion(IntEnum):
     NONE = 0
@@ -54,6 +51,7 @@ class HttpVersion(IntEnum):
     V2_PRIOR_KNOWLEDGE = 5  # HTTP 1.1 (no idea.)
     V3 = 30  # HTTP 3 - FALLBACK -> HTTP 2
     V3ONLY = 31  # HTTP3 - No Fallback
+
 
 class Session(requests.Session):
     def __init__(
