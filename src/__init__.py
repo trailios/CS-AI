@@ -1,6 +1,8 @@
-from src.helpers.KeyHelper import KeyService
-from src.helpers.SessionHelper import Session
-from src.utils.logger import log
+from src.helpers.KeyHelper      import KeyService
+from src.helpers.SessionHelper  import Session
+from src.utils.logger           import log
+
+from threading import Thread
 
 key_service = KeyService()
 internal_session = Session(impersonate="chrome")

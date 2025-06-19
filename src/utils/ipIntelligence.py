@@ -1,8 +1,8 @@
 import requests
 
-from src.helpers.ProxyHelper import Proxy
+from src.helpers.ProxyHelper    import Proxy
 
-from typing                 import Dict, Optional
+from typing                     import Dict, Optional
 
 class TimeZoneOffsets:
     def __init__(self) -> None:
@@ -54,7 +54,7 @@ def getIpInfo(proxy: Proxy) -> int:
         timezone_str = geo_data.get("timezone", "America/New_York")
 
         timetones = TimeZoneOffsets()
-        utc_offset = timetones.get_offset(timezone_str) or 0
+        utc_offset = timetones.get_offset(timezone_str) or -120 # <-- falllback
 
         return utc_offset
     except Exception:
