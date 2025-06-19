@@ -78,7 +78,7 @@ class Challenge:
     
     def gt2(self) -> None:
         try:
-            ...
+            ... # somebody make this thanks
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
         
