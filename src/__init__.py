@@ -2,11 +2,9 @@ from src.helpers.KeyHelper import KeyService
 from src.helpers.SessionHelper import Session
 from src.utils.logger import log
 
-from threading import Thread
-
 key_service = KeyService()
-internal_session = Session(impersonate="chrome")
 
+internal_session = Session(impersonate="chrome")
 internal_session.headers = {
     "accept": "*/*",
     "accept-language": "en-US,en;q=0.9",
