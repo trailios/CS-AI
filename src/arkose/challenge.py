@@ -1,11 +1,12 @@
 from typing import Dict, Optional
 from urllib import parse
 
-from src.utils.versionInfo      import get_version_info
-from src.helpers.SessionHelper  import *
-from src.helpers.ProxyHelper    import Proxy
+from src.utils.versionInfo import get_version_info
+from src.helpers.SessionHelper import *
+from src.helpers.ProxyHelper import Proxy
 
 import time
+
 
 class ProxyConnectionFailed(Exception):
     PREFIX = "CS-AI-ERR:"
@@ -14,6 +15,7 @@ class ProxyConnectionFailed(Exception):
         full_message = f"{self.PREFIX} {message}"
         super().__init__(full_message)
 
+
 class Http3NotSupported(Exception):
     PREFIX = "CS-AI-ERR:"
 
@@ -21,8 +23,16 @@ class Http3NotSupported(Exception):
         full_message = f"{self.PREFIX} {message}"
         super().__init__(full_message)
 
+
 class Challenge:
-    def __init__(self, Headers: Dict[str, str], Proxy: Proxy, Settings: Dict[str, str], BrowserData: Dict[str, str], HTTPVersion: Optional[int] = HttpVersion.V2_0) -> None:
+    def __init__(
+        self,
+        Headers: Dict[str, str],
+        Proxy: Proxy,
+        Settings: Dict[str, str],
+        BrowserData: Dict[str, str],
+        HTTPVersion: Optional[int] = HttpVersion.V2_0,
+    ) -> None:
         self.session: Session = Session(impersonate="edge")
         self.session.http_version = HTTPVersion
 
@@ -33,13 +43,16 @@ class Challenge:
         self.settings: Dict[str, str] = Settings
 
         self.base_url: str = Settings["service_url"]
-        self.version, self.hash = get_version_info(Settings["service_url"], Settings["public_key"])
+        self.version, self.hash = get_version_info(
+            Settings["service_url"], Settings["public_key"]
+        )
         self.session_token: str = ""
 
-    
     def _pre_load(self) -> None:
         try:
-            r = self.session.get(f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}.html")
+            r = self.session.get(
+                f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}.html"
+            )
             self.session.cookies.update(r.cookies)
             self.cookies.update(r.cookies.get_dict())
 
@@ -47,43 +60,42 @@ class Challenge:
 
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
-        
+
         except HTTPError as e:
             raise Http3NotSupported(str(e))
-        
+
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to pre-load challenge because " + str(e))
 
-
     def _callback_sup(self) -> None:
         params = {
-            'callback': '__jsonp_' + str(int(time.time() * 1000)),
-            'category': 'loaded',
-            'action': 'game loaded',
-            'session_token': self.session_token,
-            'data[public_key]': self.settings["public_key"],
-            'data[site]': parse.quote(self.settings["site_url"]),
+            "callback": "__jsonp_" + str(int(time.time() * 1000)),
+            "category": "loaded",
+            "action": "game loaded",
+            "session_token": self.session_token,
+            "data[public_key]": self.settings["public_key"],
+            "data[site]": parse.quote(self.settings["site_url"]),
         }
 
         try:
             r = self.session.get(f"{self.base_url}/fc/a/", params=params)
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
-        
+
         except HTTPError as e:
             raise Http3NotSupported(str(e))
-        
+
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to callback because " + str(e))
-    
+
     def gt2(self) -> None:
         try:
-            ... # somebody make this thanks
+            ...  # somebody make this thanks
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
-        
+
         except HTTPError as e:
             raise Http3NotSupported(str(e))
-        
+
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to get token because " + str(e))
