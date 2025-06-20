@@ -1,8 +1,8 @@
 from curl_cffi.requests.exceptions import *
-from curl_cffi.requests            import ThreadType, RequestParams
-from curl_cffi                     import Curl, requests, Response
-from typing                        import Optional, Unpack, Literal
-from enum                          import IntEnum
+from curl_cffi.requests import ThreadType, RequestParams
+from curl_cffi import Curl, requests, Response
+from typing import Optional, Unpack, Literal
+from enum import IntEnum
 
 BrowserLiteral = Literal[
     "edge99",

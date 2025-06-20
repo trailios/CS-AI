@@ -8,5 +8,5 @@ def get_version_info(apiurl: str, sitekey: str):
 
     capi_version = captchadata[0].split('"')[-1]
     enforcement_hash = captchadata[1].split(".html")[0]
-    
+
     return (capi_version, enforcement_hash)
