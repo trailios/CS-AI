@@ -51,7 +51,7 @@ class Challenge:
     def _pre_load(self) -> None:
         try:
             r = self.session.get(
-                f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}.html"
+                f"{self.base_url}/v2/{self.version}/api.js"
             )
             self.session.cookies.update(r.cookies)
             self.cookies.update(r.cookies.get_dict())
