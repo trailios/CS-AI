@@ -1,11 +1,12 @@
 from typing import Dict, Optional
 from urllib import parse
 
-from src.utils.versionInfo import get_version_info
-from src.helpers.SessionHelper import *
-from src.helpers.ProxyHelper import Proxy
+from src.utils.versionInfo      import get_version_info
+from src.helpers.SessionHelper  import *
+from src.helpers.ProxyHelper    import Proxy
 
 import time
+import random
 
 
 class ProxyConnectionFailed(Exception):
@@ -51,7 +52,7 @@ class Challenge:
     def _pre_load(self) -> None:
         try:
             r = self.session.get(
-                f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}.html"
+                f"{self.base_url}/v2/{self.version}/api.js"
             )
             self.session.cookies.update(r.cookies)
             self.cookies.update(r.cookies.get_dict())
@@ -89,8 +90,24 @@ class Challenge:
             raise Exception("CS-AI-ERR: Failed to callback because " + str(e))
 
     def gt2(self) -> None:
-        try:
-            ...  # somebody make this thanks
+
+        payload = {
+            "public_key": self.settings["public_key"],
+            "capi_version": self.version,
+            "style_theme": "default",
+            "rnd": str(random.random()),
+            "bda": self.settings["bda"],
+            "site": self.settings["site"],
+            "userbrowser": self.session.headers["user-agent"],
+        }
+
+        if self.settings["blob"]:
+            payload["data[blob]"] = self.settings["blob"]
+
+        try: #https://arkoselabs.roblox.com/fc/gt2/public_key/A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F
+
+            self.session.post("")
+            
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
 
