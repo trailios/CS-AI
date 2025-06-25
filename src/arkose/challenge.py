@@ -47,7 +47,6 @@ class Challenge:
         self.version, self.hash = get_version_info(
             Settings["service_url"], Settings["public_key"]
         )
-        self.session_token: str = ""
 
     def _pre_load(self) -> None:
         try:
@@ -106,7 +105,23 @@ class Challenge:
 
         try: #https://arkoselabs.roblox.com/fc/gt2/public_key/A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F
 
-            self.session.post("")
+            gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse(payload)))
+
+            if "access denied" in gt2r.text.lower():
+                raise Exception("Blob has been refused by provider.")
+
+            if gt2r.ok:
+                rjson = gt2r.json()
+
+                self.full_token = rjson["token"]
+                self.game_url = rjson["challenge_url_cdn"]
+
+                self.session_token = self.full_token.split("|")[0]
+
+                if "sup" in self.full_token:
+                    self._callback_sup()
+
+                    return self.full_token
             
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
