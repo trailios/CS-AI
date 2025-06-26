@@ -103,7 +103,7 @@ class Challenge:
         if self.settings["blob"]:
             payload["data[blob]"] = self.settings["blob"]
 
-        try: #https://arkoselabs.roblox.com/fc/gt2/public_key/A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F
+        try:
 
             gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse(payload)))
 
