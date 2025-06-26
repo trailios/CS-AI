@@ -174,7 +174,7 @@ def enhanced_fp(method) -> dict:
 
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
-    bda = reorder_bda(bda)
+    bda = reorder_bda(method,bda)
     nonFormat = []
     for k, v in bda.items():
         nonFormat.append({"key": k, "value": v})
