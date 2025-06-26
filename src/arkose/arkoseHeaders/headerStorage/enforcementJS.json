@@ -1,0 +1,18 @@
+{
+    "host": "arkoselabs.roblox.com",
+    "connection": "keep-alive",
+    "origin": "https://arkoselabs.roblox.com",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "prefer": "safe",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0",
+    "sec-ch-ua": "\"Microsoft Edge\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+    "sec-ch-ua-mobile": "?0",
+    "accept": "*/*",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-dest": "script",
+    "referer": "https://arkoselabs.roblox.com/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.9",
+    "cookie": "rbx-ip2=1; RBXEventTrackerV2=CreateDate=06/26/2025 00:44:25&rbxid=&browserid=1750916665770001; GuestData=UserID=-735093651; RBXcb=RBXViralAcquisition=true&RBXSource=true&GoogleAnalytics=true; RBXSource=rbx_acquisition_time=06/26/2025 05:47:54&rbx_acquisition_referrer=https://www.roblox.com/&rbx_medium=Social&rbx_source=www.roblox.com&rbx_campaign=&rbx_adgroup=&rbx_keyword=&rbx_matchtype=&rbx_send_info=0; _cfuvid=2Tcy_EqLJ0qhYnviOGCTm_1P9sZBMu9.hAx5FSqz2z4-1717104076479-0.0.1.1-604800000"
+}
