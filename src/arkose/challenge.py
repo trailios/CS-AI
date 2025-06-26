@@ -79,6 +79,7 @@ class Challenge:
 
         try:
             r = self.session.get(f"{self.base_url}/fc/a/", params=params)
+
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
 
@@ -104,10 +105,9 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-
             gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse(payload)))
 
-            if "access denied" in gt2r.text.lower():
+            if "access denied" in gt2r.text.lower() or gt2r.status_code == 400:
                 raise Exception("Blob has been refused by provider.")
 
             if gt2r.ok:

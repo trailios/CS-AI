@@ -83,6 +83,7 @@ class DapibClient:
                 response=JSON.stringify(data);
             }
         """.replace("answers", json.dumps(answers).replace('"index"', "index"))
+        
         self.vm_script(inject_answers).runInContext(vm_context)
         self.vm_script(self.dapib_code).runInContext(vm_context)
 
@@ -90,7 +91,7 @@ class DapibClient:
         result = json.loads(response_json)
 
         tanswer = result.get("tanswer", [])
-        
+
         if self.is_flagged(tanswer):
             for record in tanswer:
                 for key, val in record.items():
