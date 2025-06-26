@@ -8,7 +8,7 @@ with open("bdaSandbox_WIP/realBDA.json", "r", encoding="utf-8") as realBDA:
 with open("bdaSandbox_WIP/gennedBDA.json", "r", encoding="utf-8") as gennedBDA:
     gennedBDAData = json.load(gennedBDA)
 
-
+preset = str("Preset of the bda given: ")
 # Extract enhanced_fp block
 def fetch_random_enhanced_fingerprint(data):
     enhanced_fp_entry = next(
@@ -60,7 +60,7 @@ ordered_realEFP = {key: realEFP[key] for key in real_keys if key in realEFP}
 
 # Output path
 output_path = os.path.abspath(
-    os.path.join("src", "fingerprint", "bda", "realOrder.json")
+    os.path.join("src", "fingerprint", "bda", f"{preset}realOrder.json")
 )
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
