@@ -13,10 +13,10 @@ signal.signal(signal.SIGINT, signal_handler)
 uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", "16", "--port", "80"]
 celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=solo"]
 
-print("Starting Celery worker...")
+print("starting Celery")
 celery_process = subprocess.Popen(celery_cmd)
 
-print("Starting FastAPI app...")
+print("starting server")
 try:
     uvicorn_process = subprocess.Popen(uvicorn_cmd)
     uvicorn_process.wait()
