@@ -8,7 +8,7 @@ from src.utils.crypto import encrypt_data
 class DapibClient:
     def __init__(
         self,
-        user_agent: Session,
+        user_agent: str,
         dapib_code: str,
         vm_storage_quota: int = 10_000_000,
     ) -> None:
@@ -58,7 +58,7 @@ class DapibClient:
             {
                 "userAgent": user_agent
                 or (
-                    self.user_agent or  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+                    self.user_agent or "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
                 )
             }
         )
