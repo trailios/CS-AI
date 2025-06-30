@@ -5,6 +5,9 @@ from typing import ClassVar, Iterable, Optional
 from src import internal_session
 from src.helpers.SessionHelper import Session
 
+import time
+import random
+import requests
 
 @dataclass
 class XEvilClient:

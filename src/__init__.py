@@ -1,6 +1,7 @@
 from src.helpers.KeyHelper import KeyService
 from src.helpers.SessionHelper import Session
 from src.utils.logger import log
+from src.utils.tools import Tools
 
 key_service = KeyService()
 
@@ -21,3 +22,4 @@ internal_session.headers = {
 }
 
 log = log
+tools = Tools
