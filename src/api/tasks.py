@@ -18,6 +18,9 @@ celery_app.conf.update(
 )
 
 @celery_app.task
-def solve(inputd) -> str:
-    time.sleep(2)
-    return "example solved - " + inputd
+def solve(type: str, **kwargs) -> str:
+    if type == "FunCaptcha":
+        blob = kwargs.get("blob")
+        site_url = kwargs.get("site_url")
+        action = kwargs.get("action")
+        proxy = kwargs.get("proxy", None)
