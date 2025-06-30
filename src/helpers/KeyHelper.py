@@ -77,7 +77,7 @@ class KeyManager:
 
     def generate_key(self, bought: int) -> str:
         random_key_segment = self._generate_random_key_segment()
-        full_unhashed_key = f"CAI-{random_key_segment}"
+        full_unhashed_key = f"CS-{random_key_segment}"
         hashed_key = self._hash_key(full_unhashed_key)
         timestamp = int(time.time())
 
@@ -95,10 +95,10 @@ class KeyManager:
         return full_unhashed_key
 
     def _generate_random_key_segment(self) -> str:
-        return f"{uuid.uuid4().hex[:16].upper()}{int(time.time()) - random.randint(1, 10000000)}"
+        return f"{uuid.uuid4().hex.upper()}{int(time.time()) - random.randint(1, 10000000)}"
 
     def _hash_key(self, key: str) -> str:
-        return sha256(key.encode()).hexdigest()
+        return sha256(key.encode()).hexdigest()[:45] + "CHASH"
 
     def get_key_data(self, key: str) -> Key:
         hashed_key = self._hash_key(key)
@@ -144,6 +144,34 @@ class KeyManager:
         result = self.db.fetch_all("SELECT * FROM keys")
         return {row[0]: Key(*row) for row in result}
 
+    def add_solved_request(self, key: str):
+        hashed_key = self._hash_key(key)
+        try:
+            self.db.execute_query(
+                """
+                UPDATE keys
+                SET solved = solved + 1, total_requests = total_requests + 1
+                WHERE key = ?
+            """,
+                (hashed_key,),
+            )
+        except DatabaseError as e:
+            raise DatabaseError(f"Failed to update solved request for key {key}: {str(e)}")
+    
+    def add_total_request(self, key: str):
+        hashed_key = self._hash_key(key)
+        try:
+            self.db.execute_query(
+                """
+                UPDATE keys
+                SET total_requests = total_requests + 1
+                WHERE key = ?
+            """,
+                (hashed_key,),
+            )
+        except DatabaseError as e:
+            raise DatabaseError(f"Failed to update total request for key {key}: {str(e)}")
+
 
 class KeyService:
     def __init__(self, db_path="db/keys.db"):
@@ -179,3 +207,50 @@ class KeyService:
             return self.key_manager.list_keys()
         except DatabaseError as e:
             raise DatabaseError(f"Error retrieving keys: {str(e)}")
+    
+    def get_balance(self, key: str) -> int:
+        try:
+            key_data = self.key_manager.get_key_data(key)
+            return key_data.bought
+        except KeyNotFoundError as e:
+            raise e
+        except DatabaseError as e:
+            raise DatabaseError(f"Error retrieving balance for key {key}: {str(e)}")
+
+    def add_solved_request(self, key: str):
+        try:
+            self.key_manager.add_solved_request(key)
+        except KeyNotFoundError as e:
+            raise e
+        except DatabaseError as e:
+            raise DatabaseError(f"Error updating solved request for key {key}: {str(e)}")
+
+    def add_total_request(self, key: str):
+        try:
+            self.key_manager.add_total_request(key)
+        except KeyNotFoundError as e:
+            raise e
+        except DatabaseError as e:
+            raise DatabaseError(f"Error updating total request for key {key}: {str(e)}")
+
+if __name__ == "__main__":
+    keyservice = KeyService()
+
+    r = keyservice.generate_new_key(1000)
+    print(f"Generated Key: {r}")
+
+    hashed_key = keyservice.key_manager._hash_key(r)
+    print(f"Hashed Key: {hashed_key}")
+
+    key_data = keyservice.key_manager.get_key_data(r)
+    print(f"Key Data: {key_data}")
+
+    keyservice.add_balance(r, 500)
+    print(f"Updated Balance: {keyservice.get_balance(r)}")
+
+    keyservice.add_solved_request(r)
+    print(f"Updated Solved Requests: {keyservice.key_manager.get_key_data(r).solved}")
+    keyservice.add_total_request(r)
+    print(f"Updated Total Requests: {keyservice.key_manager.get_key_data(r).total_requests}")
+
+    # testing purps
