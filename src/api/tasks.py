@@ -1,5 +1,5 @@
 from celery import Celery
-import time
+import time, hashlib
 
 celery_app = Celery(
     "src.api.tasks",
@@ -20,7 +20,9 @@ celery_app.conf.update(
 @celery_app.task
 def solve(type: str, **kwargs) -> str:
     if type == "FunCaptcha":
-        blob = kwargs.get("blob")
+        blob = kwargs.get("blob", None)
         site_url = kwargs.get("site_url")
         action = kwargs.get("action")
         proxy = kwargs.get("proxy", None)
+
+        return hashlib.sha256(f"Solving FunCaptcha with blob: {blob}, site_url: {site_url}, action: {action}, proxy: {proxy}".encode()).hexdigest()
