@@ -1,7 +1,7 @@
 from fastapi    import FastAPI
 from pydantic   import BaseModel
 from uuid       import UUID
-from typing     import Union, Dict
+from typing     import Union, Dict, Any
 
 import json
 
@@ -12,11 +12,11 @@ app = FastAPI()
 class TaskOutput(BaseModel):
     task_id: Union[str, UUID]
     status: Union[str, None] = None
-    result: Union[str, None] = None
+    result: Union[Dict[str, Any], str, None] = None
 
 class TaskInformation(BaseModel):
     type: str
-    extraData: Union[str, None] = None 
+    extraData: Union[Dict[str, Any], None] = None 
     site_url: Union[str, None] = None
     action: str
     proxy: Union[str, None] = None
@@ -27,21 +27,14 @@ class Task(BaseModel):
 
 @app.post("/createTask")
 def create_task(data: Task) -> TaskOutput:
-    blob = None
-    if data.task.extraData:
-        try:
-            blob = json.loads(data.task.extraData).get("blob")
-        except (json.JSONDecodeError, AttributeError):
-            blob = None
-
-    task = solve.delay({
-        "type": data.task.type,
-        "blob": blob,
-        "site_url": data.task.site_url,
-        "action": data.task.action,
-        "proxy": data.task.proxy,
-        "key": data.key
-    })
+    task = solve.delay(
+        type=data.task.type,
+        blob=data.task.extraData.get("data[blob]", None) if data.task.extraData else None,
+        site_url=data.task.site_url,
+        action=data.task.action,
+        proxy=data.task.proxy,
+        key=data.key
+    )
 
     return TaskOutput(
         task_id=task.id,
