@@ -1,5 +1,6 @@
 import requests, hashlib, time, os
 
+
 version = 1.0
 prev_api_hash = ""
 

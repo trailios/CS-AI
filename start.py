@@ -4,6 +4,8 @@ import sys
 import signal
 import os
 
+cores = os.cpu_count() or 8
+
 def signal_handler(sig, frame):
     print("\nReceived interrupt signal. Stopping services...")
     sys.exit(0)
@@ -11,7 +13,7 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", "16", "--port", "80"]
-celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=solo"]
+celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=solo", f"--concurrency={cores}"]
 
 print("starting Celery")
 celery_process = subprocess.Popen(celery_cmd)
