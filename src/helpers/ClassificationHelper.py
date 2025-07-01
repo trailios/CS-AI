@@ -73,7 +73,7 @@ class XEvilClient:
 
         return None
 
-    def solve_image(self, image_base64: str, instructions: str) -> int:
+    def solve_image(self, image_base64: str, instructions: str, x: int) -> int:
         host = self._pick_host()
         try:
             task_id = self._submit_task(image_base64, instructions, host)
@@ -81,4 +81,4 @@ class XEvilClient:
             return result if result is not None else random.randint(0, 4)
             
         except requests.RequestException:
-            return random.randint(0, 4)
+            return random.randint(0, x)
