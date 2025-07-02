@@ -1,9 +1,7 @@
 from fastapi    import FastAPI
 from pydantic   import BaseModel
 from uuid       import UUID
-from typing     import Union, Dict, Any
-
-import json
+from typing     import Union, Dict, Any, Optional
 
 from src.api.tasks import solve, celery_app
 
@@ -11,19 +9,19 @@ app = FastAPI()
 
 class TaskOutput(BaseModel):
     task_id: Union[str, UUID]
-    status: Union[str, None] = None
-    result: Union[Dict[str, Any], str, None] = None
+    status:  Optional[str]
+    result:  Optional[Dict[str, Any]]
 
 class TaskInformation(BaseModel):
-    type: str
-    extraData: Union[Dict[str, Any], None] = None 
-    site_url: Union[str, None] = None
-    action: str
-    proxy: Union[str, None] = None
+    type:       str
+    extraData:  Optional[Dict[str, Any]]
+    site_url:   str
+    action:     str
+    proxy:      str
 
 class Task(BaseModel):
-    key: str
-    task: TaskInformation
+    key:    str
+    task:   TaskInformation
 
 @app.post("/createTask")
 def create_task(data: Task) -> TaskOutput:
