@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 from urllib import parse
 
 from src.utils.versionInfo      import get_version_info
@@ -40,13 +40,19 @@ class Challenge:
         self.session.headers = Headers
         self.session.proxies = Proxy.dict()
 
-        self.cookies: Dict[str, str] = {}
-        self.settings: Dict[str, str] = Settings
+        self.cookies:   Dict[str, str] = {}
+        self.settings:  Dict[str, str] = Settings
+        self.browser:   Dict[str, Any] = BrowserData
 
-        self.base_url: str = Settings["service_url"]
+        self.base_url:  str = Settings["service_url"]
         self.version, self.hash = get_version_info(
             Settings["service_url"], Settings["public_key"]
         )
+
+        self.session_token: str = ""
+        self.full_token: str = ""
+        self.game_url: str = ""
+        self.game_version: str = Settings.get("game_version", "1.0")
 
     def _pre_load(self) -> None:
         try:
@@ -96,7 +102,7 @@ class Challenge:
             "capi_version": self.version,
             "style_theme": "default",
             "rnd": str(random.random()),
-            "bda": self.settings["bda"],
+            "bda": self.browser["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
         }
@@ -105,9 +111,9 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-            gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse(payload)))
+            gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse.urlencode(payload)))
 
-            if "access denied" in gt2r.text.lower() or gt2r.status_code == 400:
+            if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
                 raise Exception("Blob has been refused by provider.")
 
             if gt2r.ok:
@@ -115,6 +121,10 @@ class Challenge:
 
                 self.full_token = rjson["token"]
                 self.game_url = rjson["challenge_url_cdn"]
+
+                start = self.game_url.index("bootstrap/") + len("bootstrap/")
+                end = self.game_url.index("/", start)
+                self.game_version = self.game_url[start:end]
 
                 self.session_token = self.full_token.split("|")[0]
 
