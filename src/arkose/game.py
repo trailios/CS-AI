@@ -122,7 +122,8 @@ class Game:
             raise Exception(f"CS-AI-ERR: Failed to load enforcement resources: {str(e)}")
 
     def put_answer(self, guess: Dict[str, int]) -> bool:
-        
+        ...
+
 
 # It has been days since anyone has touched this file.
 # Somebody, one day, will stumble across this chaotic masterpiece and say,
