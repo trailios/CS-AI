@@ -1,9 +1,11 @@
 from src.helpers.KeyHelper import KeyService
+from src.helpers.ProxyHelper import Proxy
 from src.helpers.SessionHelper import Session
 from src.utils.logger import log
 from src.utils.tools import Tools
 
 key_service = KeyService()
+proxyHelper = Proxy
 
 internal_session = Session(impersonate="chrome")
 internal_session.headers = {
