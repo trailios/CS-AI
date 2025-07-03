@@ -33,10 +33,11 @@ except KeyboardInterrupt:
         if 'uvicorn_process' in locals():
             uvicorn_process.wait(timeout=5)
         celery_process.wait(timeout=5)
+        
     except subprocess.TimeoutExpired:
         if 'uvicorn_process' in locals():
             uvicorn_process.kill()
         celery_process.kill()
     
-    print("All processes terminated.")
+    print("all processes terminated.")
     sys.exit(0)
