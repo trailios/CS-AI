@@ -4,6 +4,7 @@ from src.utils.logger           import *
 from src.utils.tools            import Tools
 
 key_service = KeyService()
+proxyHelper = Proxy
 
 internal_session: Session = Session(impersonate="chrome")
 internal_session.headers = {

@@ -157,6 +157,6 @@ class Game:
 # and perhaps a sense of humor to survive its horrors.
 # And remember: touching this file may void your warranty on sanity.
 # Proceed at your own risk, brave soul.
+# - Unknown Developer
 
-
-# bro shut the fuck up
+# bro shut the fuck up - Traili
