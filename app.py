@@ -55,6 +55,7 @@ def get_task_result(task_id: str) -> TaskOutput:
 
     if result.state == "SUCCESS":
         output_result = str(result.result)
+
     elif result.state == "FAILURE":
         output_result = str(result.info) if hasattr(result.info, 'args') else str(result.info)
 
