@@ -12,7 +12,7 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", "16", "--port", "80"]
+uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", str(cores), "--port", "80"]
 celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=solo", f"--concurrency={cores}"]
 
 print("starting Celery")

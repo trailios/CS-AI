@@ -28,9 +28,3 @@ class Proxy:
     def dict(self) -> Dict[str, str]:  # only works for curl_cffi
         return {"all": self.__str__()}
 
-
-if __name__ == "__main__":
-    proxy = Proxy.parse("socks://user123:pass456@127.0.0.1:8080")
-    print(proxy)
-    print(proxy.__str__())
-    print(proxy.dict())

@@ -1,8 +1,13 @@
-from src                        import Session
-from src.helpers.SessionHelper  import HTTPError, ProxyError
-from src.arkose.challenge       import *
+from typing                     import Dict, Any, List
 
-from typing import Dict, Any, List
+from src.helpers.SessionHelper  import HTTPError, ProxyError
+from src                        import Session
+from src.arkose.challenge       import (
+    Challenge,
+    ProxyConnectionFailed,
+    Http3NotSupported,
+    parse
+)
 
 class Game:
     def __init__(self, Challenge: Challenge) -> None:
@@ -66,19 +71,28 @@ class Game:
             'action': f'{self.base_url}/v2/{self.version}/enforcement.{self.hash}.html',
         }
 
-        self.session.post(f"{self.base_url}/fc/a/", data=str(parse.urlencode(BasePayload)))
+        self.session.post(
+            f"{self.base_url}/fc/a/", 
+            data=str(parse.urlencode(BasePayload))
+        )
 
         BasePayload.update({
             "game_token": self.gameToken,
             "game_type": self.gameType,
             "action": "game loaded"
         })
-        self.session.post(f"{self.base_url}/fc/a/", data=str(parse.urlencode(BasePayload)))
+        self.session.post(
+            f"{self.base_url}/fc/a/", 
+            data=str(parse.urlencode(BasePayload))
+        )
 
         BasePayload.update({
             "action": "user clicked verify"
         })
-        self.session.post(f"{self.base_url}/fc/a/", data=str(parse.urlencode(BasePayload)))
+        self.session.post(
+            f"{self.base_url}/fc/a/", 
+            data=str(parse.urlencode(BasePayload))
+        )
 
     def gfct(self) -> Dict[str, Any]: # fuck ton parsing here KMS -Traili
         try:

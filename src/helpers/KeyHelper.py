@@ -232,25 +232,3 @@ class KeyService:
             raise e
         except DatabaseError as e:
             raise DatabaseError(f"Error updating total request for key {key}: {str(e)}")
-
-if __name__ == "__main__":
-    keyservice = KeyService()
-
-    r = keyservice.generate_new_key(1000)
-    print(f"Generated Key: {r}")
-
-    hashed_key = keyservice.key_manager._hash_key(r)
-    print(f"Hashed Key: {hashed_key}")
-
-    key_data = keyservice.key_manager.get_key_data(r)
-    print(f"Key Data: {key_data}")
-
-    keyservice.add_balance(r, 500)
-    print(f"Updated Balance: {keyservice.get_balance(r)}")
-
-    keyservice.add_solved_request(r)
-    print(f"Updated Solved Requests: {keyservice.key_manager.get_key_data(r).solved}")
-    keyservice.add_total_request(r)
-    print(f"Updated Total Requests: {keyservice.key_manager.get_key_data(r).total_requests}")
-
-    # testing purps

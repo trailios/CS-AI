@@ -1,9 +1,9 @@
-from fastapi    import FastAPI
-from pydantic   import BaseModel
-from uuid       import UUID
-from typing     import Union, Dict, Any, Optional
+from typing         import Union, Dict, Any, Optional
+from pydantic       import BaseModel
+from fastapi        import FastAPI
+from uuid           import UUID
 
-from src.api.tasks import solve, celery_app
+from src.api.tasks  import solve, celery_app
 
 app = FastAPI()
 
