@@ -1,4 +1,4 @@
-from curl_cffi.requests.exceptions import *
+from curl_cffi.requests.exceptions import HTTPError, ProxyError
 from curl_cffi.requests import ThreadType, RequestParams
 from curl_cffi import Curl, requests, Response
 from typing import Optional, Unpack, Literal
@@ -85,16 +85,3 @@ class Session(requests.Session):
 
     def head(self, url: str, **kwargs: Unpack[RequestParams]) -> Response:
         return super().head(url, **kwargs)
-
-
-if __name__ == "__main__":
-    session: Session = Session(impersonate="chrome136")
-
-    print(session.impersonate)
-
-    try:
-        r = session.get("https://example.com/")
-        print(r.text)
-
-    except Exception as e:
-        print(f"Error occurred: {e}")

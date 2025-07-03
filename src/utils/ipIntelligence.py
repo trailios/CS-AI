@@ -1,8 +1,8 @@
-import requests
+from typing     import Dict, Optional
+from requests   import get
 
 from src.helpers.ProxyHelper import Proxy
 
-from typing import Dict, Optional
 
 
 class TimeZoneOffsets:
@@ -43,12 +43,12 @@ class TimeZoneOffsets:
 
 def getIpInfo(proxy: Proxy) -> int:
     try:
-        response = requests.get(
+        response = get(
             "https://api.ipify.org/?format=json", proxies=proxy.dict(), timeout=10
         ).json()
         ip_address = response.get("ip", "")
 
-        geo_data = requests.get(
+        geo_data = get(
             f"https://ipinfo.io/{ip_address}/json", proxies=proxy.dict(), timeout=10
         ).json()
 

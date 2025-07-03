@@ -1,11 +1,11 @@
-from src.helpers.KeyHelper import KeyService
-from src.helpers.SessionHelper import Session
-from src.utils.logger import log
-from src.utils.tools import Tools
+from src.helpers.KeyHelper      import KeyService
+from src.helpers.SessionHelper  import Session
+from src.utils.logger           import *
+from src.utils.tools            import Tools
 
 key_service = KeyService()
 
-internal_session = Session(impersonate="chrome")
+internal_session: Session = Session(impersonate="chrome")
 internal_session.headers = {
     "accept": "*/*",
     "accept-language": "en-US,en;q=0.9",
@@ -21,5 +21,5 @@ internal_session.headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
 }
 
-log = log
+log = ...
 tools = Tools

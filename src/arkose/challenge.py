@@ -1,12 +1,17 @@
-from typing import Dict, Optional, Any
-from urllib import parse
+from typing                     import Dict, Optional, Any
+from random                     import random
+from urllib                     import parse
+from time                       import time
 
+
+from src.helpers.SessionHelper  import (
+    HTTPError, 
+    ProxyError, 
+    Session, 
+    HttpVersion
+)
 from src.utils.versionInfo      import get_version_info
-from src.helpers.SessionHelper  import *
 from src.helpers.ProxyHelper    import Proxy
-
-import time
-import random
 
 
 class ProxyConnectionFailed(Exception):
@@ -50,9 +55,9 @@ class Challenge:
         )
 
         self.session_token: str = ""
-        self.full_token: str = ""
-        self.game_url: str = ""
-        self.game_version: str = Settings.get("game_version", "1.0")
+        self.full_token:    str = ""
+        self.game_url:      str = ""
+        self.game_version:  str = ""
 
     def _pre_load(self) -> None:
         try:

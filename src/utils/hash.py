@@ -1,11 +1,11 @@
-import struct, hashlib, mmh3
-
-from typing import Union
-
+from mmh3    import hash_bytes
+from struct  import unpack
+from typing  import Union
+from hashlib import md5
 
 def md5hash(data: str):
     try:
-        return hashlib.md5(data.encode()).hexdigest()
+        return md5(data.encode()).hexdigest()
     except Exception:
         raise Exception("Failed to MD5 hash data.")
 
@@ -13,8 +13,9 @@ def md5hash(data: str):
 def x64hash128(data: Union[str, bytes], seed: int = 0) -> str:
     if isinstance(data, str):
         data = data.encode()
-    hash_bytes: bytes = mmh3.hash_bytes(data, seed=seed, x64arch=True)
-    hash_parts: tuple[int, int] = struct.unpack("<QQ", hash_bytes)
-    hash_hex_str: str = "{:016x}{:016x}".format(*hash_parts)
 
-    return hash_hex_str
+    Hb: bytes = hash_bytes(data, seed=seed, x64arch=True)
+    Hp: tuple[int, int] = unpack("<QQ", Hb)
+    Hhs: str = "{:016x}{:016x}".format(*Hp)
+
+    return Hhs
