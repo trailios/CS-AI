@@ -8,16 +8,26 @@ from src.api.tasks import solve, celery_app
 app = FastAPI()
 
 class TaskOutput(BaseModel):
+<<<<<<< HEAD
     task_id:    Union[str, UUID]
     status:     Optional[str]
     result:     Optional[Dict[str, Any]]
+=======
+    task_id: Union[str, UUID]
+    status:  Optional[str]
+    result:  Optional[Dict[str, Any]]
+>>>>>>> cfb277fdbcb9530c9165ee7ed47d6c035d0f0281
 
 class TaskInformation(BaseModel):
     type:       str
     extraData:  Optional[Dict[str, Any]]
     site_url:   str
     action:     str
+<<<<<<< HEAD
     proxy:      Optional[str]
+=======
+    proxy:      str
+>>>>>>> cfb277fdbcb9530c9165ee7ed47d6c035d0f0281
 
 class Task(BaseModel):
     key:    str
