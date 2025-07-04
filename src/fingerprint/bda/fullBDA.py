@@ -3,7 +3,7 @@ import json
 
 from base64 import b64encode
 
-from src.utils.hash import x64hash128
+from src.utils.Utils import x64hash128
 from src.fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
 from src.utils.ipIntelligence import getIpInfo
 from src.helpers.ProxyHelper import Proxy

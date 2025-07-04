@@ -2,7 +2,7 @@ from src.helpers.KeyHelper      import KeyService
 from src.helpers.SessionHelper  import Session
 from src.helpers.ProxyHelper    import Proxy
 from src.utils.logger           import *
-from src.utils.tools            import Tools
+from src.utils.utils            import Utils
 
 
 key_service = KeyService()
@@ -25,4 +25,4 @@ internal_session.headers = {
 }
 
 log = ...
-tools = Tools
+tools: Utils = Utils
