@@ -1,5 +1,5 @@
 from celery import Celery
-import time, hashlib
+import hashlib
 
 celery_app = Celery(
     "src.api.tasks",
