@@ -133,7 +133,7 @@ class Game:
             raise ProxyConnectionFailed()
     
         except Exception as e:
-            raise Exception(f"CS-AI-ERR: Failed to load enforcement resources: {str(e)}")
+            raise Exception(f"CS-AI-ERR: Failed to fetch GFCT: {str(e)}")
 
     def put_answer(self, guess: Dict[str, int]) -> bool:
         ...

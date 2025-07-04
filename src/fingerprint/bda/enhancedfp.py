@@ -1,18 +1,14 @@
-import os
-import uuid
-import time
-import random
-import json
-
+from os     import listdir
+from random import choice
+from json   import load
+from time   import time
 
 from typing import Dict, Any, List
 
-from src.utils.hash import x64hash128
 from src.utils.versionInfo import get_version_info
-from src.utils.presets import get_method, get_options
 from src.fingerprint.bda.ordering import reorder_bda
 
-fingerprints: List[str] = os.listdir("fpData")
+fingerprints: List[str] = list("fpData")
 
 
 def convert_to_dict(data_list):
@@ -31,8 +27,8 @@ def convert_to_dict(data_list):
 
 
 def fetch_random_fingerprint():
-    with open("fpData/" + random.choice(fingerprints), "r", encoding="utf-8") as f:
-        realfingerprint = json.load(f)
+    with open("fpData/" + choice(fingerprints), "r", encoding="utf-8") as f:
+        realfingerprint = load(f)
         return realfingerprint
 
 
@@ -149,7 +145,7 @@ def enhanced_fp(method) -> dict:
         "supported_math_functions": "67d1759d7e92844d98045708c0a91c2f",
         "screen_orientation": "landscape-primary",
         "rtc_peer_connection": 5,
-        "4b4b269e68": str(uuid.uuid4()),
+        "4b4b269e68": str(uuid4()),
         "6a62b2a558": capiInfo[1],
         "is_keyless": False,
         "c2d2015": "29d13b1af8803cb86c2697345d7ea9eb",

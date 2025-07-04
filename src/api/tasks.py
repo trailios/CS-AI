@@ -25,4 +25,4 @@ def solve(type: str, **kwargs) -> str:
         action = kwargs.get("action")
         proxy = kwargs.get("proxy", None)
 
-        return hashlib.sha256(f"Solving FunCaptcha with blob: {blob}, site_url: {site_url}, action: {action}, proxy: {proxy}".encode()).hexdigest()
+        return "i forgot"
