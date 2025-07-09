@@ -3,7 +3,7 @@ import json
 
 from base64 import b64encode
 
-from src.utils.Utils import x64hash128
+from src.utils.utils import Utils
 from src.fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
 from src.utils.ipIntelligence import getIpInfo
 from src.helpers.ProxyHelper import Proxy
@@ -56,12 +56,12 @@ def returnBDA(proxy: Proxy, method: str):
     data_entries = prepare_fingerprint_data(data_dict)
     BDA = {
         "api_type": "js",
-        "f": x64hash128(prepare_fingerprint_data(data_dict), 0),
+        "f": Utils.x64hash128(prepare_fingerprint_data(data_dict), 0),
         "n": b64encode(str(int(time.time())).encode("utf-8")).decode("utf-8"),
         "wh": "6e783395340e2dddfb86bc8a7f040a3c|cc7fecdd5c8bec57541ae802c7648eed",
         "enhanced_fp": enhanced_fp["formatted"],
         "fe": fe,
-        "ife_hash": x64hash128(", ".join(data_entries), 38),
+        "ife_hash": Utils.x64hash128(", ".join(data_entries), 38),
         "jsbd": '{"HL":2,"NCE":true,"DT":"Challenge","NWD":"false","DMTO":1,"DOTO":1}',
     }
     bdaList = [{"key": k, "value": v} for k, v in BDA.items()]
