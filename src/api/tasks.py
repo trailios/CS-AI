@@ -24,4 +24,4 @@ def solve(type: str, **kwargs) -> str:
         action = kwargs.get("action")
         proxy = kwargs.get("proxy", None)
 
-        return 
+        return "ass: asdadasdadadadadadasdas"
