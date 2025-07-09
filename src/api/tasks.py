@@ -1,5 +1,4 @@
-from celery import Celery
-import hashlib
+from celery import Celery, Task
 
 celery_app = Celery(
     "src.api.tasks",
@@ -25,4 +24,4 @@ def solve(type: str, **kwargs) -> str:
         action = kwargs.get("action")
         proxy = kwargs.get("proxy", None)
 
-        return "i forgot"
+        return 

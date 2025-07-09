@@ -8,9 +8,9 @@ from src.api.tasks  import solve, celery_app
 app = FastAPI()
 
 class TaskOutput(BaseModel):
-    task_id: Union[str, UUID]
-    status:  Optional[str]
-    result:  Optional[Dict[str, Any]]
+    task_id: str
+    status:  str
+    result:  Union[str, Dict[str, Any]]
 
 class TaskInformation(BaseModel):
     type:       str
@@ -19,12 +19,12 @@ class TaskInformation(BaseModel):
     action:     str
     proxy:      str
 
-class Task(BaseModel):
+class TaskInput(BaseModel):
     key:    str
     task:   TaskInformation
 
 @app.post("/createTask")
-def create_task(data: Task) -> TaskOutput:
+def create_task(data: TaskInput) -> TaskOutput:
     task = solve.delay(
         type=data.task.type,
         blob=data.task.extraData.get("data[blob]", None) if data.task.extraData else None,
@@ -57,7 +57,7 @@ def get_task_result(task_id: str) -> TaskOutput:
         output_result = str(result.result)
 
     elif result.state == "FAILURE":
-        output_result = str(result.info) if hasattr(result.info, 'args') else str(result.info)
+        output_result = str(result.info)
 
     return TaskOutput(
         task_id=result.id,
