@@ -172,9 +172,19 @@ class Preset:
                     "c8480e29a": str(Preset.hash(data["service_url"])) + "\u2062",
                     "client_config__triggered_inline": False,
                 }
+
+                info: dict = {
+                    "pkey": data["public_key"],
+                    "surl": data["service_url"],
+                    "url": data["site_url"],
+                    "cmode": data["capi_mode"],
+                    "lang": data["language"]
+                }
+
+
                     
         if options:
-            return options
+            return options, info
         
         else:
             raise ValueError(f"{method} is not a valid method.")

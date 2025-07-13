@@ -3,10 +3,10 @@ import json
 
 from base64 import b64encode
 
-from src.utils.utils import Utils
+from src.utils.utils                import Utils
 from src.fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
-from src.utils.ipIntelligence import getIpInfo
-from src.helpers.ProxyHelper import Proxy
+from src.utils.ipIntelligence       import getIpInfo
+from src.helpers.ProxyHelper        import Proxy
 
 
 def getCFP(bda):
@@ -62,13 +62,13 @@ def returnBDA(proxy: Proxy, method: str):
         "enhanced_fp": enhanced_fp["formatted"],
         "fe": fe,
         "ife_hash": Utils.x64hash128(", ".join(data_entries), 38),
-        "jsbd": '{"HL":2,"NCE":true,"DT":"Challenge","NWD":"false","DMTO":1,"DOTO":1}',
+        "jsbd": '{"HL":2,"NCE":true,"DT":"","NWD":"false","DMTO":1,"DOTO":1}',
     }
     bdaList = [{"key": k, "value": v} for k, v in BDA.items()]
 
-    return json.dumps(
+    return b64encode(json.dumps(
         bdaList, indent=4, separators=(",", ": "), ensure_ascii=False
-    )  # .replace('\u2062',"⁣").replace('\u2063',"⁣")
+    ).encode()).decode()
 
 
 print(returnBDA("eee", "roblox_login"))

@@ -67,7 +67,7 @@ class Challenge:
             self.session.cookies.update(r.cookies)
             self.cookies.update(r.cookies.get_dict())
 
-            r = self.session.get(f"{self.base_url}/v2/{self.version}/settings")
+            self.session.get(f"{self.base_url}/v2/{self.version}/settings")
 
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
@@ -80,7 +80,7 @@ class Challenge:
 
     def _callback_sup(self) -> None:
         params = {
-            "callback": "__jsonp_" + str(int(time.time() * 1000)),
+            "callback": "__jsonp_" + str(int(time() * 1000)),
             "category": "loaded",
             "action": "game loaded",
             "session_token": self.session_token,
@@ -89,7 +89,7 @@ class Challenge:
         }
 
         try:
-            r = self.session.get(f"{self.base_url}/fc/a/", params=params)
+            self.session.get(f"{self.base_url}/fc/a/", params=params)
 
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
@@ -106,7 +106,7 @@ class Challenge:
             "public_key": self.settings["public_key"],
             "capi_version": self.version,
             "style_theme": "default",
-            "rnd": str(random.random()),
+            "rnd": str(random()),
             "bda": self.browser["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
