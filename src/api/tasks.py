@@ -1,4 +1,10 @@
-from celery import Celery, Task
+
+from typing     import Dict, Any
+from celery     import Celery
+
+from src.fingerprint.bda.fingerprint import returnBDA
+from src import proxyHelper
+
 
 celery_app = Celery(
     "src.api.tasks",
@@ -24,4 +30,16 @@ def solve(type: str, **kwargs) -> str:
         action = kwargs.get("action")
         proxy = kwargs.get("proxy", None)
 
-        return "ass: asdadasdadadadadadasdas"
+        settings: Dict[str, Any] = {}
+        browser:  Dict[str, Any] = {}
+
+
+        settings["blob"] = blob
+        settings["site_url"] = site_url
+        settings["proxy"] = proxyHelper.parse(proxy)
+
+        browser["bda"] = returnBDA(settings["proxy"], action)
+        
+
+        # blah blah i got lazy. -Traili | 13.07.2025 18:23
+        

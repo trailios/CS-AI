@@ -6,10 +6,10 @@ from uuid   import uuid4
 
 from typing import Dict, Any, List
 
-from src.utils.versionInfo import get_version_info
-from src.fingerprint.bda.ordering import reorder_bda
+from src.utils.versionInfo  import get_version_info
+from src.utils.presets      import Preset
 
-fingerprints: List[str] = list("fpData")
+fingerprints: List[str] = listdir("db/fpData")
 
 
 def convert_to_dict(data_list):
@@ -45,9 +45,8 @@ def fetch_random_enhanced_fingerprint(data):
 
 
 def enhanced_fp(method) -> dict:
-    info = get_options(method)
-    other_info = get_method(method)
-    capiInfo = get_version_info(other_info["service_url"], other_info["public_key"])
+    options, info = Preset.get_options(method)
+    capiInfo = get_version_info(info["surl"], info["pkey"])
     nonFormatted = fetch_random_fingerprint()
     arkoseBda = convert_to_dict(nonFormatted)
     enhanced_fp_data = fetch_random_enhanced_fingerprint(nonFormatted)
@@ -122,19 +121,19 @@ def enhanced_fp(method) -> dict:
         "headless_browser_selenium": False,
         "headless_browser_nightmare_js": False,
         "headless_browser_generic": 4,
-        "1l2l5234ar2": str(int(time.time()) * 1000) + "⁣",
-        "document__referrer": info["document__referrer"],
-        "window__ancestor_origins": info["window__ancestor_origins"],
-        "window__tree_index": info["window__tree_index"],
-        "window__tree_structure": info["window__tree_structure"],
-        "window__location_href": info["window__location_href"],
-        "client_config__sitedata_location_href": info[
+        "1l2l5234ar2": str(int(time()) * 1000) + "⁣",
+        "document__referrer": options["document__referrer"],
+        "window__ancestor_origins": options["window__ancestor_origins"],
+        "window__tree_index": options["window__tree_index"],
+        "window__tree_structure": options["window__tree_structure"],
+        "window__location_href": options["window__location_href"],
+        "client_config__sitedata_location_href": options[
             "client_config__sitedata_location_href"
         ],
-        "client_config__language": other_info["language"],
-        "client_config__surl": other_info["service_url"],
-        "c8480e29a": info["c8480e29a"],
-        "client_config__triggered_inline": info["client_config__triggered_inline"],
+        "client_config__language": info["lang"],
+        "client_config__surl": info["surl"],
+        "c8480e29a": options["c8480e29a"],
+        "client_config__triggered_inline": options["client_config__triggered_inline"],
         "mobile_sdk__is_sdk": False,
         "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
         "audio_fingerprint": enhanced_fp_data["audio_fingerprint"],
@@ -171,7 +170,7 @@ def enhanced_fp(method) -> dict:
 
     if "roblox" in method:
         bda["window__location_href"] = info["client_config__sitedata_location_href"]
-    bda = reorder_bda(method,bda)
+
     nonFormat = []
     for k, v in bda.items():
         nonFormat.append({"key": k, "value": v})
