@@ -28,7 +28,7 @@ def convert_to_dict(data_list):
 
 
 def fetch_random_fingerprint():
-    with open("fpData/" + choice(fingerprints), "r", encoding="utf-8") as f:
+    with open("db/fpData/" + choice(fingerprints), "r", encoding="utf-8") as f:
         realfingerprint = load(f)
         return realfingerprint
 
@@ -121,7 +121,7 @@ def enhanced_fp(method) -> dict:
         "headless_browser_selenium": False,
         "headless_browser_nightmare_js": False,
         "headless_browser_generic": 4,
-        "1l2l5234ar2": str(int(time()) * 1000) + "⁣",
+        "1l2l5234ar2": str(int(time()) * 1000) + "\u2023",
         "document__referrer": options["document__referrer"],
         "window__ancestor_origins": options["window__ancestor_origins"],
         "window__tree_index": options["window__tree_index"],
@@ -158,10 +158,8 @@ def enhanced_fp(method) -> dict:
             "speech_default_voice", "Microsoft Hedda - German (Germany) || de-DE"
         ),
         "speech_voices_hash": enhanced_fp_data.get(
-            "speech_default_voice", "f8224b0bd046a07df30c0549fd055803"
+            "speech_voices_hash", "f8224b0bd046a07df30c0549fd055803"
         ),
-        "speech_default_voice": enhanced_fp_data.get("speech_default_voice", None),
-        "speech_voices_hash": enhanced_fp_data["speech_voices_hash"],
         "83eb055": "7fa7f3064b181569c87529f62d07c386",
         "4ca87df3d1": "Ow==",
         "867e25e5d4": "Ow==",
@@ -169,7 +167,7 @@ def enhanced_fp(method) -> dict:
     }
 
     if "roblox" in method:
-        bda["window__location_href"] = info["client_config__sitedata_location_href"]
+        bda["window__location_href"] = options["client_config__sitedata_location_href"]
 
     nonFormat = []
     for k, v in bda.items():

@@ -75,9 +75,9 @@ class KeyManager:
     def __init__(self, db: Database):
         self.db = db
 
-    def generate_key(self, bought: int) -> str:
+    def generate_key(self, bought: int, prefix: str = "CS") -> str:
         random_key_segment = self._generate_random_key_segment()
-        full_unhashed_key = f"CS-{random_key_segment}"
+        full_unhashed_key = f"{prefix}-{random_key_segment}".upper()
         hashed_key = self._hash_key(full_unhashed_key)
         timestamp = int(time.time())
 
@@ -97,8 +97,13 @@ class KeyManager:
     def _generate_random_key_segment(self) -> str:
         return f"{uuid.uuid4().hex.upper()}{int(time.time()) - random.randint(1, 10000000)}"
 
-    def _hash_key(self, key: str) -> str:
-        return sha256(key.encode()).hexdigest()[:45] + "CHASH"
+    def _hash_key(self, key: str) -> str: # added for security incase ever something gets leaked
+        hashed = sha256(key.encode()).hexdigest()[:50]
+        parts = [hashed[i:i+5] for i in range(0, len(hashed), 5)]
+        if len(parts) > 4:
+            parts[4] = "CHASH"
+            parts[5] = "CS#AI"
+        return "-".join(parts).upper()
 
     def get_key_data(self, key: str) -> Key:
         hashed_key = self._hash_key(key)
@@ -178,9 +183,9 @@ class KeyService:
         self.db = Database(db_path)
         self.key_manager = KeyManager(self.db)
 
-    def generate_new_key(self, bought: int) -> str:
+    def generate_new_key(self, bought: int, prefix: str = "CS") -> str:
         try:
-            return self.key_manager.generate_key(bought)
+            return self.key_manager.generate_key(bought, prefix)
         except DatabaseError as e:
             raise DatabaseError(f"Error generating key: {str(e)}")
 
@@ -232,3 +237,13 @@ class KeyService:
             raise e
         except DatabaseError as e:
             raise DatabaseError(f"Error updating total request for key {key}: {str(e)}")
+
+    def key_exists(self, key: str) -> bool:
+        try:
+            self.key_manager.get_key_data(key)
+            return True
+        except KeyNotFoundError:
+            return False
+        except DatabaseError as e:
+            raise DatabaseError(f"Error checking key existence for {key}: {str(e)}")
+        

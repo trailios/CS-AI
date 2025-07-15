@@ -98,13 +98,13 @@ class Game:
         try:
             Payload: Dict[str, Any] ={
                 "token": self.challenge.session_token,
-                "sid": self.challenge.full_token.split("|")[1].replace("r=", ""),
+                "sid": self.challenge.full_token.split("|")[1].replace("r=", ""), # but you cou- SHUT THE FUCK UP
                 "render_type": "canvas", # Canvas | noJS <- forces GT3
                 "lang": self.challenge.browser["language"] or "",
                 "isAudioGame": "false",
                 "is_compatibility_mode": "false",
                 "apiBreakerVersion": "green",
-                "analytics_tier": 40 # static for now, but its usually in token at=...
+                "analytics_tier": 40 # static for now, but its usually in token, at=...
             }
 
             gfct = self.session.get(f"{self.base_url}/fc/gfct/", data=str(parse.urlencode(Payload))) # <- slick but dont forget / at the end

@@ -2,10 +2,12 @@ import time
 import json
 
 from base64 import b64encode
+from json   import dumps
 
-from src.utils.utils                import Utils
-from src.fingerprint.bda.enhancedfp import enhanced_fp as fetchEnhanced_fp
+from src.fingerprint.bda.enhancedfp import enhanced_fp
+from src.utils.crypto               import AES_Crypto
 from src.utils.ipIntelligence       import getIpInfo
+from src.utils.utils                import Utils
 from src.helpers.ProxyHelper        import Proxy
 
 
@@ -23,17 +25,17 @@ def prepare_fingerprint_data(fingerprint: dict) -> str:
     return ";".join(formatted_data)
 
 
-def returnBDA(proxy: Proxy, method: str):
-    enhanced_fp = fetchEnhanced_fp(method)
-    CFP = getCFP(enhanced_fp["realBdaUsed"])
+def returnBDA(proxy: Proxy, method: str, userbrowser: str ):
+    enhancedfp = enhanced_fp(method)
+    CFP = getCFP(enhancedfp["realBdaUsed"])
     TO = getIpInfo(proxy)
     fe = [
         "DNT:unknown",
         "L:en-US",
         "D:24",
         "PR:1",
-        "S:1366,768",
-        "AS:1366,768",
+        "S:1920,1080",
+        "AS:1920,1080", # what the fuck !?!?!? :fire:
         f"TO:{TO}",
         "SS:true",
         "LS:true",
@@ -58,17 +60,17 @@ def returnBDA(proxy: Proxy, method: str):
         "api_type": "js",
         "f": Utils.x64hash128(prepare_fingerprint_data(data_dict), 0),
         "n": b64encode(str(int(time.time())).encode("utf-8")).decode("utf-8"),
-        "wh": "6e783395340e2dddfb86bc8a7f040a3c|cc7fecdd5c8bec57541ae802c7648eed",
-        "enhanced_fp": enhanced_fp["formatted"],
+        "wh": "6e783395340e2dddfb86bc8a7f040a3c|cc7fecdd5c8bec57541ae802c7648eed",# proto|browserbasedproto
+        "enhanced_fp": enhancedfp["formatted"],
         "fe": fe,
         "ife_hash": Utils.x64hash128(", ".join(data_entries), 38),
         "jsbd": '{"HL":2,"NCE":true,"DT":"","NWD":"false","DMTO":1,"DOTO":1}',
     }
     bdaList = [{"key": k, "value": v} for k, v in BDA.items()]
+    timestamp = time.time()
+    timeframe = int(timestamp - (timestamp % 21600))
+
 
     return b64encode(json.dumps(
-        bdaList, indent=4, separators=(",", ": "), ensure_ascii=False
+        AES_Crypto.encrypt_data(dumps(bdaList), userbrowser + str(timeframe)), separators=(",", ": ")
     ).encode()).decode()
-
-
-print(returnBDA("eee", "roblox_login"))

@@ -44,12 +44,12 @@ class TimeZoneOffsets:
 def getIpInfo(proxy: Proxy) -> int:
     try:
         response = get(
-            "https://api.ipify.org/?format=json", proxies=proxy.dict(), timeout=10
+            "https://api.ipify.org/?format=json", proxies={"all": Proxy.__str__()}, timeout=10
         ).json()
         ip_address = response.get("ip", "")
 
         geo_data = get(
-            f"https://ipinfo.io/{ip_address}/json", proxies=proxy.dict(), timeout=10
+            f"https://ipinfo.io/{ip_address}/json", proxies={"all": Proxy.__str__()}, timeout=10
         ).json()
 
         timezone_str = geo_data.get("timezone", "America/New_York")
