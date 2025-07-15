@@ -39,11 +39,11 @@ class Challenge:
         BrowserData: Dict[str, str],
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
     ) -> None:
-        self.session: Session = Session(impersonate="edge")
+        self.session: Session = Session(impersonate="chrome136")
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
-        self.session.proxies = Proxy.dict()
+        self.session.proxies = {"all": Proxy.__str__()}
 
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
@@ -105,6 +105,7 @@ class Challenge:
         payload = {
             "public_key": self.settings["public_key"],
             "capi_version": self.version,
+            "capi_mode": self.settings["cmode"],
             "style_theme": "default",
             "rnd": str(random()),
             "bda": self.browser["bda"],
