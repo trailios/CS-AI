@@ -4,9 +4,11 @@ from curl_cffi import Curl, requests, Response
 from typing import Optional, Unpack, Literal
 from enum import IntEnum
 
-BrowserLiteral = Literal[
+BrowserTypeLiteral = Literal[
+    
     "edge99",
     "edge101",
+    
     "chrome99",
     "chrome100",
     "chrome101",
@@ -23,6 +25,7 @@ BrowserLiteral = Literal[
     "chrome136",
     "chrome99_android",
     "chrome131_android",
+    
     "safari153",
     "safari155",
     "safari170",
@@ -31,15 +34,21 @@ BrowserLiteral = Literal[
     "safari180_ios",
     "safari184",
     "safari184_ios",
+    "safari260",
+    "safari260_ios",
+    
     "firefox133",
     "firefox135",
     "tor145",
-    "chrome",
-    "edge",
-    "safari",
-    "safari_ios",
-    "chrome_android",
-    "firefox",
+    
+    "safari15_3",
+    "safari15_5",
+    "safari17_0",
+    "safari17_2_ios",
+    "safari18_0",
+    "safari18_0_ios",
+    "safari18_4",
+    "safari18_4_ios",
 ]
 
 
@@ -60,7 +69,7 @@ class Session(requests.Session):
         curl: Optional[Curl] = None,
         thread: Optional[ThreadType] = None,
         use_thread_local_curl: bool = True,
-        impersonate: Optional[BrowserLiteral] = None,
+        impersonate: Optional[BrowserTypeLiteral] = None,
         **kwargs,
     ):
         super().__init__(

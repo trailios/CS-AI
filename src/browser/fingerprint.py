@@ -1,9 +1,9 @@
-from os         import listdir
-from typing     import List, Dict
-from random     import choice
+from random     import choice, randint
 from json       import loads, dumps
-from time       import time
+from typing     import List, Dict
 from base64     import b64encode
+from os         import listdir
+from time       import time
 
 from src                        import Proxy
 from src.utils.utils            import Utils
@@ -88,6 +88,10 @@ class BDA:
         self.fingerprintDict["ife_hash"] = Utils.x64hash128(
             ", ".join(feList),
             38
+        )
+
+        self.fingerprintDict["jsbd"] = dumps(
+            {"HL":str(randint(3,17)),"NCE":True,"DT":"","NWD":"false","DMTO":1,"DOTO":1}
         )
 
         for key, value in self.options.items():

@@ -12,8 +12,8 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", str(cores), "--port", "82"]
-celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=solo", f"--concurrency={cores}"]
+uvicorn_cmd = ["uvicorn", "app:app", "--host", "0.0.0.0", "--workers", str(cores), "--port", "82","--log-level", "critical"]
+celery_cmd = ["celery", "-A", "src.api.tasks", "worker", "--loglevel=info", "--pool=threads", f"--concurrency={cores}"]
 
 print("starting Celery")
 celery_process = subprocess.Popen(celery_cmd)

@@ -1,8 +1,12 @@
-from typing                     import Dict, Any, List
-from json                       import dumps
+from base64     import b64decode, b64encode
+from random     import uniform, randint
+from typing     import Dict, Any, List
+from json       import dumps
 
 from src.helpers.SessionHelper  import HTTPError, ProxyError
+from src.utils.crypto           import AES_Crypto
 from src                        import Session
+from src.utils.bio              import motion
 from src.utils.utils            import Utils
 from src.arkose.challenge       import (
     Challenge,
@@ -10,6 +14,21 @@ from src.arkose.challenge       import (
     Http3NotSupported,
     parse
 )
+
+def gt3Coordinates(
+    answer_index: int, layouts: Dict[str, Any]
+) -> Dict[str, float]:
+    columns = layouts["columns"]
+    rows = layouts["rows"]
+    tile_width = layouts["tile_width"]
+    tile_height = layouts["tile_height"]
+    if not 0 <= answer_index < columns * rows:
+        raise ValueError(f"The answer should be between 0 and {columns * rows}")
+    x = (answer_index % columns) * tile_width
+    y = (answer_index // columns) * tile_height
+    px = round(uniform(0, tile_width), 2)
+    py = round(uniform(0, tile_height), 2)
+    return {"px": px, "py": py, "x": x, "y": y}
 
 class Game:
     def __init__(self, Challenge: Challenge) -> None:
@@ -28,6 +47,7 @@ class Game:
         self.gameType:  int = 0
         self.waves:     int = 0
         self.diff:      int = 0
+        self._imgs_d:    List[bytes] = []
         
     def _enforcement_callback(self) -> None:
         url: str = f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}."
@@ -37,7 +57,7 @@ class Game:
             self.session.get(url + "js")
         
         except HTTPError as e:
-            raise Http3NotSupported(f"Failed to load enforcement resources: {str(e)}")
+            raise Http3NotSupported()
         
         except ProxyError as e:
             raise ProxyConnectionFailed(f"Failed to connect to proxy for enforcement: {str(e)}")
@@ -55,7 +75,7 @@ class Game:
             self.session.get(gameCoreCallbackUrl)
 
         except HTTPError as e:
-            raise Http3NotSupported(f"Failed to load enforcement resources: {str(e)}")
+            raise Http3NotSupported()
         
         except ProxyError as e:
             raise ProxyConnectionFailed(f"Failed to connect to proxy for enforcement: {str(e)}")
@@ -109,9 +129,7 @@ class Game:
                 "is_compatibility_mode": False,
                 "apiBreakerVersion": "green",
                 "analytics_tier": 40 # static for now, but its usually in token, at=...
-            }
-
-            print(Payload)
+            } # 100% skidded from hamidnigger
 
             gfct = self.session.post(f"{self.base_url}/fc/gfct/", data=Payload) # <- slick but dont forget / at the end
 
@@ -120,7 +138,6 @@ class Game:
             
             if gfct.ok:
                 rjson = gfct.json()
-                print(rjson)
 
                 self.gameToken = rjson["challengeID"]
 
@@ -144,7 +161,118 @@ class Game:
             raise Exception(f"CS-AI-ERR: Failed to fetch GFCT: {str(e)}")
 
     def put_answer(self, guess: Dict[str, int]) -> bool:
-        ...
+        try: # only for gametype 4 now
+
+            guessCrypt = AES_Crypto.encrypt_data(dumps(guess), self.challenge.session_token)
+        
+            Payload = {
+                "session_token": self.challenge.session_token,
+                "game_token": self.gameToken,
+                "sid": self.challenge.full_token.split("|")[1].replace("r=", ""),
+                "guess": guessCrypt,
+                "render_type": "canvas",
+                "analytics_tier": 40,
+                "bio": str(b64encode(motion().encode()).decode()),
+                "is_compatibility_mode": False
+            }
+
+            newrelic = Utils.x_ark_esync()
+
+            requestID: str = AES_Crypto.encrypt_data(
+                dumps(
+                    {
+                        "sc": [randint(180,220), randint(180,220)]
+                    }
+                ),
+                f"REQUESTED{self.challenge.session_token}ID"
+            )
+
+            self.session.cookies.update(
+                {
+                    "timestamp": newrelic
+                }
+            )
+
+            # https://arkoselabs.roblox.com/fc/assets/ec-game-core/game-core/1.29.1/standard/index.html?
+
+            self.session.headers.update(
+                {
+                    "x-newrelic-timestamp": newrelic,
+                    "x-requested-id": requestID,
+                    "x-requested-with": "XMLHttpRequest",
+                    "referer": f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.session_token}{''.join(self.challenge.full_token.split('|')[1:])}"
+                }
+            )
+
+            response = self.session.post(
+                f"{self.base_url}/fc/ca/",
+                data=Payload
+            )
+
+            if response.status_code != 200:
+                raise Exception(f"CS-AI-ERR: Failed to put answer: {response.text}")
+
+            elif response.status_code == 200:
+                return bool(response.json()["solved"])
+            
+            raise Exception(f"CS-AI-ERR: Failed to put answer: {response.text} - {response.status_code}")
+
+        except HTTPError as e:
+            raise Http3NotSupported()
+        
+        except ProxyError as e:
+            raise ProxyConnectionFailed(f"Failed to connect to proxy for answer: {str(e)}")
+    
+        except Exception as e:
+            raise Exception(f"CS-AI-ERR: Failed to put answer: {str(e)}")
+
+    def get_images(self):
+        try:
+            for img in self._imgs:
+                self.session.cookies.update(
+                    {
+                        "timestamp": Utils.x_ark_esync()
+                    }
+                )
+                r = self.session.get(img)
+
+                if r.status_code == 200:
+                    imgbytes = r.content
+
+                    self._imgs_d.append(imgbytes)
+            
+            self._imgs.clear()
+
+        
+        except HTTPError as e:
+            raise Http3NotSupported()
+        
+        except ProxyError as e:
+            raise ProxyConnectionFailed(f"Failed to connect to proxy image: {str(e)}")
+    
+        except Exception as e:
+            raise Exception(f"CS-AI-ERR: Failed to get image: {str(e)}")
+        
+
+    def parse_images(self):
+        try:
+            for img in self._imgs_d:
+                imgb64 = b64decode(img).decode()
+                imgmd5 = Utils.md5hash(img)
+
+                self._imgs.append((imgb64, imgmd5))
+
+        except Exception as e:
+            raise Exception(f"CS-AI-ERR: Failed to parse images: {str(e)}")
+
+
+
+
+
+
+
+
+
 
 
 # It has been days since anyone has touched this file.

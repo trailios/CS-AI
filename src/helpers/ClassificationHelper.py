@@ -17,7 +17,7 @@ class XEvilClient:
     poll_interval: float = 0.5
     session: Session = field(default_factory=internal_session, init=False)
 
-    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("49.12.173.95:2020",)
+    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80",)
 
 
     @classmethod
