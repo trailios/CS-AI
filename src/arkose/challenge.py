@@ -39,12 +39,13 @@ class Challenge:
         Settings: Dict[str, str],
         BrowserData: Dict[str, str],
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
+        Impersonate: Optional[str] = "safari260"
     ) -> None:
-        self.session: Session = Session(impersonate="chrome133a")
+        self.session: Session = Session(impersonate=Impersonate)
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
-        self.session.proxies = {"http": Proxy.__str__(), "https": Proxy.__str__()}
+        self.session.proxies = Proxy.dict()
 
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
@@ -87,7 +88,7 @@ class Challenge:
             "action": "game loaded",
             "session_token": self.session_token,
             "data[public_key]": self.settings["public_key"],
-            "data[site]": parse.quote(self.settings["site_url"]),
+            "data[site]": parse.quote(self.settings["site"]),
         }
 
         try:
