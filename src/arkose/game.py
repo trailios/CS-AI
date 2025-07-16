@@ -1,7 +1,9 @@
 from typing                     import Dict, Any, List
+from json                       import dumps
 
 from src.helpers.SessionHelper  import HTTPError, ProxyError
 from src                        import Session
+from src.utils.utils            import Utils
 from src.arkose.challenge       import (
     Challenge,
     ProxyConnectionFailed,
@@ -45,6 +47,8 @@ class Game:
 
     def _init_load(self) -> None:
         try:
+            self.session.get(f"{self.base_url}/cdn/fc/assets/ec-game-core/bootstrap/{self.challenge.version}/standard/game_core_bootstrap.js")
+
             self.session.get(f"{self.base_url}/fc/init-load/?session_token={self.challenge.session_token}")
             
             gameCoreCallbackUrl: str = f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.session_token}{''.join(self.challenge.full_token.split('|')[1:])}"
@@ -101,19 +105,22 @@ class Game:
                 "sid": self.challenge.full_token.split("|")[1].replace("r=", ""), # but you cou- SHUT THE FUCK UP
                 "render_type": "canvas", # Canvas | noJS <- forces GT3
                 "lang": self.challenge.browser["language"] or "",
-                "isAudioGame": "false",
-                "is_compatibility_mode": "false",
+                "isAudioGame": False,
+                "is_compatibility_mode": False,
                 "apiBreakerVersion": "green",
                 "analytics_tier": 40 # static for now, but its usually in token, at=...
             }
 
-            gfct = self.session.get(f"{self.base_url}/fc/gfct/", data=str(parse.urlencode(Payload))) # <- slick but dont forget / at the end
+            print(Payload)
 
-            if "denied" in gfct.text:
+            gfct = self.session.post(f"{self.base_url}/fc/gfct/", data=Payload) # <- slick but dont forget / at the end
+
+            if "denied" in gfct.text or gfct.status_code != 200:
                 raise Exception("Request was denied, rotating proxy IP?")
             
             if gfct.ok:
                 rjson = gfct.json()
+                print(rjson)
 
                 self.gameToken = rjson["challengeID"]
 
@@ -125,6 +132,7 @@ class Game:
                 self.gameType = gameData["gameType"]
                 self.diff = gameData["game_difficulty"]
 
+                return rjson
         
         except HTTPError as e:
             raise Http3NotSupported()

@@ -1,8 +1,9 @@
-from mmh3       import hash_bytes
-from struct     import unpack
-from typing     import Union
-from hashlib    import md5
-from time       import time
+from typing         import Union, Dict, Any
+from mmh3           import hash_bytes
+from struct         import unpack
+from urllib.parse   import quote
+from hashlib        import md5
+from time           import time
 
 class Utils:
     @staticmethod
@@ -39,3 +40,15 @@ class Utils:
     @staticmethod
     def x_newrelic_timestamp() -> str:
         return str(int(time() * 100000))
+
+    @staticmethod
+    def construct_form_data(data: Dict[str, Any]) -> str:
+        filtered_data: Dict[str, Any] = {
+            key: value for key, value in data.items() if value is not None
+        }
+        encoded_data: list[str] = [
+            f"{key}={quote(str(value), safe='()')}"
+            for key, value in filtered_data.items()
+        ]
+        form_data: str = "&".join(encoded_data)
+        return form_data

@@ -27,7 +27,7 @@ class TaskInput(BaseModel):
 def create_task(data: TaskInput) -> TaskOutput:
     task = solve.delay(
         type=data.task.type,
-        blob=data.task.extraData.get("data[blob]", None) if data.task.extraData else None,
+        blob=data.task.extraData.get("blob", None) if data.task.extraData else None,
         site_url=data.task.site_url,
         action=data.task.action,
         proxy=data.task.proxy,
@@ -51,13 +51,13 @@ def get_task_result(task_id: str) -> TaskOutput:
     }
 
     status = status_map.get(result.state, result.state)
-    output_result = None
+    output_result = {}
 
     if result.state == "SUCCESS":
-        output_result = str(result.result)
+        output_result = result.result
 
     elif result.state == "FAILURE":
-        output_result = {"error": str(result.info)}
+        output_result = result.info
 
     return TaskOutput(
         task_id=result.id,
