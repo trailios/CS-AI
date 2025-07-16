@@ -11,6 +11,7 @@ from src.helpers.SessionHelper  import (
     HttpVersion
 )
 from src.utils.versionInfo      import get_version_info
+from src.utils.utils            import Utils
 from src.helpers.ProxyHelper    import Proxy
 
 
@@ -39,11 +40,11 @@ class Challenge:
         BrowserData: Dict[str, str],
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
     ) -> None:
-        self.session: Session = Session(impersonate="chrome136")
+        self.session: Session = Session(impersonate="chrome133a")
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
-        self.session.proxies = {"all": Proxy.__str__()}
+        self.session.proxies = {"http": Proxy.__str__(), "https": Proxy.__str__()}
 
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
@@ -64,10 +65,11 @@ class Challenge:
             r = self.session.get(
                 f"{self.base_url}/v2/{self.version}/api.js"
             )
+            
             self.session.cookies.update(r.cookies)
             self.cookies.update(r.cookies.get_dict())
 
-            self.session.get(f"{self.base_url}/v2/{self.version}/settings")
+            self.session.get(f"{self.base_url}/v2/{self.settings["public_key"]}/settings")
 
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
@@ -108,7 +110,7 @@ class Challenge:
             "capi_mode": self.settings["cmode"],
             "style_theme": "default",
             "rnd": str(random()),
-            "bda": self.browser["bda"],
+            "bda": self.settings["bda"], #self.browser["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
         }
@@ -117,7 +119,7 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-            gt2r = self.session.post(f"https://{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=str(parse.urlencode(payload)))
+            gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=Utils.construct_form_data(payload))
 
             if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
                 raise Exception("Blob has been refused by provider.")

@@ -5,26 +5,26 @@
   },
   {
     "key": "f",
-    "value": "01ad924605e2b9a35973f9dd2f36a4a7"
+    "value": "5a0e09bfd6274d9dac12286852ca59e4"
   },
   {
     "key": "n",
-    "value": "MTc0NzY3MjM0OA=="
+    "value": "MTc1MjYyODM2NA=="
   },
   {
     "key": "wh",
-    "value": "269620e57a03949f70b2e67f552fc5bb|cc7fecdd5c8bec57541ae802c7648eed"
+    "value": "9b5d5bed1fe97cc7a8800856bb0dea4d|cc7fecdd5c8bec57541ae802c7648eed"
   },
   {
     "key": "enhanced_fp",
     "value": [
       {
         "key": "webgl_extensions",
-        "value": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_color_buffer_float;WEBGL_compressed_texture_astc;WEBGL_compressed_texture_etc;WEBGL_compressed_texture_etc1;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode"
+        "value": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode"
       },
       {
         "key": "webgl_extensions_hash",
-        "value": "a0b3b7ac4cbca4984e183045148a91f4"
+        "value": "7300c23f4e6fa34e534fc99c1b628588"
       },
       {
         "key": "webgl_renderer",
@@ -48,7 +48,7 @@
       },
       {
         "key": "webgl_aliased_point_size_range",
-        "value": "[1, 1023]"
+        "value": "[1, 1024]"
       },
       {
         "key": "webgl_antialiasing",
@@ -56,47 +56,47 @@
       },
       {
         "key": "webgl_bits",
-        "value": "8.000006490143692,7.999995493149138,24.000005363791754,7.9999982431147565,7.9999916140645135,-0.0000035615535149462964"
+        "value": "8,8,24,8,8,0"
       },
       {
         "key": "webgl_max_params",
-        "value": "15.99999318078144,64.000000946896,16383.999991761164,4095.999991303488,8191.999995379675,32.00000698975217,8192.000002811084,31.000001574232417,15.999994465482374,31.99999018641635,4095.9999940133857"
+        "value": "16,32,16384,1024,16384,16,16384,30,16,16,4095"
       },
       {
         "key": "webgl_max_viewport_dims",
-        "value": "[8192, 8192]"
+        "value": "[32767, 32767]"
       },
       {
         "key": "webgl_unmasked_vendor",
-        "value": "Google Inc. (Intel)"
+        "value": "Google Inc. (NVIDIA)"
       },
       {
         "key": "webgl_unmasked_renderer",
-        "value": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x00009A49) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        "value": "ANGLE (NVIDIA, NVIDIA GeForce GTX 1050 Ti (0x00001C82) Direct3D11 vs_5_0 ps_5_0, D3D11)"
       },
       {
         "key": "webgl_vsf_params",
-        "value": "23,127,127,10,15,15,10,15,15"
+        "value": "23,127,127,23,127,127,23,127,127"
       },
       {
         "key": "webgl_vsi_params",
-        "value": "0,31,30,0,15,14,0,15,14"
+        "value": "0,31,30,0,31,30,0,31,30"
       },
       {
         "key": "webgl_fsf_params",
-        "value": "23,127,127,10,15,15,10,15,15"
+        "value": "23,127,127,23,127,127,23,127,127"
       },
       {
         "key": "webgl_fsi_params",
-        "value": "0,31,30,0,15,14,0,15,14"
+        "value": "0,31,30,0,31,30,0,31,30"
       },
       {
         "key": "webgl_hash_webgl",
-        "value": "c35e0f7c0f2db08964adefa1b0710491"
+        "value": "031ded1511d551491c673b92bb657b39"
       },
       {
         "key": "user_agent_data_brands",
-        "value": "Google Chrome,Chromium,Not_A Brand"
+        "value": "Not)A;Brand,Chromium,Brave"
       },
       {
         "key": "user_agent_data_mobile",
@@ -104,7 +104,7 @@
       },
       {
         "key": "navigator_connection_downlink",
-        "value": 1.35
+        "value": null
       },
       {
         "key": "navigator_connection_downlink_max",
@@ -112,11 +112,11 @@
       },
       {
         "key": "network_info_rtt",
-        "value": 450
+        "value": null
       },
       {
         "key": "network_info_save_data",
-        "value": false
+        "value": null
       },
       {
         "key": "network_info_rtt_type",
@@ -128,7 +128,7 @@
       },
       {
         "key": "navigator_device_memory",
-        "value": 8
+        "value": 0.5
       },
       {
         "key": "navigator_pdf_viewer_enabled",
@@ -136,23 +136,23 @@
       },
       {
         "key": "navigator_languages",
-        "value": "en-PH"
+        "value": "en"
       },
       {
         "key": "window_inner_width",
-        "value": 1536
+        "value": 1920
       },
       {
         "key": "window_inner_height",
-        "value": 864
+        "value": 951
       },
       {
         "key": "window_outer_width",
-        "value": 1536
+        "value": 1928
       },
       {
         "key": "window_outer_height",
-        "value": 816
+        "value": 958
       },
       {
         "key": "browser_detection_firefox",
@@ -160,7 +160,7 @@
       },
       {
         "key": "browser_detection_brave",
-        "value": false
+        "value": true
       },
       {
         "key": "browser_api_checks",
@@ -194,7 +194,7 @@
       },
       {
         "key": "audio_codecs_extended_hash",
-        "value": "a2a8b4bc7e8800473c81932ed1c02a69"
+        "value": "805036349642e2569ec299baed02315b"
       },
       {
         "key": "video_codecs",
@@ -202,39 +202,19 @@
       },
       {
         "key": "video_codecs_extended_hash",
-        "value": "c9af97116ca5ccb9581e3c8122620142"
+        "value": "67b509547efe3423d32a3a70a2553c16"
       },
       {
         "key": "media_query_dark_mode",
         "value": true
       },
       {
-        "key": "css_media_queries",
-        "value": 0
-      },
-      {
-        "key": "css_color_gamut",
-        "value": "srgb"
-      },
-      {
-        "key": "css_contrast",
-        "value": "no-preference"
-      },
-      {
-        "key": "css_monochrome",
-        "value": false
-      },
-      {
-        "key": "css_pointer",
-        "value": "fine"
-      },
-      {
-        "key": "css_grid_support",
-        "value": false
+        "key": "f9bf2db",
+        "value": "{\"pc\":\"no-preference\",\"ah\":\"hover\",\"ap\":\"fine\",\"p\":\"fine\",\"h\":\"hover\",\"u\":\"fast\",\"prm\":\"no-preference\",\"prt\":\"no-preference\",\"s\":\"enabled\",\"fc\":\"none\"}"
       },
       {
         "key": "headless_browser_phantom",
-        "value": false
+        "value": true
       },
       {
         "key": "headless_browser_selenium",
@@ -250,11 +230,11 @@
       },
       {
         "key": "1l2l5234ar2",
-        "value": "1747672347189\u2063"
+        "value": "1752628364006\u2063"
       },
       {
         "key": "document__referrer",
-        "value": ""
+        "value": "https://6p4vd1w0-80.euw.devtunnels.ms/"
       },
       {
         "key": "window__ancestor_origins",
@@ -270,23 +250,23 @@
       },
       {
         "key": "window__location_href",
-        "value": "https://hcap.ai/"
+        "value": "https://6p4vd1w0-80.euw.devtunnels.ms/"
       },
       {
         "key": "client_config__sitedata_location_href",
-        "value": "https://hcap.ai/"
+        "value": "https://6p4vd1w0-80.euw.devtunnels.ms/"
       },
       {
         "key": "client_config__language",
-        "value": "en-PH"
+        "value": "en"
       },
       {
         "key": "client_config__surl",
-        "value": "https://hcap.ai/client-api.arkoselabs.com"
+        "value": "https://6p4vd1w0-80.euw.devtunnels.ms/client-api.arkoselabs.com"
       },
       {
         "key": "c8480e29a",
-        "value": "b6340a91a251e31a43f79b943f016797\u2062"
+        "value": "49c2a7c0f0efc43061a9be917f30f21a\u2062"
       },
       {
         "key": "client_config__triggered_inline",
@@ -298,7 +278,7 @@
       },
       {
         "key": "audio_fingerprint",
-        "value": "124.04347527516074"
+        "value": "60.652979285106994"
       },
       {
         "key": "navigator_battery_charging",
@@ -306,15 +286,19 @@
       },
       {
         "key": "media_device_kinds",
-        "value": []
+        "value": [
+          "audioinput",
+          "audiooutput",
+          "videoinput"
+        ]
       },
       {
         "key": "media_devices_hash",
-        "value": "d751713988987e9331980363e24189ce"
+        "value": "c4c212cd39e229437a8fe27d3b6c7d07"
       },
       {
-        "key": "navigator_permissions_hash",
-        "value": "67419471976a14a1430378465782c62d"
+        "key": "1f220c9",
+        "value": "a9a952ac91569f3cb55616f0b57d5244"
       },
       {
         "key": "math_fingerprint",
@@ -334,11 +318,11 @@
       },
       {
         "key": "4b4b269e68",
-        "value": "e4f75a6f-2ca3-4d9d-8ef5-c00d14130e6c"
+        "value": "53b2131c-6446-42c2-8ec9-dac3138f4e7c"
       },
       {
         "key": "6a62b2a558",
-        "value": "9e04fe5120461d0d467a7f0eba7fb7f1"
+        "value": "df45d93b7883fed1e47dedac58c1d924"
       },
       {
         "key": "is_keyless",
@@ -350,7 +334,11 @@
       },
       {
         "key": "43f2d94",
-        "value": false
+        "value": [
+          "MetaMask",
+          "Phantom",
+          "Tron Web (likely TronLink)"
+        ]
       },
       {
         "key": "20c15922",
@@ -363,8 +351,11 @@
       {
         "key": "3ea7194",
         "value": {
-          "supported": false,
-          "formats": [],
+          "supported": true,
+          "formats": [
+            "HDR10",
+            "HLG"
+          ],
           "isHDR": false
         }
       },
@@ -374,15 +365,15 @@
       },
       {
         "key": "speech_default_voice",
-        "value": null
+        "value": "Microsoft Hedda - German (Germany) || de-DE"
       },
       {
         "key": "speech_voices_hash",
-        "value": null
+        "value": "72fc19858a0de338229dfb7f5d7023ea"
       },
       {
         "key": "83eb055",
-        "value": "7fa7f3064b181569c87529f62d07c386"
+        "value": false
       },
       {
         "key": "4ca87df3d1",
@@ -402,12 +393,12 @@
     "key": "fe",
     "value": [
       "DNT:unknown",
-      "L:en-PH",
+      "L:en",
       "D:24",
-      "PR:1.25",
-      "S:1536,864",
-      "AS:1536,816",
-      "TO:-480",
+      "PR:1",
+      "S:2560,1440",
+      "AS:2560,1440",
+      "TO:-120",
       "SS:true",
       "LS:true",
       "IDB:true",
@@ -415,23 +406,23 @@
       "ODB:false",
       "CPUC:unknown",
       "PK:Win32",
-      "CFP:1039717908",
+      "CFP:137713834",
       "FR:false",
       "FOS:false",
       "FB:false",
-      "JSF:Arial,Arial Black,Arial Narrow,Calibri,Cambria,Cambria Math,Comic Sans MS,Consolas,Courier,Courier New,Georgia,Helvetica,Impact,Lucida Console,Lucida Sans Unicode,Microsoft Sans Serif,MS Gothic,MS PGothic,MS Sans Serif,MS Serif,Palatino Linotype,Segoe Print,Segoe Script,Segoe UI,Segoe UI Light,Segoe UI Semibold,Segoe UI Symbol,Tahoma,Times,Times New Roman,Trebuchet MS,Verdana,Wingdings",
-      "P:Chrome PDF Viewer,Chromium PDF Viewer,Microsoft Edge PDF Viewer,PDF Viewer,WebKit built-in PDF",
+      "JSF:Arial,Arial Black,Calibri,Cambria,Cambria Math,Comic Sans MS,Consolas,Courier,Courier New,Georgia,Helvetica,Impact,Lucida Console,Lucida Sans Unicode,Microsoft Sans Serif,MS Gothic,MS PGothic,Palatino Linotype,Segoe Print,Segoe Script,Segoe UI,Segoe UI Light,Segoe UI Semibold,Segoe UI Symbol,Tahoma,Times New Roman,Trebuchet MS,Verdana,Wingdings",
+      "P:Online portable-document-format ,OpenSource doc Plugin,bsePPmy,xBAIjZUx",
       "T:0,false,false",
-      "H:8",
+      "H:2",
       "SWF:false"
     ]
   },
   {
     "key": "ife_hash",
-    "value": "61b678864d479029095ea2efd36c35f5"
+    "value": "5a92b09ab693ad83f9d8e772e5bee70f"
   },
   {
     "key": "jsbd",
-    "value": "{\"HL\":3,\"NCE\":true,\"DT\":\"\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
+    "value": "{\"HL\":2,\"NCE\":true,\"DT\":\"\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
   }
 ]

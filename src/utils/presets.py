@@ -165,7 +165,7 @@ class Preset:
                     "window__ancestor_origins": [data["site_url"]] + ([data["origin"]] if "origin" in data and data["origin"] else []),
                     "window__tree_index": data["tree_index"],
                     "window__tree_structure": data["structure"],
-                    "window__location_href": f"{data["service_url"]}/v2/{capi_version[0]}/enforcement.{enforcement_hash}.html",
+                    "window__location_href": f"{data["service_url"]}/v2/{capi_version}/enforcement.{enforcement_hash}.html",
                     "client_config__sitedata_location_href": data["location"],
                     "client_config__language": data["language"],
                     "client_config__surl": data["service_url"],
@@ -178,7 +178,9 @@ class Preset:
                     "surl": data["service_url"],
                     "url": data["site_url"],
                     "cmode": data["capi_mode"],
-                    "lang": data["language"]
+                    "lang": data["language"],
+                    "ver": capi_version,
+                    "hash": enforcement_hash
                 }
 
 
