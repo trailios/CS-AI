@@ -26,6 +26,7 @@ class Utils:
 
     @staticmethod
     def x_ark_esync() -> str:
+        """USED FOR TIEMSTAMP IN COOKIE"""
         current_time = time()
         timestamp_str = str(int(current_time * 1000)).zfill(13)
 
