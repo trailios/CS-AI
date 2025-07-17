@@ -8,7 +8,7 @@ cores = os.cpu_count() or 16
 
 def signal_handler(sig, frame):
     print("\nReceived interrupt signal. Stopping services...")
-    sys.exit(0)
+    os._exit(1)
 
 signal.signal(signal.SIGINT, signal_handler)
 

@@ -1,12 +1,14 @@
 from base64     import b64decode, b64encode
 from random     import uniform, randint
 from typing     import Dict, Any, List
+from urllib     import parse
 from json       import dumps
 
+
+from src.utils.bio              import EnhancedDataGenerator
 from src.helpers.SessionHelper  import HTTPError, ProxyError
 from src.utils.crypto           import AES_Crypto
 from src                        import Session
-from src.utils.bio              import motion
 from src.utils.utils            import Utils
 from src.arkose.challenge       import (
     Challenge,
@@ -71,7 +73,7 @@ class Game:
 
             self.session.get(f"{self.base_url}/fc/init-load/?session_token={self.challenge.session_token}")
             
-            gameCoreCallbackUrl: str = f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.session_token}{''.join(self.challenge.full_token.split('|')[1:])}"
+            gameCoreCallbackUrl: str = f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.full_token.replace('|', '&')}"
             self.session.get(gameCoreCallbackUrl)
 
         except HTTPError as e:
@@ -103,7 +105,8 @@ class Game:
         BasePayload.update({
             "game_token": self.gameToken,
             "game_type": self.gameType,
-            "action": "game loaded"
+            "action": "game loaded",
+            "category": "loaded"
         })
         self.session.post(
             f"{self.base_url}/fc/a/", 
@@ -111,7 +114,8 @@ class Game:
         )
 
         BasePayload.update({
-            "action": "user clicked verify"
+            "action": "user clicked verify",
+            "category": "begin app"
         })
         self.session.post(
             f"{self.base_url}/fc/a/", 
@@ -172,7 +176,7 @@ class Game:
                 "guess": guessCrypt,
                 "render_type": "canvas",
                 "analytics_tier": 40,
-                "bio": str(b64encode(motion().encode()).decode()),
+                "bio": str(EnhancedDataGenerator().generate()),
                 "is_compatibility_mode": False
             }
 
@@ -197,16 +201,18 @@ class Game:
 
             self.session.headers.update(
                 {
-                    "x-newrelic-timestamp": newrelic,
-                    "x-requested-id": requestID,
-                    "x-requested-with": "XMLHttpRequest",
-                    "referer": f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.session_token}{''.join(self.challenge.full_token.split('|')[1:])}"
+                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                    "X-Newrelic-Timestamp": newrelic,
+                    "X-Requested-Id": requestID,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "referer": f"{self.base_url}/fc/assets/ec-game-core/game-core/{self.challenge.game_version}/standard/index.html?session={self.challenge.full_token.replace('|', '&')}&theme=default"
                 }
             )
 
+
             response = self.session.post(
                 f"{self.base_url}/fc/ca/",
-                data=Payload
+                data=parse.urlencode(Payload)
             )
 
             if response.status_code != 200:
@@ -257,8 +263,8 @@ class Game:
     def parse_images(self):
         try:
             for img in self._imgs_d:
-                imgb64 = b64decode(img).decode()
-                imgmd5 = Utils.md5hash(img)
+                imgb64 = b64encode(img).decode("utf-8")
+                imgmd5 = Utils.md5hash(imgb64)
 
                 self._imgs.append((imgb64, imgmd5))
 

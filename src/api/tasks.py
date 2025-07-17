@@ -114,6 +114,7 @@ def solve(type: str, **kwargs) -> str:
 
             challenge.session.headers = {
                 'accept': '*/*',
+                'accept-encoding': "gzip, deflate, br, zstd",
                 'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
                 'cache-control': 'no-cache',
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -138,6 +139,7 @@ def solve(type: str, **kwargs) -> str:
                 game._enforcement_callback()
                 game._init_load()
                 game.gfct()
+                game._user_callback()
 
                 game.get_images()
                 game.parse_images()
@@ -146,17 +148,21 @@ def solve(type: str, **kwargs) -> str:
 
                 solved = False
 
+                guess = []
+
                 for img in game._imgs:
                     answer = client.solve_image(img, game.variant, game.diff)
 
-                    guess = {
-                        "index": answer
-                    }
+                    guess.append(
+                        {
+                            "index": answer
+                        }
+                    )
 
                     solved = game.put_answer(guess)
 
                     if solved:
-                        return dict({"solution": challenge.full_token})
+                        return dict({"solution": challenge.full_token, "game_info": {"waves": game.waves, "variant": game.variant}})
 
                 if solved == False:
                     return dict({"error": "Failed to solve captcha.", "solution": None})
