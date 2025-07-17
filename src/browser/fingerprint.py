@@ -66,7 +66,7 @@ class BDA:
             item.split(":")[0]: item.split(":")[1]
             for item in self.fingerprintDict["fe"]
         }
-        feDict["L"] = self.accept_lang.split(",")[0]
+        feDict["L"] = self.accept_lang.split("-")[0]
         feDict["TO"] = str(timeOffset)
         feDict["JSF"] = None # not sure if its the same still for brolxo
         feList = [
@@ -91,7 +91,7 @@ class BDA:
         )
 
         self.fingerprintDict["jsbd"] = dumps(
-            {"HL":str(randint(3,17)),"NCE":True,"DT":"","NWD":"false","DMTO":1,"DOTO":1}
+            {"HL":int(randint(3,17)),"NCE":True,"DT":"Challenge","NWD":"false","DMTO":1,"DOTO":1}
         )
 
         for key, value in self.options.items():

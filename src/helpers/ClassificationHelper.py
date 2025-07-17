@@ -1,9 +1,8 @@
-from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import ClassVar, Iterable, Optional
+from __future__     import annotations
+from dataclasses    import dataclass, field
+from typing         import ClassVar, Iterable, Optional
 
-from src import internal_session
-from src.helpers.SessionHelper import Session
+from src    import internal_session
 
 import time
 import random
@@ -15,7 +14,6 @@ class XEvilClient:
     hosts: Iterable[str]
     timeout: float = 30.0
     poll_interval: float = 0.5
-    session: Session = field(default_factory=internal_session, init=False)
 
     DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80",)
 
@@ -49,7 +47,7 @@ class XEvilClient:
             "body": image_base64,
         }
 
-        response = self.session.post(url, data=payload)
+        response = internal_session.post(url, data=payload)
         parts = response.text.split("|")
 
         return parts[1]
@@ -61,7 +59,7 @@ class XEvilClient:
         end_time = time.time() + self.timeout
 
         while time.time() < end_time:
-            response = self.session.get(url, params=params)
+            response = internal_session.get(url, params=params)
             text = response.text
             if text.startswith("OK|"):
                 return int(text.split("|", 1)[1]) - 1

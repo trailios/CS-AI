@@ -66,4 +66,4 @@ class AES_Crypto:
                 "iv": iv.hex(),
             }
 
-        return dumps(encrypted_data, separators=(",", ":"))
+        return dumps(encrypted_data)
