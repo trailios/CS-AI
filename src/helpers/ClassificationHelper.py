@@ -15,7 +15,7 @@ class XEvilClient:
     timeout: float = 30.0
     poll_interval: float = 0.5
 
-    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80",)
+    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80", "149.50.108.43:2020",)
 
 
     @classmethod
@@ -76,7 +76,7 @@ class XEvilClient:
         try:
             task_id = self._submit_task(image_base64, instructions, host)
             result = self._fetch_result(task_id, host)
-            return result if result is not None else random.randint(0, 4)
+            return result if result is not None else random.randint(0, x)
             
         except requests.RequestException:
             return random.randint(0, x)
