@@ -6,11 +6,9 @@ r = requests.post(
         "user-agent": "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97"
     },
     json={
-        "bought": 0.6
+        "bought": 2
     }
 )
-
-print
 
 rjson = r.json()
 print(rjson["key"], rjson["bought"])

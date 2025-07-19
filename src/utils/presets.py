@@ -143,6 +143,16 @@ class Preset:
             "location": "https://www.battle.net/",
             "tree_index": [0],
             "structure": "[[]]",
+        },
+        "match.com": {
+            "public_key": "85800716-F435-4981-864C-8B90602D10F7",
+            "service_url": "https://client-api.arkoselabs.com",
+            "site_url": "https://us.match.com",
+            "capi_mode": "lightbox",
+            "language": None,
+            "location": "https://us.match.com/login",
+            "tree_index": [1],
+            "structure": "[[],[],[[]],[]]"
         }
     }
     
