@@ -88,7 +88,7 @@ def solve(type: str, **kwargs) -> str:
 
         browser["language"] = info["lang"]
 
-        version = 138
+        version = 136
 
         headers = {
     'accept': '*/*',
