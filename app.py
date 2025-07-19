@@ -67,14 +67,18 @@ def get_task_result(task_id: str) -> TaskOutput:
     )
 
 
-class generate(BaseModel):
+class CustomAPI1(BaseModel):
     bought: float
 
-class stats(BaseModel):
+class CustomAPI2(BaseModel):
+    bought: float
+    key: str
+
+class KeyAuth(BaseModel):
     key: str
 
 @app.post("/admin/generate")
-def generate_key(data: generate, user_agent: str = Header(None)):
+def generate_key(data: CustomAPI1, user_agent: str = Header(None)):
     print(user_agent)
     if not user_agent:
         return "?"
@@ -135,7 +139,7 @@ def generate_key(data: generate, user_agent: str = Header(None)):
     ## add more if needed
 
 @app.post("/admin/key/stats")
-def key_stats(data: stats, user_agent: str = Header(None)):
+def key_stats(data: KeyAuth, user_agent: str = Header(None)):
     if user_agent == None:
         return None
     
@@ -153,3 +157,42 @@ def key_stats(data: stats, user_agent: str = Header(None)):
 
 
     return "?"
+
+
+@app.post("/getBalance")
+def balance(data: KeyAuth):
+    try:
+        key = data.key
+        keydata = key_service.key_manager.get_key_data(key)
+
+        return {
+            "balance": int(keydata.bought - keydata.solved)
+        }
+
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
+    
+@app.post("/admin/topup")
+def admin_topup(data: CustomAPI2, user_agent: str = Header(None)):
+    if user_agent != "data/key/stats#0e3eae2a-ec61-4fe0-87f2-4476d159d197":
+        return {"error": "?"}
+    
+    try:
+        bought = data.bought * 1666.7
+        key_service.add_balance(data.key, bought)
+        keydata = key_service.key_manager.get_key_data(data.key)
+    
+        return {
+            "key": data.key,
+            "balance": int(keydata.bought - keydata.solved),
+            "error": None
+        }
+    
+    except Exception as e:
+        return {
+            "key": None,
+            "bought": None,
+            "error": str(e)
+        }

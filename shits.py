@@ -1,7 +1,7 @@
 import requests
 
 r = requests.post(
-    "http://127.0.0.1:82/admin/generate",
+    "https://api.captchasolver.ai/admin/generate",
     headers={
         "user-agent": "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97"
     },
@@ -10,11 +10,13 @@ r = requests.post(
     }
 )
 
+print
+
 rjson = r.json()
 print(rjson["key"], rjson["bought"])
 
 r2 = requests.post(
-    "http://127.0.0.1:82/admin/key/stats",
+    "https://api.captchasolver.ai/admin/key/stats",
     headers={
         "user-agent": "data/key/stats#0e3eae2a-ec61-4fe0-87f2-4476d159d197"
     },
