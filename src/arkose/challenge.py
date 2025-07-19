@@ -1,7 +1,7 @@
-from random                     import random, choice, uniform
-from typing                     import Dict, Optional, Any
-from urllib                     import parse
-from time                       import time
+from random     import random, choice, uniform
+from typing     import Dict, Optional, Any
+from urllib     import parse
+from time       import time
 
 
 from src.helpers.SessionHelper  import (

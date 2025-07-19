@@ -197,8 +197,6 @@ class Game:
                 }
             )
 
-            # https://arkoselabs.roblox.com/fc/assets/ec-game-core/game-core/1.29.1/standard/index.html?
-
             self.session.headers.update(
                 {
                     "content-type": "application/x-www-form-urlencoded; charset=UTF-8",

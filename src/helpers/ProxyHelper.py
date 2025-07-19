@@ -1,15 +1,15 @@
-from dataclasses import dataclass
-from urllib.parse import urlparse
-from typing import Dict
+from dataclasses    import dataclass
+from urllib.parse   import urlparse
+from typing         import Dict
 
 
 @dataclass
 class Proxy:
-    Protocol: str
-    User: str
-    Password: str
-    Host: str
-    Port: int
+    Protocol:   str
+    User:       str
+    Password:   str
+    Host:       str
+    Port:       int
 
     @classmethod
     def parse(cls, url: str) -> "Proxy":
@@ -25,6 +25,6 @@ class Proxy:
     def __str__(self) -> str:
         return f"{self.Protocol}://{self.User}:{self.Password}@{self.Host}:{self.Port}"
 
-    def dict(self) -> Dict[str, str]:  # only works for curl_cffi
+    def dict(self) -> Dict[str, str]:
         return {"all": self.__str__()}
 
