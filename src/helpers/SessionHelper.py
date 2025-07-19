@@ -1,14 +1,14 @@
-from curl_cffi.requests.exceptions import HTTPError, ProxyError
-from curl_cffi.requests import ThreadType, RequestParams
-from curl_cffi import Curl, requests, Response
-from typing import Optional, Unpack, Literal
-from enum import IntEnum
+from curl_cffi.requests.exceptions  import HTTPError, ProxyError
+from curl_cffi.requests             import ThreadType, RequestParams
+from curl_cffi                      import Curl, requests, Response
+from typing                         import Optional, Unpack, Literal
+from enum                           import IntEnum
 
 BrowserTypeLiteral = Literal[
-    
+    # edge
     "edge99",
     "edge101",
-    
+    # chrome
     "chrome99",
     "chrome100",
     "chrome101",
@@ -25,7 +25,7 @@ BrowserTypeLiteral = Literal[
     "chrome136",
     "chrome99_android",
     "chrome131_android",
-    
+    # safari
     "safari153",
     "safari155",
     "safari170",
@@ -36,11 +36,11 @@ BrowserTypeLiteral = Literal[
     "safari184_ios",
     "safari260",
     "safari260_ios",
-    
+    # firefox and firefox tor
     "firefox133",
     "firefox135",
     "tor145",
-    
+    # safari OLD
     "safari15_3",
     "safari15_5",
     "safari17_0",

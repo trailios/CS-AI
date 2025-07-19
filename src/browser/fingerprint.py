@@ -14,7 +14,12 @@ from src.utils.crypto           import AES_Crypto
 fps = listdir("db/fingerprints")
 
 class BDA:
-    def __init__(self, proxy: Proxy, action: str, userbrowser: str, accept_language: str = "en-US,de-DE"):
+    def __init__(self, 
+                 proxy: Proxy, 
+                 action: str, 
+                 userbrowser: str, 
+                 accept_language: str = "en-US,de-DE"
+    ) -> None:
         self.proxy: Proxy     = proxy
         self.action: str      = action
         self.userbrowser: str = userbrowser
@@ -111,7 +116,6 @@ class BDA:
 
         self.fingerprint = dumps(
             self.fingerprint,
-            separators=(",", ":")
         )
 
         self.encryptedfingerprint = b64encode(

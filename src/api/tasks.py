@@ -23,8 +23,8 @@ for logger_name in [
 
 celery_app = Celery(
     "src.api.tasks",
-    broker="redis://144.76.218.98:6379/0",
-    backend="redis://144.76.218.98:6379/0",
+    broker="redis://149.50.108.43:6379/0",
+    backend="redis://149.50.108.43:6379/0",
 )
 
 
@@ -42,22 +42,30 @@ celery_app.conf.update(
 
 @celery_app.task
 def solve(type: str, **kwargs) -> str:
-    key: str = kwargs.get("key", None)
+    try:
+        key: str = kwargs.get("key", None)
 
-    if key == None:
+        if key == None:
+            return {
+                "error": "Key is missing."
+            }
+        
+        if not key_service.key_exists(key):
+            return {
+                "error": "Key does not exists"
+            }
+        
+        keydata = key_service.key_manager.get_key_data(key)
+
+        if (keydata.bought - keydata.solved) < 1:
+            return {
+                "error": "Key does not have any balance, refill at None"
+            }
+        
+    except Exception as e:
         return {
-            "error": "Key is missing."
-        }
-    
-    if not key_service.key_exists(key):
-        return {
-            "error": "Key does not exists on our database"
-        }
-    
-    keydata = key_service.key_manager.get_key_data(key)
-    if (keydata.bought - keydata.solved) < 1:
-        return {
-            "error": "Key does not have any balance, refill at None"
+            "error": "Couldnt process the key. (To many global threads?)",
+            "solution": None
         }
         
 
@@ -80,7 +88,7 @@ def solve(type: str, **kwargs) -> str:
 
         browser["language"] = info["lang"]
 
-        version = random.randint(128, 138)
+        version = 138
 
         headers = {
     'accept': '*/*',
@@ -121,7 +129,7 @@ def solve(type: str, **kwargs) -> str:
                 'origin': 'https://arkoselabs.roblox.com',
                 'pragma': 'no-cache',
                 'priority': 'u=1, i',
-                'referer': 'https://arkoselabs.roblox.com/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
+                'referer': f'https://{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
                 'sec-ch-ua': f'"Not/A)Brand";v="99", "Google Chrome";v="{version}", "Chromium";v="{version}"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
@@ -162,13 +170,35 @@ def solve(type: str, **kwargs) -> str:
                     solved = game.put_answer(guess)
 
                     if solved:
+                        key_service.add_solved_request(key)
+                        key_service.add_stat(
+                            key,
+                            action,
+                            "success",
+                            0.0006
+                        )
                         return dict({"solution": challenge.full_token, "game_info": {"waves": game.waves, "variant": game.variant}})
 
                 if solved == False:
-                    return dict({"error": "Failed to solve captcha.", "solution": None})
+                    key_service.increment_failed(key)
+                    key_service.add_total_request(key)
+                    key_service.add_stat(
+                        key,
+                        action,
+                        "failed",
+                        0.0
+                    )
+                    return dict({"error": "Failed to solve captcha.", "solution": None, "game_info": {"waves": game.waves, "variant": game.variant}})
 
-                return dict({"error": "Image solving no implemented", "solution": None})
+                return dict({"error": "Image solving not implemented", "solution": None})
 
+            key_service.add_stat(
+                key,
+                action,
+                "success",
+                0.0006
+            )
+            key_service.add_solved_request(key)
             return dict({"solution": challenge.full_token})
         except Exception as e:
             return dict({"error": str(e), "solution": None})

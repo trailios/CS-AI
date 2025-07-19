@@ -1,5 +1,6 @@
 from typing         import Union, Dict, Any, Optional
 from fastapi        import FastAPI, Header
+from json           import loads, dumps
 from pydantic       import BaseModel
 
 from src.api.tasks  import solve, celery_app
@@ -65,29 +66,90 @@ def get_task_result(task_id: str) -> TaskOutput:
         result=output_result
     )
 
+
+class generate(BaseModel):
+    bought: float
+
+class stats(BaseModel):
+    key: str
+
 @app.post("/admin/generate")
-def generate_key(data: dict, user_agent: str = Header(None)):
+def generate_key(data: generate, user_agent: str = Header(None)):
+    print(user_agent)
+    if not user_agent:
+        return "?"
+    
+    elif user_agent == "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97":
+        try:
+            bought = data.bought * 1666.7
+
+            key = key_service.generate_new_key(bought, prefix="CS")
+
+            return {
+                "key": key,
+                "bought": bought,
+                "error": None
+            }
+        
+        except Exception as e:
+            return {
+                "key": None,
+                "bought": None,
+                "error": str(e)
+            }
+
+    elif user_agent == "sb/reseller/tool#370ef922-5124-42dc-83c8-6e574f8fa403":
+        return {"error": "NOT IMPLEMENTED"}
+    
+    elif user_agent == "ufc/reseller/solver#440c888c-dc32-43a0-9b56-7c8813af3bc4":
+        try:
+            bought = data.get("bought",0) * 1666.7
+
+            if bought > key_service.get_balance("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826"):
+                return {
+                    "key": None,
+                    "bought": None,
+                    "error": "You don't have enough balance, ask traili for refill."
+                }
+            
+
+            key = key_service.generate_new_key(bought, "STRIKE")
+            key_service.add_solved_request("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826", bought)
+
+            return {
+                "key": key,
+                "bought": bought,
+                "error": None
+            }
+
+        except Exception as e:
+            return {
+                "key": None,
+                "bought": None,
+                "error": str(e)
+            }
+
+
+    return "?"
+
+    ## add more if needed
+
+@app.post("/admin/key/stats")
+def key_stats(data: stats, user_agent: str = Header(None)):
     if user_agent == None:
         return None
     
-    elif user_agent == "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97":
-        bought = data.get("bought", 0.1) * 1000
+    elif user_agent == "data/key/stats#0e3eae2a-ec61-4fe0-87f2-4476d159d197":
+        key = data.key
 
-        key = key_service.generate_new_key(bought, prefix="CS")
+        if key == None:
+            return {
+                "error": "Invalid key"
+            }
 
-        return {
-            "key": key,
-            "bought": bought
-        }
+        keydata = key_service.key_manager.get_key_data(key)
 
-    elif user_agent == "sb/reseller/tool#370ef922-5124-42dc-83c8-6e574f8fa403":
-        ... #EXTRACT FROM THEIR OWN KEY
-    
-    elif user_agent == "ufc/reseller/solver#440c888c-dc32-43a0-9b56-7c8813af3bc4":
-        bought = data.get("bought", 0.05) * 1000
+        return dumps(keydata.stats)
 
 
-
-    return None
-
-    ## add more if needed
+    return "?"
