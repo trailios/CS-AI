@@ -4,12 +4,7 @@ from urllib     import parse
 from time       import time
 
 
-from src.helpers.SessionHelper  import (
-    HTTPError, 
-    ProxyError, 
-    Session, 
-    HttpVersion
-)
+from primp import Client
 from src.utils.versionInfo      import get_version_info
 from src.utils.utils            import Utils
 from src.helpers.ProxyHelper    import Proxy
@@ -38,14 +33,14 @@ class Challenge:
         Proxy: Proxy,
         Settings: Dict[str, str],
         BrowserData: Dict[str, str],
-        HTTPVersion: Optional[int] = HttpVersion.V2_0,
+        HTTPVersion: Optional[int] = 1,# HttpVersion.V2_0,
         Impersonate: Optional[str] = "chrome136"
     ) -> None:
-        self.session: Session = Session(impersonate="safari260_ios")
-        self.session.http_version = HTTPVersion
+        self.session: Client = Client(impersonate="safari_ipad_18", impersonate_os="ios", proxy=Proxy.__str__(), headers=Headers)
+        #self.session.http_version = HTTPVersion
 
-        self.session.headers = Headers
-        self.session.proxies = Proxy.dict()
+        #self.session.headers = Headers
+        #self.session.proxies = Proxy.dict()
 
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
@@ -67,16 +62,19 @@ class Challenge:
                 f"{self.base_url}/v2/{self.version}/api.js"
             )
             
-            self.session.cookies.update(r.cookies)
-            self.cookies.update(r.cookies.get_dict())
+            self.session.set_cookies(
+                self.base_url,
+                r.cookies
+            )
+            #self.cookies.update(r.cookies.get_dict())
 
             self.session.get(f"{self.base_url}/v2/{self.settings["public_key"]}/settings")
 
-        except ProxyError as e:
-            raise ProxyConnectionFailed(str(e))
+        # except ProxyError as e:
+        #     raise ProxyConnectionFailed(str(e))
 
-        except HTTPError as e:
-            raise Http3NotSupported()
+        # except HTTPError as e:
+        #     raise Http3NotSupported()
 
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to pre-load challenge because " + str(e))
@@ -94,11 +92,11 @@ class Challenge:
         try:
             self.session.get(f"{self.base_url}/fc/a/", params=params)
 
-        except ProxyError as e:
-            raise ProxyConnectionFailed(str(e))
+        # except ProxyError as e:
+        #     raise ProxyConnectionFailed(str(e))
 
-        except HTTPError as e:
-            raise Http3NotSupported()
+        # except HTTPError as e:
+        #     raise Http3NotSupported()
 
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to callback because " + str(e))
@@ -120,12 +118,12 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-            gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=Utils.construct_form_data(payload))
+            gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=payload)
 
             if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
                 raise Exception("Blob has been refused by provider.")
 
-            if gt2r.ok:
+            if gt2r.status_code == 200:
                 rjson = gt2r.json()
 
                 self.full_token = rjson["token"]
@@ -145,11 +143,11 @@ class Challenge:
                 if rjson["pow"]:
                     raise Exception("Master issue, ask traili to fix")
             
-        except ProxyError as e:
-            raise ProxyConnectionFailed(str(e))
+        # except ProxyError as e:
+        #     raise ProxyConnectionFailed(str(e))
 
-        except HTTPError as e:
-            raise Http3NotSupported()
+        # except HTTPError as e:
+        #     raise Http3NotSupported()
 
         except Exception as e:
             raise Exception("CS-AI-ERR: Failed to get token because " + str(e))
