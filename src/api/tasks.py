@@ -6,10 +6,10 @@ from logging    import getLogger
 from src                                import proxyHelper, key_service
 from src.helpers.ClassificationHelper   import XEvilClient
 from src.browser.fingerprint            import BDA
-from src.arkose.challenge               import Challenge
+from src.arkose.challenge2              import Challenge
 from src.utils.utils                    import Utils
 from src.utils.presets                  import Preset
-from src.arkose.game                    import Game
+from src.arkose.game2                   import Game
 
 import random
 
@@ -88,7 +88,7 @@ def solve(type: str, **kwargs) -> str:
 
         browser["language"] = info["lang"]
 
-        version = 136
+        version = 139
 
         headers = {
     'accept': '*/*',
@@ -120,13 +120,14 @@ def solve(type: str, **kwargs) -> str:
             challenge._pre_load()
             challenge.gt2()
 
-            challenge.session.headers = {
+
+            challenge.session.headers_update({
                 'accept': '*/*',
                 'accept-encoding': "gzip, deflate, br, zstd",
                 'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
                 'cache-control': 'no-cache',
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'origin': 'https://arkoselabs.roblox.com',
+                'origin': settings["service_url"],
                 'pragma': 'no-cache',
                 'priority': 'u=1, i',
                 'referer': f'{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
@@ -140,14 +141,16 @@ def solve(type: str, **kwargs) -> str:
                 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36',
                 'x-newrelic-timestamp': Utils.x_ark_esync(),
                 'x-requested-with': 'XMLHttpRequest',
-            }
+            })
 
-            if "sup=" not in challenge.full_token:
+            if "sup" not in challenge.full_token:
                 game: Game = Game(challenge)
                 game._enforcement_callback()
                 game._init_load()
                 game.gfct()
                 game._user_callback()
+
+                # what if i was actually gay?
 
                 game.get_images()
                 game.parse_images()
