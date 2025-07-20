@@ -6,10 +6,10 @@ from logging    import getLogger
 from src                                import proxyHelper, key_service
 from src.helpers.ClassificationHelper   import XEvilClient
 from src.browser.fingerprint            import BDA
-from src.arkose.challenge2              import Challenge
+from src.arkose.challenge               import Challenge
 from src.utils.utils                    import Utils
 from src.utils.presets                  import Preset
-from src.arkose.game2                   import Game
+from src.arkose.game                    import Game
 
 import random
 
