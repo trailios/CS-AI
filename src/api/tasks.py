@@ -129,7 +129,7 @@ def solve(type: str, **kwargs) -> str:
                 'origin': 'https://arkoselabs.roblox.com',
                 'pragma': 'no-cache',
                 'priority': 'u=1, i',
-                'referer': f'https://{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
+                'referer': f'{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
                 'sec-ch-ua': f'"Not/A)Brand";v="99", "Google Chrome";v="{version}", "Chromium";v="{version}"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
