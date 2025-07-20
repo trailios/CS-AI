@@ -135,13 +135,19 @@ class Game:
                 "analytics_tier": 40 # static for now, but its usually in token, at=...
             } # 100% skidded from hamidnigger
 
+            self.session.cookies.update({
+                "timestamp": Utils.x_ark_esync()
+            })
+
             gfct = self.session.post(f"{self.base_url}/fc/gfct/", data=Payload) # <- slick but dont forget / at the end
 
-            if "denied" in gfct.text or gfct.status_code != 200:
+            if "denied" in gfct.text.lower() or gfct.status_code != 200:
                 raise Exception("Request was denied, rotating proxy IP?")
             
             if gfct.ok:
                 rjson = gfct.json()
+
+                print(rjson)
 
                 self.gameToken = rjson["challengeID"]
 
@@ -268,12 +274,6 @@ class Game:
 
         except Exception as e:
             raise Exception(f"CS-AI-ERR: Failed to parse images: {str(e)}")
-
-
-
-
-
-
 
 
 
