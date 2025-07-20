@@ -15,7 +15,7 @@ class XEvilClient:
     timeout: float = 30.0
     poll_interval: float = 0.5
 
-    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80", "149.50.108.43:2020",)
+    DEFAULT_HOSTS: ClassVar[Iterable[str]] = ("157.180.15.203:80",)
 
 
     @classmethod
