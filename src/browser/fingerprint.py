@@ -96,7 +96,7 @@ class BDA:
         )
 
         self.fingerprintDict["jsbd"] = dumps(
-            {"HL":int(randint(3,17)),"NCE":True,"DT":"Challenge","NWD":"false","DMTO":1,"DOTO":1}
+            {"HL":int(randint(3,17)),"NCE":True,"DT":"","NWD":"false","DMTO":1,"DOTO":1}
         )
 
         for key, value in self.options.items():
