@@ -1,51 +1,42 @@
-from curl_cffi import requests
-from time import sleep
-
-API_URL = "api.captchasolver.ai"
-
-def get_token(roblox_session: requests.Session, blob, proxy):
-    SOLVER_KEY = "LMAOADMIN-85FFD879E19840ABA927068599A48AF61748819857"
-    try:
-        if "http://" not in proxy:
-            proxy = "http://" + proxy
-        session = requests.Session()
+import requests, base64, json
 
 
-        payload = {
-            "key": SOLVER_KEY,
-            "task": {
-                "type": "FunCaptcha",
-                "extraData": {
-                    "blob": blob
-                },
-                "site_url": "https://www.roblox.com",
-                "action": "roblox_login",
-                "proxy": proxy
-            }
-        }
+headers = {
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
+    'cache-control': 'no-cache',
+    'content-type': 'application/json;charset=UTF-8',
+    'origin': 'https://www.roblox.com',
+    'pragma': 'no-cache',
+    'priority': 'u=1, i',
+    'referer': 'https://www.roblox.com/',
+    'sec-ch-ua': '"Not)A;Brand";v="8", "Chromium";v="137", "Brave";v="137"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-site',
+    'sec-gpc': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+    'x-bound-auth-token': 'v1|M14qKWShIJJULQRXlFfjFHPamTlLpGGhWDsnNy0hHyE=|1753233385|5XDvOhKr4hTf17fuEMGaGwq4CMn/vp4zVThw7dK4wArsinYlkEAcoug5irw5CSQYnoQtAeKMy6xpyhr/MBO+2Q==|CvX4ko2YBUcfhrw1NRx82IOSEWMlNpJ7NrrHGh7WQq6B5K8F3/9Fx43PHCNW/pzBGXvHMqOIF9bNM92CY2Eg0g==',
+    'x-csrf-token': 'k7+71Vy8lOHA',
+    # 'cookie': 'GuestData=UserID=-403029659; .RBXIDCHECK=bef37345-66a6-4006-a342-daed0439ea78; RBXEventTrackerV2=CreateDate=07/10/2025 10:29:18&rbxid=579005&browserid=1744825028827006; RBXcb=RBXViralAcquisition%3Dfalse%26RBXSource%3Dfalse%26GoogleAnalytics%3Dfalse; .ROBLOSECURITY=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_CAEaAhAB.CF726327F5F427232E10B97CE9E16C0285557039FA5C5F2CE440BD4C5746C37CAA96EF83832B68E9836DF83859662F66ED449BB22ABA5E835D66D92BCE468F841D4A13547C3236A4D8A63D3A042AA5CFA1AFBF7A529472773EE97BAF288F0D96FD16834B355DFEC75C75733A8C76AAC2324F6B7146E125DEB9488E9BAC401D6FA5FE7C7B6A892176E868CD9AB29CE331B44D7B4DE88CA43176373651FDB9B4321359F746D94CE754191AAD7C7BE82A673681154B49F39C54F4499EFFCD773DC6DCD9AAFE8E4FF6E5F200ED20A23D6FBEBBC953C9E3C096D9B13F339464A465C6142FD4A0D58B0E9FF5062D94FC8891AADFC94C76E716771D174526CE81C56E0399B3FB1C924A4910109FF3E33588F73247B50CBA7B44642154DB3F98C8F00C2E9AAC01D7E926914CBF7ABA7C5A890D81A1BFB7EC384436B409721BA5487ACA0B82E42124D97B2D55EDF6652BD0B7D5F083A385903D0710797C981C355320108DCF5FFB13472529DDE4880746C60075169DA46EB4BD1BEEBD28405F9BFD21DF725609D90348CD2F99C69C674379040E0C968A303A9A67FB31AE689ABEEC163948B84EE69E88E97E3DFE0A185C114ACB6ECB1AA247CC0FCFAEBEFA42FA7AA11D35A03657D461012782E1F94C37809A343B4353681843394BD024D3C14F4706C07328D5541EF1592C95839814BA160FB079E671D038A03827505277F7D291EE7D75A566244EC5F192FF316ACCBAB256B337BA5B8D715345276417A31FE6610A247348642885685F6930F583601F5B8294E783A8EA741DC8B146A7E83A9BDAF8B989112A83D46085DDD202C8FAAF99455B95CDF5FC9F79583317712E942C9402BB55741DE595BE50A1FF744A4745673BF2355B7FA28A19B1A40AB66407CD328E8E4331DCB2CB0E3B2D08D6C24FBA54F8D822FDC373C4C895F9D4A273DED75205E65DB7DB20825C8ECB84190142635CE0D00C593F9F5D1727394CC7EA53CEB4F364472EDFAE0103701B652A5A2B7404E7D414AB9EDBD52543742A6913190163CB7DF677EFBBD7C24BB175E10ABF9ECC41FD22F6ACF7E8BFF7D4369036CFA72EC1208168017243617C19DFAEC283C06C1BA8C0C979C25B25E98214111C72333D49A7DE3967822F46F1A495D5304210A0632C073942769808642A6640E2A2CE2CA1DC9471A97AF7A5119CD88751FBE80EC55D3B765DCD58; RBXSessionTracker=sessionid=eb17eace-7017-4324-83ba-923c3ba993c2; rbx-ip2=rbx-ip2; rbxas=1532a953abf4e7b60efd6d376c22365d3c5ea9ebceb19fe7e4a7d70bfb27e5eb',
+}
 
-        response = session.post(f"{API_URL}/createTask", json=payload, timeout=120).json()
-        print(response)
-        task_id = response.get("task_id")
+json_data = {
+    'ctype': 'Username',
+    'cvalue': 'shi',
+    'password': '1123123123',
+    'accountBlob': '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',
+    'secureAuthenticationIntent': {
+        'clientPublicKey': 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXW1OLbFBFjQtgkwjrMQDoqmKxQ6i4Uq+LPv8HmqjBI3dQ/F/9agU6zJhLtjV9jG9+MTxi0ieALiUtc0NsQn3CA==',
+        'clientEpochTimestamp': 1753233385,
+        'serverNonce': 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJoYmEtc2VydmljZSIsImV4cCI6MTc1MzIzMzY4NiwiaWF0IjoxNzUzMjMzMzg2LCJuYmYiOjE3NTMyMzMzODYsIm5vbmNlIjoiQ0JWWEhIQkZHUjY4NENXUCJ9.bGhzYqNqXIULfAZcDARKWeddAlMJr4Ah8-Zm7caQG4M',
+        'saiSignature': 'gsT+KOZ7Af3+UvudXZRhezj5Dd9COSNSL4idxXzzygcZ/cDbVEBKy+UBLc/LB6wFl3YMoArUcFZ5DnknF/13DA==',
+    },
+}
 
-        if task_id is None:
-            raise ValueError(f'Failed to get taskId, reason: {response["error"]}')
-
-        counter = 0
-
-        while counter < 60:
-            sleep(1)
-
-            solution = session.get(f"{API_URL}/getTaskResult/{task_id}").json()
-            if solution["status"] == "success":
-                return solution["result"]["solution"]
-
-            elif solution["status"] == "failure":
-                return None
-
-            counter += 1
-
-        return None
-    except Exception as e:
-        print(e)
-        return None
+response = requests.post('https://auth.roblox.com/v2/login', headers=headers, json=json_data)
+print(response.headers)
+meta = json.loads(base64.b64decode((response.headers["rblx-challenge-metadata"])).decode())
+print(meta["dataExchangeBlob"])
