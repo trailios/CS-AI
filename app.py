@@ -28,7 +28,8 @@ class TaskInput(BaseModel):
 def create_task(data: TaskInput) -> TaskOutput:
     task = solve.delay(
         type=data.task.type,
-        blob=data.task.extraData.get("blob", None) if data.task.extraData else None,
+        blob=data.task.extraData.get("blob", None),
+        accept_language=data.task.extraData.get("Accept-Language", "en-US"),
         site_url=data.task.site_url,
         action=data.task.action,
         proxy=data.task.proxy,

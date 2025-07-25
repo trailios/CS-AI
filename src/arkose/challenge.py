@@ -41,7 +41,7 @@ class Challenge:
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
         Impersonate: Optional[str] = "chrome136"
     ) -> None:
-        self.session: Session = Session(impersonate="safari260_ios")
+        self.session: Session = Session(impersonate=Impersonate)
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
@@ -120,10 +120,12 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
+            self.session.cookies.clear()
             gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=Utils.construct_form_data(payload))
+            self.session.cookies.update(self.cookies)
 
             if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
-                raise Exception("Blob has been refused by provider.")
+                raise Exception("Access was denied, flagged blob?")
 
             if gt2r.ok:
                 rjson = gt2r.json()

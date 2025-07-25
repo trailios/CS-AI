@@ -59,7 +59,7 @@ def solve(type: str, **kwargs) -> str:
 
         if (keydata.bought - keydata.solved) < 1:
             return {
-                "error": "Key does not have any balance, refill at None"
+                "error": "Key does not have any balance, refill at Captchasolver.ai"
             }
         
     except Exception as e:
@@ -71,6 +71,7 @@ def solve(type: str, **kwargs) -> str:
 
     if type == "FunCaptcha":
         blob = kwargs.get("blob", None)
+        accept_language = kwargs.get("accept_language", "en-US")
         site_url = kwargs.get("site_url")
         action = kwargs.get("action")
         proxy = proxyHelper.parse(kwargs.get("proxy", None))
@@ -88,18 +89,18 @@ def solve(type: str, **kwargs) -> str:
 
         browser["language"] = info["lang"]
 
-        version = 139
+        version = 138
 
         headers = {
     'accept': '*/*',
-    'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
+    'accept-language': accept_language,
     'cache-control': 'no-cache',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'origin': 'https://www.roblox.com',
+    'origin': site_url,
     'pragma': 'no-cache',
     'priority': 'u=1, i',
-    'referer': 'https://www.roblox.com/',
-    'sec-ch-ua': f'"Not/A)Brand";v="99", "Google Chrome";v="{version}", "Chromium";v="{version}"',
+    'referer': f'{site_url}/',
+    'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
     'sec-fetch-dest': 'empty',
@@ -124,14 +125,14 @@ def solve(type: str, **kwargs) -> str:
             challenge.session.headers = {
                 'accept': '*/*',
                 'accept-encoding': "gzip, deflate, br, zstd",
-                'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
+                'accept-language': accept_language,
                 'cache-control': 'no-cache',
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 'origin': settings["service_url"],
                 'pragma': 'no-cache',
                 'priority': 'u=1, i',
-                'referer': f'{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
-                'sec-ch-ua': f'"Not/A)Brand";v="99", "Google Chrome";v="{version}", "Chromium";v="{version}"',
+                'referer': f'{settings["service_url"]}/v2/{challenge.version}/enforcement.{challenge.hash}.html',
+                'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
                 'sec-fetch-dest': 'empty',
@@ -151,7 +152,8 @@ def solve(type: str, **kwargs) -> str:
                 game.gfct()
                 game._user_callback()
 
-                # what if i was actually gay?
+                if game.waves >= 5 or game.diff >= 12:
+                    raise Exception("CS-AI-ERR: Challenge was to hard to solve.")
 
                 game.get_images()
                 game.parse_images()
