@@ -3,7 +3,10 @@ from json       import loads, dumps
 from typing     import List, Dict
 from base64     import b64encode
 from os         import listdir
+<<<<<<< HEAD
 from uuid       import uuid4
+=======
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 from time       import time
 
 from src                        import Proxy
@@ -61,6 +64,7 @@ class BDA:
         self.enhancedFingerprint["6a62b2a558"] = self.info["hash"]
         self.enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327\u2063"
         self.enhancedFingerprint["navigator_languages"] = self.accept_lang.split(",")[0]
+<<<<<<< HEAD
         self.enhancedFingerprint["4b4b269e68"] = str(uuid4())
         self.enhancedFingerprint["43f2d94"] = [
             "MetaMask",
@@ -69,6 +73,8 @@ class BDA:
 
         if choice([True, False]):
             self.enhancedFingerprint["43f2d94"].append("Phantom")
+=======
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
         self.enhancedFingerprint["d4a306884c"] = "Ow=="
         self.enhancedFingerprint["4ca87df3d1"] = "Ow=="
@@ -83,7 +89,10 @@ class BDA:
         feDict["L"] = self.accept_lang.split("-")[0]
         feDict["TO"] = str(timeOffset)
         feDict["JSF"] = None # not sure if its the same still for brolxo
+<<<<<<< HEAD
         feDict["H"] = choice([2,4,8,6,16,12,32,24])
+=======
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
         feList = [
             f"{key}:{value}"
             for key, value in feDict.items()
@@ -128,10 +137,13 @@ class BDA:
             self.fingerprint,
         )
 
+<<<<<<< HEAD
         if choice([0,0,0,1]):
             pos = randint(0, len(self.fingerprint) - 1)
             self.fingerprint = self.fingerprint[:pos] + '"' + self.fingerprint[pos:]
 
+=======
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
         self.encryptedfingerprint = b64encode(
             AES_Crypto.encrypt_data(
                 self.fingerprint,

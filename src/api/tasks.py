@@ -59,7 +59,11 @@ def solve(type: str, **kwargs) -> str:
 
         if (keydata.bought - keydata.solved) < 1:
             return {
+<<<<<<< HEAD
                 "error": "Key does not have any balance, refill at None"
+=======
+                "error": "Key does not have any balance, refill at Captchasolver.ai"
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
             }
         
     except Exception as e:
@@ -71,6 +75,7 @@ def solve(type: str, **kwargs) -> str:
 
     if type == "FunCaptcha":
         blob = kwargs.get("blob", None)
+<<<<<<< HEAD
         site_url = kwargs.get("site_url")
         action = kwargs.get("action")
         try:
@@ -79,6 +84,12 @@ def solve(type: str, **kwargs) -> str:
         except Exception as e:
             return dict({"error": str(e), "solution": None})
             
+=======
+        accept_language = kwargs.get("accept_language", "en-US")
+        site_url = kwargs.get("site_url")
+        action = kwargs.get("action")
+        proxy = proxyHelper.parse(kwargs.get("proxy", None))
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
         options, info = Preset.get_options(action)
         settings: Dict[str, Any] = {}
@@ -97,6 +108,7 @@ def solve(type: str, **kwargs) -> str:
 
         headers = {
     'accept': '*/*',
+<<<<<<< HEAD
     'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
     'cache-control': 'no-cache',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -104,6 +116,15 @@ def solve(type: str, **kwargs) -> str:
     'pragma': 'no-cache',
     'priority': 'u=1, i',
     'referer': 'https://www.roblox.com/',
+=======
+    'accept-language': accept_language,
+    'cache-control': 'no-cache',
+    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'origin': site_url,
+    'pragma': 'no-cache',
+    'priority': 'u=1, i',
+    'referer': f'{site_url}/',
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
     'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
@@ -129,13 +150,21 @@ def solve(type: str, **kwargs) -> str:
             challenge.session.headers = {
                 'accept': '*/*',
                 'accept-encoding': "gzip, deflate, br, zstd",
+<<<<<<< HEAD
                 'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
+=======
+                'accept-language': accept_language,
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
                 'cache-control': 'no-cache',
                 'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 'origin': settings["service_url"],
                 'pragma': 'no-cache',
                 'priority': 'u=1, i',
+<<<<<<< HEAD
                 'referer': f'{settings["service_url"]}/v2/3.5.0/enforcement.df45d93b7883fed1e47dedac58c1d924.html',
+=======
+                'referer': f'{settings["service_url"]}/v2/{challenge.version}/enforcement.{challenge.hash}.html',
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
                 'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
@@ -156,7 +185,12 @@ def solve(type: str, **kwargs) -> str:
                 game.gfct()
                 game._user_callback()
 
+<<<<<<< HEAD
                 # what if i was actually gay?
+=======
+                if game.waves >= 5 or game.diff >= 12:
+                    raise Exception("CS-AI-ERR: Challenge was to hard to solve.")
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
                 game.get_images()
                 game.parse_images()

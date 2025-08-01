@@ -72,6 +72,7 @@ class Preset:
             "tree_index": [1, 0],
             "structure": "[[],[[]]]"
         },
+<<<<<<< HEAD
         "roblox_support": {
             "public_key": "63E4117F-E727-42B4-6DAA-C8448E9B137F",
             "service_url": "https://arkoselabs.roblox.com",
@@ -83,6 +84,8 @@ class Preset:
             "tree_index": [1, 0],
             "structure": "[[],[]]"
         },
+=======
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
         "ea": {
             "public_key": "73BEC076-3E53-30F5-B1EB-84F494D43DBA",
             "service_url": "https://ea-api.arkoselabs.com",
@@ -182,7 +185,11 @@ class Preset:
                 capi_version, enforcement_hash = get_version_info(data["service_url"], data["public_key"])
                 
                 options: dict = {
+<<<<<<< HEAD
                     "document__referrer": data["site_url"] + "/" if not method == "roblox_support" else data["site_url"] + "/support",
+=======
+                    "document__referrer": data["site_url"] + "/",
+>>>>>>> bc866b9515201de4fa468acf7551815a35983e33
                     "window__ancestor_origins": [data["site_url"]] + ([data["origin"]] if "origin" in data and data["origin"] else []),
                     "window__tree_index": data["tree_index"],
                     "window__tree_structure": data["structure"],
