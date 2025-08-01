@@ -11,7 +11,7 @@ app = FastAPI()
 class TaskOutput(BaseModel):
     task_id: str
     status:  str
-    result:  Optional[Dict[str, Any]]
+    result:  Optional[Any]
 
 class TaskInformation(BaseModel):
     type:       str
@@ -35,6 +35,8 @@ def create_task(data: TaskInput) -> TaskOutput:
         key=data.key
     )
 
+    
+
     return TaskOutput(
         task_id=task.id,
         status="created",
@@ -44,6 +46,8 @@ def create_task(data: TaskInput) -> TaskOutput:
 @app.get("/getTaskResult/{task_id}")
 def get_task_result(task_id: str) -> TaskOutput:
     result = celery_app.AsyncResult(task_id)
+
+    print(result.result)
 
     status_map = {
         "PENDING": "pending",
@@ -79,62 +83,69 @@ class KeyAuth(BaseModel):
 
 @app.post("/admin/generate")
 def generate_key(data: CustomAPI1, user_agent: str = Header(None)):
-    print(user_agent)
-    if not user_agent:
-        return "?"
-    
-    elif user_agent == "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97":
-        try:
-            bought = data.bought * 1666.7
-
-            key = key_service.generate_new_key(bought, prefix="CS")
-
-            return {
-                "key": key,
-                "bought": bought,
-                "error": None
-            }
+    try:
+        print(user_agent)
+        if not user_agent:
+            return "?"
         
-        except Exception as e:
-            return {
-                "key": None,
-                "bought": None,
-                "error": str(e)
-            }
+        elif user_agent == "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97":
+            try:
+                bought = data.bought * 1666.7
 
-    elif user_agent == "sb/reseller/tool#370ef922-5124-42dc-83c8-6e574f8fa403":
-        return {"error": "NOT IMPLEMENTED"}
-    
-    elif user_agent == "ufc/reseller/solver#440c888c-dc32-43a0-9b56-7c8813af3bc4":
-        try:
-            bought = data.get("bought",0) * 1666.7
+                key = key_service.generate_new_key(bought, prefix="CS")
 
-            if bought > key_service.get_balance("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826"):
+                return {
+                    "key": key,
+                    "bought": bought,
+                    "error": None
+                }
+            
+            except Exception as e:
                 return {
                     "key": None,
                     "bought": None,
-                    "error": "You don't have enough balance, ask traili for refill."
+                    "error": str(e)
                 }
-            
 
-            key = key_service.generate_new_key(bought, "STRIKE")
-            key_service.add_solved_request("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826", bought)
+        elif user_agent == "sb/reseller/tool#370ef922-5124-42dc-83c8-6e574f8fa403":
+            return {"error": "NOT IMPLEMENTED"}
+        
+        elif user_agent == "ufc/reseller/solver#440c888c-dc32-43a0-9b56-7c8813af3bc4":
+            try:
+                bought = data.get("bought",0) * 1666.7
 
-            return {
-                "key": key,
-                "bought": bought,
-                "error": None
-            }
+                if bought > key_service.get_balance("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826"):
+                    return {
+                        "key": None,
+                        "bought": None,
+                        "error": "You don't have enough balance, ask traili for refill."
+                    }
+                
 
-        except Exception as e:
-            return {
-                "key": None,
-                "bought": None,
-                "error": str(e)
-            }
+                key = key_service.generate_new_key(bought, "STRIKE")
+                key_service.add_solved_request("UFCR-461C8A462B8C4726A20EDFE367BFA8C81747616826", bought)
+
+                return {
+                    "key": key,
+                    "bought": bought,
+                    "error": None
+                }
+
+            except Exception as e:
+                return {
+                    "key": None,
+                    "bought": None,
+                    "error": str(e)
+                }
 
 
-    return "?"
+        return "?"
+    except Exception as e:
+        return {
+            "key": None,
+            "bought": None,
+            "error": str(e)
+        }
 
     ## add more if needed
 

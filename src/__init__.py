@@ -3,10 +3,12 @@ from src.helpers.SessionHelper  import Session
 from src.helpers.ProxyHelper    import Proxy
 from src.utils.logger           import *
 from src.utils.utils            import Utils
+from src.utils.v8r              import MathRandomV8    
 
 
 key_service = KeyService()
 proxyHelper = Proxy
+V8RND = MathRandomV8()
 
 internal_session: Session = Session(impersonate="chrome")
 internal_session.headers = {

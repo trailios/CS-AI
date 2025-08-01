@@ -78,5 +78,5 @@ class XEvilClient:
             result = self._fetch_result(task_id, host)
             return result if result is not None else random.randint(0, x)
             
-        except requests.RequestException:
+        except:
             return random.randint(0, x)

@@ -1,6 +1,7 @@
 from random     import random, choice, uniform
 from typing     import Dict, Optional, Any
 from urllib     import parse
+from json       import loads
 from time       import time
 
 
@@ -10,6 +11,7 @@ from src.helpers.SessionHelper  import (
     Session, 
     HttpVersion
 )
+from src                        import internal_session
 from src.utils.versionInfo      import get_version_info
 from src.utils.utils            import Utils
 from src.helpers.ProxyHelper    import Proxy
@@ -50,6 +52,7 @@ class Challenge:
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
         self.browser:   Dict[str, Any] = BrowserData
+        self.proxy :    Any            = Proxy
 
         self.base_url:  str = Settings["service_url"]
         self.version, self.hash = get_version_info(
@@ -110,7 +113,7 @@ class Challenge:
             "capi_version": self.version,
             "capi_mode": self.settings["cmode"],
             "style_theme": "default",
-            "rnd": str(random() - uniform(0.002, 0.04)),
+            "rnd": str("a"),
             "bda": self.settings["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
@@ -120,13 +123,17 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-            gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=Utils.construct_form_data(payload))
+            gt2r: str = internal_session.post("http://localhost:19222/send-request", json={
+                "proxy": self.proxy.__str__(),
+                "bda": self.settings["bda"],
+                "blob": self.settings["blob"]
+            }).json()["body"]
 
-            if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
+            if "denied" in gt2r.lower() or "cloudfront" in gt2r.lower():
                 raise Exception("Blob has been refused by provider.")
 
-            if gt2r.ok:
-                rjson = gt2r.json()
+            if gt2r:
+                rjson = loads(gt2r)
 
                 self.full_token = rjson["token"]
                 self.game_url = rjson["challenge_url_cdn"]

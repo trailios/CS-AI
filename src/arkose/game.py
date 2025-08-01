@@ -146,9 +146,6 @@ class Game:
             
             if gfct.ok:
                 rjson = gfct.json()
-                print(rjson)
-
-                print(rjson)
 
                 self.gameToken = rjson["challengeID"]
 

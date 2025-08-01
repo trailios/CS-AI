@@ -1,10 +1,10 @@
 from curl_cffi import requests
 from time import sleep
 
-API_URL = "api.captchasolver.ai"
+API_URL = "https://api.captchasolver.ai"
 
 def get_token(roblox_session: requests.Session, blob, proxy):
-    SOLVER_KEY = "LMAOADMIN-85FFD879E19840ABA927068599A48AF61748819857"
+    SOLVER_KEY = ""
     try:
         if "http://" not in proxy:
             proxy = "http://" + proxy

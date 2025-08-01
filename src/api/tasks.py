@@ -73,7 +73,12 @@ def solve(type: str, **kwargs) -> str:
         blob = kwargs.get("blob", None)
         site_url = kwargs.get("site_url")
         action = kwargs.get("action")
-        proxy = proxyHelper.parse(kwargs.get("proxy", None))
+        try:
+            proxy = proxyHelper.parse(kwargs.get("proxy", None))
+            print(proxy.__str__())
+        except Exception as e:
+            return dict({"error": str(e), "solution": None})
+            
 
         options, info = Preset.get_options(action)
         settings: Dict[str, Any] = {}
@@ -88,7 +93,7 @@ def solve(type: str, **kwargs) -> str:
 
         browser["language"] = info["lang"]
 
-        version = 139
+        version = 138
 
         headers = {
     'accept': '*/*',
@@ -121,7 +126,7 @@ def solve(type: str, **kwargs) -> str:
             challenge.gt2()
 
 
-            challenge.session.headers_update({
+            challenge.session.headers = {
                 'accept': '*/*',
                 'accept-encoding': "gzip, deflate, br, zstd",
                 'accept-language': 'en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7',
@@ -141,9 +146,10 @@ def solve(type: str, **kwargs) -> str:
                 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36',
                 'x-newrelic-timestamp': Utils.x_ark_esync(),
                 'x-requested-with': 'XMLHttpRequest',
-            })
+            }
 
             if "sup" not in challenge.full_token:
+                #return dict({"error": "Image solving not implemented", "solution": None})
                 game: Game = Game(challenge)
                 game._enforcement_callback()
                 game._init_load()

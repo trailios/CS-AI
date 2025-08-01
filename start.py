@@ -4,7 +4,7 @@ import sys
 import signal
 import os
 
-cores = 150
+cores = 1500
 
 def signal_handler(sig, frame):
     print("\nReceived interrupt signal. Stopping services...")

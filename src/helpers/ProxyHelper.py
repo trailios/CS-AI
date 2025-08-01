@@ -10,6 +10,7 @@ class Proxy:
     Password:   str
     Host:       str
     Port:       int
+    UnEdited:   str
 
     @classmethod
     def parse(cls, url: str) -> "Proxy":
@@ -20,10 +21,14 @@ class Proxy:
             Password=parsed.password or "",
             Host=parsed.hostname,
             Port=parsed.port,
+            UnEdited=url
         )
 
     def __str__(self) -> str:
-        return f"{self.Protocol}://{self.User}:{self.Password}@{self.Host}:{self.Port}"
+        return self.UnEdited
+
+    def __str__UnEdited(self) -> str:
+        return self.UnEdited
 
     def dict(self) -> Dict[str, str]:
         return {"all": self.__str__()}
