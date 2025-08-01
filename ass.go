@@ -17,10 +17,12 @@ type RequestData struct {
 	Blob  string `json:"blob"`
 	Proxy string `json:"proxy"`
 	BDA   string `json:"bda"`
-	
+	SURL  string `json:"url"`
+	Pkey  string `json:"public_key"`
+	AL 	  string `json:"accept_language"`
 }
 
-func startProcess(bda string, proxy string, blob string) (int, string, error) {
+func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
 	fmt.Printf("Starting process for: \nBDA: %s\nPROXY: %s\nBLOB: %s", bda, proxy, blob)
 
 	now := time.Now().Unix()
@@ -39,7 +41,7 @@ func startProcess(bda string, proxy string, blob string) (int, string, error) {
 		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
 		{"accept", "*/*"},
 		{"sec-gpc", "1"},
-		{"accept-language", "en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7"},
+		{"accept-language", al},
 		{"sec-fetch-site", "same-site"},
 		{"sec-fetch-mode", "cors"},
 		{"sec-fetch-dest", "empty"},
@@ -61,7 +63,7 @@ func startProcess(bda string, proxy string, blob string) (int, string, error) {
 	}
 	randomFloat := strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	params := []struct{ Key, Value string }{
-		{"public_key", "476068BF-9607-4799-B53D-966BE98E2B81"},
+		{"public_key", pkey},
 		{"capi_version", "3.5.0"},
 		{"capi_mode", "inline"},
 		{"style_theme", "default"},
@@ -78,11 +80,18 @@ func startProcess(bda string, proxy string, blob string) (int, string, error) {
 		parts = append(parts, key+"="+value)
 	}
 	encodedParams := strings.Join(parts, "&")
+	forceHTTP3 := true
+	if strings.Contains(strings.ToLower(proxy), "socks") {
+		forceHTTP3 = true
+	} else {
+		forceHTTP3 = false
+	}
+	
 	resp, err := session.Do(&azuretls.Request{
 		Method:     "POST",
-		Url:        "https://arkoselabs.roblox.com/fc/gt2/public_key/476068BF-9607-4799-B53D-966BE98E2B81",
-		Body: 		encodedParams,
-		ForceHTTP3: true,
+		Url:        surl,
+		Body:       encodedParams,
+		ForceHTTP3: forceHTTP3,
 	})
 	if err != nil {
 		panic(err)
@@ -110,7 +119,7 @@ func sendRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	statusCode, respBody, err := startProcess(data.BDA, data.Proxy, data.Blob)
+	statusCode, respBody, err := startProcess(data.BDA, data.Proxy, data.Blob, data.SURL, data.Pkey, data.AL)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Internal Error: %v", err), http.StatusInternalServerError)
 		return

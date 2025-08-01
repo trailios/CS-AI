@@ -1,10 +1,7 @@
 from random     import random, choice, uniform
 from typing     import Dict, Optional, Any
 from urllib     import parse
-<<<<<<< HEAD
 from json       import loads
-=======
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 from time       import time
 
 
@@ -14,10 +11,7 @@ from src.helpers.SessionHelper  import (
     Session, 
     HttpVersion
 )
-<<<<<<< HEAD
 from src                        import internal_session
-=======
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 from src.utils.versionInfo      import get_version_info
 from src.utils.utils            import Utils
 from src.helpers.ProxyHelper    import Proxy
@@ -49,11 +43,7 @@ class Challenge:
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
         Impersonate: Optional[str] = "chrome136"
     ) -> None:
-<<<<<<< HEAD
         self.session: Session = Session(impersonate="safari260_ios")
-=======
-        self.session: Session = Session(impersonate=Impersonate)
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
@@ -62,10 +52,7 @@ class Challenge:
         self.cookies:   Dict[str, str] = {}
         self.settings:  Dict[str, str] = Settings
         self.browser:   Dict[str, Any] = BrowserData
-<<<<<<< HEAD
         self.proxy :    Any            = Proxy
-=======
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
         self.base_url:  str = Settings["service_url"]
         self.version, self.hash = get_version_info(
@@ -126,11 +113,7 @@ class Challenge:
             "capi_version": self.version,
             "capi_mode": self.settings["cmode"],
             "style_theme": "default",
-<<<<<<< HEAD
             "rnd": str("a"),
-=======
-            "rnd": str(random() - uniform(0.002, 0.04)),
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
             "bda": self.settings["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
@@ -140,11 +123,13 @@ class Challenge:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-<<<<<<< HEAD
             gt2r: str = internal_session.post("http://localhost:19222/send-request", json={
                 "proxy": self.proxy.__str__(),
                 "bda": self.settings["bda"],
-                "blob": self.settings["blob"]
+                "blob": self.settings["blob"],
+                "accept_language": self.session.headers.get("accept-language"),
+                "public_key": self.settings["public_key"],
+                "url": f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}" #https://arkoselabs.roblox.com/fc/gt2/public_key/476068BF-9607-4799-B53D-966BE98E2B81
             }).json()["body"]
 
             if "denied" in gt2r.lower() or "cloudfront" in gt2r.lower():
@@ -152,17 +137,6 @@ class Challenge:
 
             if gt2r:
                 rjson = loads(gt2r)
-=======
-            self.session.cookies.clear()
-            gt2r = self.session.post(f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}", data=Utils.construct_form_data(payload))
-            self.session.cookies.update(self.cookies)
-
-            if "denied" in gt2r.text.lower() or gt2r.status_code == 400:
-                raise Exception("Access was denied, flagged blob?")
-
-            if gt2r.ok:
-                rjson = gt2r.json()
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
                 self.full_token = rjson["token"]
                 self.game_url = rjson["challenge_url_cdn"]
