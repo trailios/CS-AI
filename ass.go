@@ -33,22 +33,22 @@ func startProcess(bda string, proxy string, blob string) (int, string, error) {
 	}
 
 	session.OrderedHeaders = azuretls.OrderedHeaders{
+		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"`},
+		{"sec-ch-ua-mobile", "?0"},
+		{"sec-ch-ua-platform", `"Windows"`},
+		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
 		{"accept", "*/*"},
+		{"sec-gpc", "1"},
 		{"accept-language", "en,de-DE;q=0.9,de;q=0.8,en-US;q=0.7"},
+		{"sec-fetch-site", "same-site"},
+		{"sec-fetch-mode", "cors"},
+		{"sec-fetch-dest", "empty"},
+		{"priority", "u=1, i"},
 		{"cache-control", "no-cache"},
 		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
 		{"origin", "https://www.roblox.com"},
 		{"pragma", "no-cache"},
-		{"priority", "u=1, i"},
 		{"referer", "https://www.roblox.com/"},
-		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="138", "Brave";v="138"`},
-		{"sec-ch-ua-mobile", "?0"},
-		{"sec-ch-ua-platform", `"Windows"`},
-		{"sec-fetch-dest", "empty"},
-		{"sec-fetch-mode", "cors"},
-		{"sec-fetch-site", "same-site"},
-		{"sec-gpc", "1"},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
 		{"x-ark-esync-value", esync},
 	}
 	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53-255,0-11-10-35-5-16-18-23-13-43-45-51-21,29-23-24,0-1-2"
