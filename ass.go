@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"math/rand"
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
 	"github.com/Noooste/azuretls-client"
 )
 
@@ -19,11 +20,11 @@ type RequestData struct {
 	BDA   string `json:"bda"`
 	SURL  string `json:"url"`
 	Pkey  string `json:"public_key"`
-	AL 	  string `json:"accept_language"`
+	AL    string `json:"accept_language"`
 }
 
 func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
-	fmt.Printf("Starting process for: \nBDA: %s\nPROXY: %s\nBLOB: %s", bda, proxy, blob)
+	fmt.Printf(string(proxy))
 
 	now := time.Now().Unix()
 	esync := strconv.FormatInt(now-(now%21600), 10)
@@ -64,7 +65,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	randomFloat := strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	params := []struct{ Key, Value string }{
 		{"public_key", pkey},
-		{"capi_version", "3.5.0"},
+		{"capi_version", "3.7.0"},
 		{"capi_mode", "inline"},
 		{"style_theme", "default"},
 		{"rnd", randomFloat},
@@ -86,7 +87,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	} else {
 		forceHTTP3 = false
 	}
-	
+
 	resp, err := session.Do(&azuretls.Request{
 		Method:     "POST",
 		Url:        surl,

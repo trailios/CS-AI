@@ -1,20 +1,14 @@
 from src.helpers.KeyHelper      import KeyService
 from src.helpers.SessionHelper  import Session
 from src.helpers.ProxyHelper    import Proxy
-from src.utils.logger           import *
+from src.utils.logger           import logger, live
 from src.utils.utils            import Utils
-<<<<<<< HEAD
 from src.utils.v8r              import MathRandomV8    
-=======
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
 
 key_service = KeyService()
 proxyHelper = Proxy
-<<<<<<< HEAD
 V8RND = MathRandomV8()
-=======
->>>>>>> bc866b9515201de4fa468acf7551815a35983e33
 
 internal_session: Session = Session(impersonate="chrome")
 internal_session.headers = {
@@ -32,6 +26,6 @@ internal_session.headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
 }
 
-log = ... # new logger aint impleented yet
+log = logger
 tools: Utils = Utils
 

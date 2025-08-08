@@ -1,4 +1,5 @@
 import requests
+from src.utils.logger import logger
 
 r = requests.post(
     "http://127.0.0.1/admin/generate",
@@ -6,13 +7,12 @@ r = requests.post(
         "user-agent": "cai/admin/staff#7e1bcd88-6304-4f9f-9df9-52d642399d97"
     },
     json={
-        "bought": 9
+        "bought": 1000
     }
 )
-
+print(r.text)
 rjson = r.json()
-print(rjson["key"], rjson["bought"])
-import requests
+logger.info(f'{rjson["key"]} {rjson["bought"]}')
 
 r = requests.post(
     "http://localhost/admin/generate",
@@ -25,10 +25,10 @@ r = requests.post(
 )
 
 rjson = r.text
-print(
+logger.info(
     rjson
 )
-print(rjson["key"], rjson["bought"])
+logger.info(f'{rjson["key"]} {rjson["bought"]}')
 
 r2 = requests.post(
     "https://api.captchasolver.ai/admin/key/stats",
@@ -40,4 +40,4 @@ r2 = requests.post(
     }
 )
 
-print(r2.json())
+logger.info(r2.json())

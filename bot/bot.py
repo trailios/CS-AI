@@ -2,6 +2,7 @@ import disnake
 import sqlite3
 import requests
 from disnake.ext import commands
+from src.utils.logger import logger
 
 bot = commands.Bot(command_prefix="!", intents=disnake.Intents.all(), command_sync_flags=commands.CommandSyncFlags.all())
 
@@ -25,8 +26,8 @@ def get_key(user_id: int):
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
-    print("------")
+    logger.info(f"Logged in as {bot.user} (ID: {bot.user.id})")
+    logger.info("------")
 
 @bot.slash_command(name="add")
 async def add(interaction: disnake.AppCmdInter):
@@ -58,6 +59,7 @@ async def balance(interaction: disnake.AppCmdInter, key: str = None):
             ephemeral=True
         )
     except requests.RequestException as e:
+        logger.error(f"Error fetching balance: {str(e)}")
         await interaction.response.send_message(
             f"Error fetching balance: {str(e)}",
             ephemeral=True
@@ -82,7 +84,7 @@ async def on_message(message: disnake.Message):
 
 @bot.event
 async def on_guild_join(guild: disnake.Guild):
-    print(f"was added guild: {guild.name} (ID: {guild.id})")
+    logger.info(f"was added guild: {guild.name} (ID: {guild.id})")
     await guild.leave()
 
 bot.run("MTI0MzU3MjE0ODI3MDc5Mjc1NA.G74mZw.sAPZLwNKiiEHZE1JUm5LyPQsvNR25VmdP2MlWg")

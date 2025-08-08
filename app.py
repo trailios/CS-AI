@@ -5,6 +5,7 @@ from pydantic       import BaseModel
 
 from src.api.tasks  import solve, celery_app
 from src            import key_service
+from src.utils.logger import logger
 
 app = FastAPI()
 
@@ -37,7 +38,9 @@ def create_task(data: TaskInput) -> TaskOutput:
         key=data.key
     )
 
-    
+    logger.info(
+        f"<{task.id}> Created successfully."
+    )
 
     return TaskOutput(
         task_id=task.id,
@@ -48,8 +51,6 @@ def create_task(data: TaskInput) -> TaskOutput:
 @app.get("/getTaskResult/{task_id}")
 def get_task_result(task_id: str) -> TaskOutput:
     result = celery_app.AsyncResult(task_id)
-
-    print(result.result)
 
     status_map = {
         "PENDING": "pending",
@@ -202,3 +203,5 @@ def admin_topup(data: CustomAPI2, user_agent: str = Header(None)):
             "bought": None,
             "error": str(e)
         }
+    
+logger.info("API running on 'api.captchasolver.ai' port 80/443")

@@ -1,5 +1,6 @@
 from curl_cffi import requests
 from time import sleep
+from src.utils.logger import logger
 
 API_URL = "https://api.captchasolver.ai"
 
@@ -25,7 +26,7 @@ def get_token(roblox_session: requests.Session, blob, proxy):
         }
 
         response = session.post(f"{API_URL}/createTask", json=payload, timeout=120).json()
-        print(response)
+        logger.info(f"Response from createTask: {response}")
         task_id = response.get("task_id")
 
         if task_id is None:
@@ -38,14 +39,17 @@ def get_token(roblox_session: requests.Session, blob, proxy):
 
             solution = session.get(f"{API_URL}/getTaskResult/{task_id}").json()
             if solution["status"] == "success":
+                logger.info(f"Solution found: {solution["result"]["solution"]}")
                 return solution["result"]["solution"]
 
             elif solution["status"] == "failure":
+                logger.error(f"Task failed: {solution["info"]}")
                 return None
 
             counter += 1
 
+        logger.warning("Task timed out.")
         return None
     except Exception as e:
-        print(e)
+        logger.error(f"Error in get_token: {e}")
         return None

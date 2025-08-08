@@ -3,7 +3,7 @@ from typing     import Dict, Any
 from celery     import Celery
 from logging    import getLogger
 
-from src                                import proxyHelper, key_service
+from src                                import proxyHelper, key_service, logger
 from src.helpers.ClassificationHelper   import XEvilClient
 from src.browser.fingerprint            import BDA
 from src.arkose.challenge               import Challenge
@@ -71,7 +71,7 @@ def solve(type: str, **kwargs) -> str:
 
     if type == "FunCaptcha":
         blob = kwargs.get("blob", None)
-        accept_lang = kwargs.get("accept_lang", None)
+        accept_lang = kwargs.get("accept_lang", "")
         site_url = kwargs.get("site_url")
         action = kwargs.get("action")
         try:
@@ -101,10 +101,10 @@ def solve(type: str, **kwargs) -> str:
     'accept-language': accept_lang,
     'cache-control': 'no-cache',
     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'origin': 'https://www.roblox.com',
+    'origin': site_url,
     'pragma': 'no-cache',
     'priority': 'u=1, i',
-    'referer': 'https://www.roblox.com/',
+    'referer': site_url + "/",
     'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
@@ -150,7 +150,7 @@ def solve(type: str, **kwargs) -> str:
             }
 
             if "sup" not in challenge.full_token:
-                return dict({"error": "GLOBAL PROXY SAVER IS ACTIVE. REQUESTS HAS BEEN DENIED.", "solution": None})
+                #return dict({"error": "GLOBAL PROXY SAVER IS ACTIVE. REQUESTS HAS BEEN DENIED.", "solution": None})
                 game: Game = Game(challenge)
                 game._enforcement_callback()
                 game._init_load()
@@ -162,7 +162,7 @@ def solve(type: str, **kwargs) -> str:
                 game.get_images()
                 game.parse_images()
 
-                client = XEvilClient.with_defaults("glcOgEAPEkT8JxakGyfneCeT9BsYUav8") 
+                client = XEvilClient.with_defaults("MU8HyemZ70uQzjYNTubwxHRswOp9VhQn") 
 
                 solved = False
 
@@ -187,6 +187,8 @@ def solve(type: str, **kwargs) -> str:
                             "success",
                             0.0006
                         )
+                        
+                        logger.success(f"Successfully solved: {challenge.session_token}")
                         return dict({"solution": challenge.full_token, "game_info": {"waves": game.waves, "variant": game.variant}})
 
                 if solved == False:
@@ -198,6 +200,7 @@ def solve(type: str, **kwargs) -> str:
                         "failed",
                         0.0
                     )
+                    logger.error(f"Failed to solved: {challenge.session_token}")
                     return dict({"error": "Failed to solve captcha.", "solution": None, "game_info": {"waves": game.waves, "variant": game.variant}})
 
                 return dict({"error": "Image solving not implemented", "solution": None})
@@ -209,6 +212,8 @@ def solve(type: str, **kwargs) -> str:
                 0.0006
             )
             key_service.add_solved_request(key)
+
+
             return dict({"solution": challenge.full_token})
         except Exception as e:
             return dict({"error": str(e), "solution": None})
