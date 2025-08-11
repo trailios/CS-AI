@@ -5,6 +5,7 @@ from pydantic       import BaseModel
 from json           import dumps
 from datetime       import datetime, timezone
 from time           import sleep
+import threading, os
 
 from src.api.tasks      import celery_app, solve
 from src                import key_service
@@ -56,12 +57,13 @@ REQUESTS: int = 0
 
 
 def webhook_stats():
-
     import requests
     TIME = 0
+    url = "https://discord.com/api/webhooks/1404496914946330645/Ysp1SPJeww5OQpYSamIF_2GhdmASN-_muYhK4oj4ziyxGuRwAnNTIb5YFOSQkDs8IwTB"
+    last_message_id = None
+
     while True:
         global SOLVES, REQUESTS
-        url = "https://discord.com/api/webhooks/1404496914946330645/Ysp1SPJeww5OQpYSamIF_2GhdmASN-_muYhK4oj4ziyxGuRwAnNTIb5YFOSQkDs8IwTB"
         allKeys = key_service.get_all_keys()
 
         total_requests = sum(k.total_requests for k in allKeys.values())
@@ -78,39 +80,12 @@ def webhook_stats():
                 {
                     "color": None,
                     "fields": [
-                        {
-                            "name": "Requests / H",
-                            "value": str(SOLVES),
-                            "inline": True
-                        },
-                        {
-                            "name": "Solves / H",
-                            "value": str(REQUESTS),
-                            "inline": True
-                        },
-                        {
-                            "name": "--------------------------------",
-                            "value": "⠀"
-                        },
-                        {
-                            "name": "Total Requests",
-                            "value": str(total_requests),
-                            "inline": True
-                        },
-                        {
-                            "name": "Total Solves",
-                            "value": str(total_solves),
-                            "inline": True
-                        },
-                        {
-                            "name": "Total Failed",
-                            "value": str(total_failed),
-                            "inline": True
-                        },
-                        {
-                            "name": "--------------------------------",
-                            "value": "⠀"
-                        }
+                        {"name": "Requests / H", "value": str(SOLVES), "inline": True},
+                        {"name": "Solves / H", "value": str(REQUESTS), "inline": True},
+                        {"name": "--------------------------------", "value": "⠀"},
+                        {"name": "Total", "value": str(total_requests), "inline": True},
+                        {"name": "Total", "value": str(total_solves), "inline": True},
+                        {"name": "--------------------------------", "value": "⠀"}
                     ],
                     "footer": {
                         "text": "Updates every 10 seconds",
@@ -128,10 +103,24 @@ def webhook_stats():
         }
 
         try:
+            if last_message_id:
+                delete_url = f"{url}/messages/{last_message_id}"
+                del_response = requests.delete(delete_url)
+                if del_response.status_code == 204:
+                    logger.info("Previous webhook message deleted")
+                else:
+                    print("failed")
+
             response = requests.post(url, json=payload)
             logger.info(f"Webhook sent: {response.status_code}")
+            if response.status_code == 200 or response.status_code == 201:
+                last_message_id = response.json()['id']
+            else:
+                print("failed")
+
         except Exception as e:
-            logger.error(f"Failed to send webhook: {e}")
+            print(e)
+            pass
 
         sleep(10)
         TIME += 10
@@ -190,6 +179,20 @@ def task_exists(task_id: str) -> bool:
         pass
     return False
 
+import redis, threading, time
+
+def start_webhook_if_leader():
+    r = redis.Redis(host="149.50.108.43", port=6379)
+    got_lock = r.set("webhook_stats_lock", 1, nx=True, ex=3600)
+    if got_lock:
+        print("running stats")
+        threading.Thread(target=webhook_stats, daemon=True).start()
+    else:
+        pass
+
+@app.on_event("startup")
+def startup_event():
+    start_webhook_if_leader()
 
 @app.post("/createTask", response_model=TaskOutput)
 def create_task(data: TaskInput) -> TaskOutput:
@@ -294,4 +297,3 @@ def admin_topup(data: CustomAPI2, user_agent: Optional[str] = Header(None)):
 
 
 logger.info("API running on 'api.captchasolver.ai' port 80/443")
-webhook_stats()
