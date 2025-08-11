@@ -49,7 +49,7 @@ class Game:
         self.gameType:  int = 0
         self.waves:     int = 0
         self.diff:      int = 0
-        self._imgs_d:    List[bytes] = []
+        self._imgs_d:   List[bytes] = []
         
     def _enforcement_callback(self) -> None:
         url: str = f"{self.base_url}/v2/{self.version}/enforcement.{self.hash}."

@@ -1,4 +1,3 @@
-from random     import random, choice, uniform
 from typing     import Dict, Optional, Any
 from urllib     import parse
 from json       import loads
@@ -13,7 +12,6 @@ from src.helpers.SessionHelper  import (
 )
 from src                        import internal_session
 from src.utils.versionInfo      import get_version_info
-from src.utils.utils            import Utils
 from src.helpers.ProxyHelper    import Proxy
 
 
@@ -153,7 +151,7 @@ class Challenge:
                     return self.full_token
                 
                 if rjson["pow"]:
-                    raise Exception("Master issue, ask traili to fix")
+                    raise Exception("POW is currently not supported.")
             
         except ProxyError as e:
             raise ProxyConnectionFailed(str(e))
