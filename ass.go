@@ -24,7 +24,7 @@ type RequestData struct {
 }
 
 func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
-	fmt.Println("Received request with blob:", blob)
+
 	now := time.Now().Unix()
 	esync := strconv.FormatInt(now-(now%21600), 10)
 
@@ -40,7 +40,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"sec-ch-ua-platform", `"Windows"`},
 		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
 		{"accept", "*/*"},
-		{"sec-gpc", "1"},
+		//{"sec-gpc", "1"},
 		{"accept-language", al},
 		{"sec-fetch-site", "same-site"},
 		{"sec-fetch-mode", "cors"},
@@ -53,10 +53,12 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"referer", "https://www.roblox.com/"},
 		{"x-ark-esync-value", esync},
 	}
-	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53-255,0-11-10-35-5-16-18-23-13-43-45-51-21,29-23-24,0-1-2"
+	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,65281-13-43-23-11-16-65037-45-5-17613-27-0-35-51-18-10,4588-29-23-24,0"
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
+
+	
 	http3 := "1:16383;7:100;GREASE|m,s,a,p"
 	if err := session.ApplyHTTP3(http3); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
@@ -70,6 +72,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"rnd", randomFloat},
 		{"bda", bda},
 		{"site", "https://www.roblox.com"},
+		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
 		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
 		{"data[blob]", string(blob)},
 	}
@@ -99,6 +102,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 
 	fmt.Println(resp.StatusCode)
 	fmt.Println(string(resp.Body))
+	
 	session.Close()
 	return resp.StatusCode, string(resp.Body), nil
 }
