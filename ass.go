@@ -24,22 +24,21 @@ type RequestData struct {
 }
 
 func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
-	fmt.Printf(string(proxy))
-
+	fmt.Println("Received request with blob:", blob)
 	now := time.Now().Unix()
 	esync := strconv.FormatInt(now-(now%21600), 10)
 
 	session := azuretls.NewSession()
 	err := session.SetProxy(proxy)
 	if err != nil {
-		fmt.Println(err)
+		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 
 	session.OrderedHeaders = azuretls.OrderedHeaders{
-		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"`},
+		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="139", "Google Chrome";v="139"`},
 		{"sec-ch-ua-mobile", "?0"},
 		{"sec-ch-ua-platform", `"Windows"`},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
+		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
 		{"accept", "*/*"},
 		{"sec-gpc", "1"},
 		{"accept-language", al},
@@ -56,11 +55,11 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53-255,0-11-10-35-5-16-18-23-13-43-45-51-21,29-23-24,0-1-2"
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
-		panic(err)
+		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 	http3 := "1:16383;7:100;GREASE|m,s,a,p"
 	if err := session.ApplyHTTP3(http3); err != nil {
-		panic(fmt.Sprintf("failed to apply HTTP/3 settings: %v", err))
+		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 	randomFloat := strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	params := []struct{ Key, Value string }{
@@ -71,7 +70,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"rnd", randomFloat},
 		{"bda", bda},
 		{"site", "https://www.roblox.com"},
-		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
+		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
 		{"data[blob]", string(blob)},
 	}
 	var parts []string
@@ -95,7 +94,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		ForceHTTP3: forceHTTP3,
 	})
 	if err != nil {
-		panic(err)
+		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 
 	fmt.Println(resp.StatusCode)
