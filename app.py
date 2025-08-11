@@ -5,7 +5,8 @@ from pydantic       import BaseModel
 from json           import dumps
 from datetime       import datetime, timezone
 from time           import sleep
-import threading, os
+from threading      import Thread
+from redis          import Redis
 
 from src.api.tasks      import celery_app, solve
 from src                import key_service
@@ -22,32 +23,32 @@ COIN_MULTIPLIER: int =   1666.7
 
 
 class TaskOutput(BaseModel):
-    task_id: str
-    status: str
-    result: Optional[Dict[str, Any]] = None
+    task_id:    str
+    status:     str
+    result:     Optional[Dict[str, Any]]
 
+class ExtraTaskData(BaseModel):
+    blob:               Optional[str]
+    accept_language:    Optional[str]
 
 class TaskInformation(BaseModel):
-    type: str
-    extraData: Optional[Dict[str, Any]] = None
-    site_url: str
-    action: str
-    proxy: str
-
+    type:       str
+    extraData:  Optional[ExtraTaskData]
+    site_url:   str
+    action:     str
+    proxy:      str
 
 class TaskInput(BaseModel):
-    key: str
-    task: TaskInformation
+    key:    str
+    task:   TaskInformation
 
 
-class CustomAPI1(BaseModel):
+class NewKey(BaseModel):
     bought: float
 
-
-class CustomAPI2(BaseModel):
+class TopUp(BaseModel):
     bought: float
-    key: str
-
+    key:    str
 
 class KeyAuth(BaseModel):
     key: str
@@ -179,14 +180,12 @@ def task_exists(task_id: str) -> bool:
         pass
     return False
 
-import redis, threading, time
-
 def start_webhook_if_leader():
-    r = redis.Redis(host="149.50.108.43", port=6379)
+    r = Redis(host="149.50.108.43", port=6379)
     got_lock = r.set("webhook_stats_lock", 1, nx=True, ex=3600)
     if got_lock:
         print("running stats")
-        threading.Thread(target=webhook_stats, daemon=True).start()
+        Thread(target=webhook_stats, daemon=True).start()
     else:
         pass
 
@@ -200,8 +199,8 @@ def create_task(data: TaskInput) -> TaskOutput:
     extra = data.task.extraData or {}
     task = solve.delay(
         type=data.task.type,
-        blob=extra.get("blob"),
-        accept_lang=extra.get("accept_language"),
+        blob=extra.blob,
+        accept_lang=extra.accept_language,
         site_url=data.task.site_url,
         action=data.task.action,
         proxy=data.task.proxy,
@@ -232,7 +231,7 @@ def get_task_result(task_id: str) -> TaskOutput:
 
 
 @app.post("/admin/generate")
-def generate_key(data: CustomAPI1, user_agent: Optional[str] = Header(None)):
+def generate_key(data: NewKey, user_agent: Optional[str] = Header(None)):
     role = role_from_user_agent(user_agent)
     if role is None:
         return "?"
@@ -283,7 +282,7 @@ def balance(data: KeyAuth):
 
 
 @app.post("/admin/topup")
-def admin_topup(data: CustomAPI2, user_agent: Optional[str] = Header(None)):
+def admin_topup(data: TopUp, user_agent: Optional[str] = Header(None)):
     role = role_from_user_agent(user_agent)
     if role != "stats":
         return {"error": "?"}

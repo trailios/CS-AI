@@ -131,10 +131,6 @@
                 "value": 8
             },
             {
-                "key": "navigator_pdf_viewer_enabled",
-                "value": true
-            },
-            {
                 "key": "navigator_languages",
                 "value": "en"
             },
@@ -161,24 +157,6 @@
             {
                 "key": "browser_detection_brave",
                 "value": false
-            },
-            {
-                "key": "browser_api_checks",
-                "value": [
-                    "permission_status: true",
-                    "eye_dropper: true",
-                    "audio_data: true",
-                    "writable_stream: true",
-                    "css_style_rule: true",
-                    "navigator_ua: true",
-                    "barcode_detector: false",
-                    "display_names: true",
-                    "contacts_manager: false",
-                    "svg_discard_element: false",
-                    "usb: defined",
-                    "media_device: defined",
-                    "playback_quality: true"
-                ]
             },
             {
                 "key": "browser_object_checks",
@@ -225,7 +203,7 @@
                 "value": false
             },
             {
-                "key": "headless_browser_generic",
+                "key": "862f2c1",
                 "value": 4
             },
             {
@@ -285,11 +263,7 @@
                 "value": false
             },
             {
-                "key": "media_device_kinds",
-                "value": null
-            },
-            {
-                "key": "media_devices_hash",
+                "key": "7541c2s",
                 "value": null
             },
             {
@@ -305,11 +279,11 @@
                 "value": "67d1759d7e92844d98045708c0a91c2f"
             },
             {
-                "key": "screen_orientation",
+                "key": "3f76dd27",
                 "value": "landscape-primary"
             },
             {
-                "key": "rtc_peer_connection",
+                "key": "5dd48ca0",
                 "value": 5
             },
             {
