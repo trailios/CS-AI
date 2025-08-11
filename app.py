@@ -122,8 +122,8 @@ def webhook_stats():
             print(e)
             pass
 
-        sleep(10)
-        TIME += 10
+        sleep(60)
+        TIME += 60
 
 
 def role_from_user_agent(user_agent: Optional[str]) -> Optional[str]:
