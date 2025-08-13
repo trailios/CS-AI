@@ -35,31 +35,28 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 
 	session.OrderedHeaders = azuretls.OrderedHeaders{
-		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="139", "Google Chrome";v="139"`},
-		{"sec-ch-ua-mobile", "?0"},
 		{"sec-ch-ua-platform", `"Windows"`},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
+		{"x-ark-esync-value", string(esync)},
+		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
+		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"`},
+		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
+		{"sec-ch-ua-mobile", "?0"},
 		{"accept", "*/*"},
-		//{"sec-gpc", "1"},
+		{"origin", "https://www.roblox.com"},
 		{"accept-language", al},
 		{"sec-fetch-site", "same-site"},
 		{"sec-fetch-mode", "cors"},
 		{"sec-fetch-dest", "empty"},
 		{"priority", "u=1, i"},
-		{"cache-control", "no-cache"},
-		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
-		{"origin", "https://www.roblox.com"},
-		{"pragma", "no-cache"},
 		{"referer", "https://www.roblox.com/"},
-		{"x-ark-esync-value", esync},
 	}
-	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,65281-13-43-23-11-16-65037-45-5-17613-27-0-35-51-18-10,4588-29-23-24,0"
+	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,5-65281-23-45-35-11-13-65037-51-27-16-17613-43-0-10-18,4588-29-23-24,0"
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 
 	
-	http3 := "1:16383;7:100;GREASE|m,s,a,p"
+	http3 := "1:65536;6:262144;7:100;51:1;GREASE|m,a,s,p"
 	if err := session.ApplyHTTP3(http3); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
@@ -72,7 +69,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"rnd", randomFloat},
 		{"bda", bda},
 		{"site", "https://www.roblox.com"},
-		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"},
+		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
 		{"data[blob]", string(blob)},
 	}
 	var parts []string
@@ -82,18 +79,12 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		parts = append(parts, key+"="+value)
 	}
 	encodedParams := strings.Join(parts, "&")
-	forceHTTP3 := true
-	if strings.Contains(strings.ToLower(proxy), "socks") {
-		forceHTTP3 = true
-	} else {
-		forceHTTP3 = false
-	}
 
 	resp, err := session.Do(&azuretls.Request{
 		Method:     "POST",
 		Url:        surl,
 		Body:       encodedParams,
-		ForceHTTP3: forceHTTP3,
+		ForceHTTP3: true,
 	})
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)

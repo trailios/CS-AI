@@ -94,7 +94,7 @@ def solve(type: str, **kwargs) -> str:
 
             browser["language"] = info["lang"]
 
-            version = 139
+            version = 138
 
             headers = {
         'accept': '*/*',
@@ -155,6 +155,8 @@ def solve(type: str, **kwargs) -> str:
                     game._init_load()
                     game.gfct()
                     game._user_callback()
+
+                    print(f"waves: {game.waves} - vairant: {game.variant}")
 
                     if game.waves >= 6:
                         return dict({"error": "Captcha was to difficult.", "solution": None})
