@@ -214,8 +214,7 @@ def solve(type: str, **kwargs) -> str:
                     0.0006
                 )
                 key_service.add_solved_request(key)
-
-
+                print(challenge.full_token)
                 return dict({"solution": challenge.full_token})
             
             except Exception as e:

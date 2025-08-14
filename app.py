@@ -53,27 +53,29 @@ class TopUp(BaseModel):
 class KeyAuth(BaseModel):
     key: str
 
-SOLVES: int = 0
-REQUESTS: int = 0
-
+r = Redis(host="149.50.108.43", port=6379, decode_responses=True)
 
 def webhook_stats():
     import requests
+    r = Redis(host="149.50.108.43", port=6379, decode_responses=True)
     TIME = 0
-    url = "https://discord.com/api/webhooks/1404496914946330645/Ysp1SPJeww5OQpYSamIF_2GhdmASN-_muYhK4oj4ziyxGuRwAnNTIb5YFOSQkDs8IwTB"
+    url = "https://discord.com/api/webhooks/..."
+
     last_message_id = None
 
     while True:
-        global SOLVES, REQUESTS
         allKeys = key_service.get_all_keys()
-
         total_requests = sum(k.total_requests for k in allKeys.values())
         total_solves = sum(k.solved for k in allKeys.values())
         total_failed = sum(k.failed for k in allKeys.values())
 
+        solves_hourly = int(r.get("stats:solves_hourly") or 0)
+        requests_hourly = int(r.get("stats:requests_hourly") or 0)
+
         if TIME >= 3600:
-            SOLVES = 0
-            REQUESTS = 0
+            r.set("stats:solves_hourly", 0)
+            r.set("stats:requests_hourly", 0)
+            TIME = 0
 
         payload = {
             "content": None,
@@ -81,15 +83,15 @@ def webhook_stats():
                 {
                     "color": None,
                     "fields": [
-                        {"name": "Requests / H", "value": str(SOLVES), "inline": True},
-                        {"name": "Solves / H", "value": str(REQUESTS), "inline": True},
+                        {"name": "Requests / H", "value": str(requests_hourly), "inline": True},
+                        {"name": "Solves / H", "value": str(solves_hourly), "inline": True},
                         {"name": "--------------------------------", "value": "⠀"},
-                        {"name": "Total", "value": str(total_requests), "inline": True},
-                        {"name": "Total", "value": str(total_solves), "inline": True},
+                        {"name": "Total Requests", "value": str(total_requests), "inline": True},
+                        {"name": "Total Solves", "value": str(total_solves), "inline": True},
                         {"name": "--------------------------------", "value": "⠀"}
                     ],
                     "footer": {
-                        "text": "Updates every 10 seconds",
+                        "text": "Updates every 60 seconds",
                         "icon_url": "https://cdn.discordapp.com/icons/1394451215261241414/f2deb3eb048e06140d2ecd43352aa2d5.webp?size=16"
                     },
                     "timestamp": datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace("+00:00", "Z"),
@@ -105,20 +107,10 @@ def webhook_stats():
 
         try:
             if last_message_id:
-                delete_url = f"{url}/messages/{last_message_id}"
-                del_response = requests.delete(delete_url)
-                if del_response.status_code == 204:
-                    logger.info("Previous webhook message deleted")
-                else:
-                    print("failed")
-
-            response = requests.post(url, json=payload)
-            logger.info(f"Webhook sent: {response.status_code}")
-            if response.status_code == 200 or response.status_code == 201:
-                last_message_id = response.json()['id']
-            else:
-                print("failed")
-
+                requests.delete(f"{url}/messages/{last_message_id}")
+            resp = requests.post(url, json=payload)
+            if resp.status_code in (200, 201):
+                last_message_id = resp.json()['id']
         except Exception as e:
             print(e)
             pass
@@ -206,7 +198,7 @@ def create_task(data: TaskInput) -> TaskOutput:
         proxy=data.task.proxy,
         key=data.key,
     )
-    REQUESTS += 1
+    r.incr("stats:requests_hourly")
     logger.info(f"<{task.id}> Created successfully.")
     return TaskOutput(task_id=task.id, status="created", result=None)
 
@@ -222,7 +214,7 @@ def get_task_result(task_id: str) -> TaskOutput:
     output_result: Optional[Dict[str, Any]] = None
     if result.state == "SUCCESS":
         if result.result:
-            SOLVES += 1
+            r.incr("stats:solves_hourly")
         output_result = result.result if isinstance(result.result, dict) else {"result": result.result}
     elif result.state == "FAILURE":
         info = getattr(result, "info", None)

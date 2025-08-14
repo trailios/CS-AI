@@ -59,7 +59,7 @@ class BDA:
         self.enhancedFingerprint["1l2l5234ar2"] = str(int(timestamp * 1000)) + "\u2063"
         self.enhancedFingerprint["6a62b2a558"] = self.info["hash"]
         self.enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327\u2063"
-        self.enhancedFingerprint["navigator_languages"] = self.accept_lang.split(",")[0]
+        self.enhancedFingerprint["navigator_languages"] = self.accept_lang.split(";")[0]
 
         self.enhancedFingerprint["d4a306884c"] = "Ow=="
         self.enhancedFingerprint["4ca87df3d1"] = "Ow=="
@@ -73,7 +73,7 @@ class BDA:
         }
         feDict["L"] = self.accept_lang.split("-")[0]
         feDict["TO"] = str(timeOffset)
-        feDict["JSF"] = None # not sure if its the same still for brolxo
+        feDict["JSF"] = "" # None # not sure if its the same still for brolxo
         feList = [
             f"{key}:{value}"
             for key, value in feDict.items()
@@ -96,7 +96,7 @@ class BDA:
         )
 
         self.fingerprintDict["jsbd"] = dumps(
-            {"HL":int(randint(3,17)),"NCE":True,"DT":"","NWD":"false","DMTO":1,"DOTO":1}
+            {"HL":int(randint(3,17)),"NCE":True,"DT":"Challenge","NWD":"false","DMTO":1,"DOTO":1}
         )
 
         for key, value in self.options.items():

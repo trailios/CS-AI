@@ -4,7 +4,7 @@ import sys
 import signal
 import os
 
-cores = 2500
+cores = 5500
 
 def signal_handler(sig, frame):
     print("\nReceived interrupt signal. Stopping services...")
@@ -21,6 +21,8 @@ uvicorn_cmd = [
     "16", 
     "--port", 
     "80",
+    "--log-level",
+    "critical"
 ]
 celery_cmd = [
     "celery",

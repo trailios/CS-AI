@@ -80,6 +80,8 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	encodedParams := strings.Join(parts, "&")
 
+
+
 	resp, err := session.Do(&azuretls.Request{
 		Method:     "POST",
 		Url:        surl,
