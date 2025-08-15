@@ -46,13 +46,8 @@ def getIpInfo(proxy: Proxy) -> int:
         response = get(
             "https://api.ipify.org/?format=json", proxies=proxy.dict(), timeout=10
         ).json()
-        ip_address = response.get("ip", "")
 
-        geo_data = get(
-            f"https://ipinfo.io/{ip_address}/json", proxies=proxy.dict(), timeout=10
-        ).json()
-
-        timezone_str = geo_data.get("timezone", "America/New_York")
+        timezone_str = response.get("timezone", "America/New_York")
 
         timetones = TimeZoneOffsets()
         utc_offset = timetones.get_offset(timezone_str) or -120  # <-- falllback
