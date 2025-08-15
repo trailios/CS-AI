@@ -44,22 +44,23 @@ class Preset:
             "public_key": "A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F",
             "service_url": "https://arkoselabs.roblox.com",
             "site_url": "https://www.roblox.com",
-            "capi_mode": "inline",
+            "capi_mode": "lightbox",
             "language": None,
-            "origin": "https://www.roblox.com",
-            "location": "https://www.roblox.com/arkose/iframe",
-            "tree_index": [1, 0],
-            "structure": "[[],[[]]]"
+            "origin": "https://www.roblox.com/",
+            "location": "https://www.roblox.com",
+            "tree_index": [],
+            "structure": "[]"
         },
         "roblox_login": {
             "public_key": "476068BF-9607-4799-B53D-966BE98E2B81",
             "service_url": "https://arkoselabs.roblox.com",
             "site_url": "https://www.roblox.com",
-            "capi_mode": "inline",
+            "capi_mode": "lightbox",
             "language": None,
-            "location": "https://www.roblox.com/arkose/iframe",
-            "tree_index": [1],
-            "structure": "[[],[]]",
+            "origin": "https://www.roblox.com/login",
+            "location": "https://www.roblox.com/login",
+            "tree_index": [],
+            "structure": "[]"
         },
         "roblox_join": {
             "public_key": "63E4117F-E727-42B4-6DAA-C8448E9B137F",
@@ -130,10 +131,10 @@ class Preset:
             "site_url": "https://www.roblox.com",
             "capi_mode": "inline",
             "language": None,
-            "origin": "https://www.roblox.com",
-            "location": "https://www.roblox.com/arkose/iframe",
-            "tree_index": [1, 0],
-            "structure": "[[],[[]]]"
+            "origin": "https://www.roblox.com/login",
+            "location": "https://www.roblox.com/login",
+            "tree_index": [],
+            "structure": "[]"
         },
         "airbnb-register": {
             "public_key": "2F0D6CB5-ACAC-4EA9-9B2A-A5F90A2DF15E",
@@ -141,7 +142,7 @@ class Preset:
             "site_url": "https://www.airbnb.com",
             "capi_mode": "inline",
             "language": "en",
-            "location": "https://www.airbnb.com/",
+            "location": "https://www.airbnb.com",
             "tree_index": [1],
             "structure": "[[[]],[]]"
         },
@@ -151,7 +152,7 @@ class Preset:
             "site_url": "https://eu.account.battle.net",
             "capi_mode": "inline",
             "language": None,
-            "location": "https://www.battle.net/",
+            "location": "https://www.battle.net",
             "tree_index": [0],
             "structure": "[[]]",
         },
@@ -183,7 +184,7 @@ class Preset:
                 
                 options: dict = {
                     "document__referrer": data["site_url"] + "/" if not method == "roblox_support" else data["site_url"] + "/support",
-                    "window__ancestor_origins": [data["site_url"]] + ([data["origin"]] if "origin" in data and data["origin"] else []),
+                    "window__ancestor_origins": [],
                     "window__tree_index": data["tree_index"],
                     "window__tree_structure": data["structure"],
                     "window__location_href": f"{data["service_url"]}/v2/{capi_version}/enforcement.{enforcement_hash}.html",

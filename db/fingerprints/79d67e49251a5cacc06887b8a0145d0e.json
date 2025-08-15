@@ -1,0 +1,399 @@
+[
+    {
+        "key": "api_type",
+        "value": "js"
+    },
+    {
+        "key": "f",
+        "value": "79d67e49251a5cacc06887b8a0145d0e"
+    },
+    {
+        "key": "n",
+        "value": "MTc0OTkzNjA5NA=="
+    },
+    {
+        "key": "wh",
+        "value": "47b108485be57fb8a6f73d915682534c|cc7fecdd5c8bec57541ae802c7648eed"
+    },
+    {
+        "key": "enhanced_fp",
+        "value": [
+            {
+                "key": "webgl_extensions",
+                "value": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_color_buffer_half_float;EXT_frag_depth;EXT_shader_texture_lod;EXT_sRGB;EXT_texture_filter_anisotropic;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_color_buffer_float;WEBGL_compressed_texture_astc;WEBGL_compressed_texture_etc;WEBGL_compressed_texture_etc1;WEBGL_compressed_texture_pvrtc;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBKIT_WEBGL_compressed_texture_pvrtc"
+            },
+            {
+                "key": "webgl_extensions_hash",
+                "value": "d45b82938c3dccb4c71e878615f4b4f4"
+            },
+            {
+                "key": "webgl_renderer",
+                "value": "WebKit WebGL"
+            },
+            {
+                "key": "webgl_vendor",
+                "value": "WebKit"
+            },
+            {
+                "key": "webgl_version",
+                "value": "WebGL 1.0"
+            },
+            {
+                "key": "webgl_shading_language_version",
+                "value": "WebGL GLSL ES 1.0 (1.0)"
+            },
+            {
+                "key": "webgl_aliased_line_width_range",
+                "value": "[1, 1]"
+            },
+            {
+                "key": "webgl_aliased_point_size_range",
+                "value": "[1, 511]"
+            },
+            {
+                "key": "webgl_antialiasing",
+                "value": "yes"
+            },
+            {
+                "key": "webgl_bits",
+                "value": "8,8,24,8,8,0"
+            },
+            {
+                "key": "webgl_max_params",
+                "value": "16,32,16384,1024,16384,16,16384,31,16,16,1024"
+            },
+            {
+                "key": "webgl_max_viewport_dims",
+                "value": "[16384, 16384]"
+            },
+            {
+                "key": "webgl_unmasked_vendor",
+                "value": "Apple Inc."
+            },
+            {
+                "key": "webgl_unmasked_renderer",
+                "value": "Apple GPU"
+            },
+            {
+                "key": "webgl_vsf_params",
+                "value": "23,127,127,23,127,127,23,127,127"
+            },
+            {
+                "key": "webgl_vsi_params",
+                "value": "0,31,30,0,31,30,0,31,30"
+            },
+            {
+                "key": "webgl_fsf_params",
+                "value": "23,127,127,23,127,127,23,127,127"
+            },
+            {
+                "key": "webgl_fsi_params",
+                "value": "0,31,30,0,31,30,0,31,30"
+            },
+            {
+                "key": "webgl_hash_webgl",
+                "value": "b68100abcfab9e43e11a5da76dadd3fb"
+            },
+            {
+                "key": "user_agent_data_brands",
+                "value": ""
+            },
+            {
+                "key": "user_agent_data_mobile",
+                "value": false
+            },
+            {
+                "key": "navigator_connection_downlink",
+                "value": 1.55
+            },
+            {
+                "key": "navigator_connection_downlink_max",
+                "value": null
+            },
+            {
+                "key": "network_info_rtt",
+                "value": 100
+            },
+            {
+                "key": "network_info_save_data",
+                "value": false
+            },
+            {
+                "key": "network_info_rtt_type",
+                "value": null
+            },
+            {
+                "key": "screen_pixel_depth",
+                "value": 24
+            },
+            {
+                "key": "navigator_device_memory",
+                "value": 8
+            },
+            {
+                "key": "navigator_languages",
+                "value": "en"
+            },
+            {
+                "key": "window_inner_width",
+                "value": 414
+            },
+            {
+                "key": "window_inner_height",
+                "value": 796
+            },
+            {
+                "key": "window_outer_width",
+                "value": 414
+            },
+            {
+                "key": "window_outer_height",
+                "value": 896
+            },
+            {
+                "key": "browser_detection_firefox",
+                "value": false
+            },
+            {
+                "key": "browser_detection_brave",
+                "value": false
+            },
+            {
+                "key": "f58835f",
+                "value": "9f8546429645fbed9aec1f89e335c19a"
+            },
+            {
+                "key": "browser_object_checks",
+                "value": "554838a8451ac36cb977e719e9d6623c"
+            },
+            {
+                "key": "29s83ih9",
+                "value": "68934a3e9455fa72420237eb05902327\u2063"
+            },
+            {
+                "key": "audio_codecs",
+                "value": "{\"ogg\":\"probably\",\"mp3\":\"probably\",\"wav\":\"probably\",\"m4a\":\"maybe\",\"aac\":\"probably\"}"
+            },
+            {
+                "key": "audio_codecs_extended_hash",
+                "value": "805036349642e2569ec299baed02315b"
+            },
+            {
+                "key": "video_codecs",
+                "value": "{\"ogg\":\"\",\"h264\":\"probably\",\"webm\":\"probably\",\"mpeg4v\":\"\",\"mpeg4a\":\"\",\"theora\":\"\"}"
+            },
+            {
+                "key": "video_codecs_extended_hash",
+                "value": "860df88c1903a4e3930122c4dec33a52"
+            },
+            {
+                "key": "media_query_dark_mode",
+                "value": false
+            },
+            {
+                "key": "f9bf2db",
+                "value": "{\"pc\":\"no-preference\",\"ah\":\"none\",\"ap\":\"coarse\",\"p\":\"coarse\",\"h\":\"none\",\"u\":\"fast\",\"prm\":\"no-preference\",\"prt\":\"no-preference\",\"s\":\"enabled\",\"fc\":\"none\"}"
+            },
+            {
+                "key": "headless_browser_phantom",
+                "value": false
+            },
+            {
+                "key": "headless_browser_selenium",
+                "value": false
+            },
+            {
+                "key": "headless_browser_nightmare_js",
+                "value": false
+            },
+            {
+                "key": "862f2c1",
+                "value": 4
+            },
+            {
+                "key": "1l2l5234ar2",
+                "value": "1749936094495\u2063"
+            },
+            {
+                "key": "document__referrer",
+                "value": ""
+            },
+            {
+                "key": "window__ancestor_origins",
+                "value": []
+            },
+            {
+                "key": "window__tree_index",
+                "value": []
+            },
+            {
+                "key": "window__tree_structure",
+                "value": "[]"
+            },
+            {
+                "key": "window__location_href",
+                "value": "https://www.bloxgen.net/"
+            },
+            {
+                "key": "client_config__sitedata_location_href",
+                "value": "https://www.bloxgen.net/"
+            },
+            {
+                "key": "client_config__language",
+                "value": "en"
+            },
+            {
+                "key": "client_config__surl",
+                "value": "https://www.bloxgen.net/client-api.arkoselabs.com"
+            },
+            {
+                "key": "c8480e29a",
+                "value": "900bcce544cc5eabbdea112ee8c98373\u2062"
+            },
+            {
+                "key": "client_config__triggered_inline",
+                "value": false
+            },
+            {
+                "key": "mobile_sdk__is_sdk",
+                "value": false
+            },
+            {
+                "key": "audio_fingerprint",
+                "value": "124.04347527516074"
+            },
+            {
+                "key": "navigator_battery_charging",
+                "value": true
+            },
+            {
+                "key": "7541c2s",
+                "value": null
+            },
+            {
+                "key": "1f220c9",
+                "value": "4265a56c672d7e6aa6193578832fbe69"
+            },
+            {
+                "key": "math_fingerprint",
+                "value": "0ce80c69b75667d69baedc0a70c82da7"
+            },
+            {
+                "key": "supported_math_functions",
+                "value": "67d1759d7e92844d98045708c0a91c2f"
+            },
+            {
+                "key": "3f76dd27",
+                "value": "portrait-primary"
+            },
+            {
+                "key": "5dd48ca0",
+                "value": 5
+            },
+            {
+                "key": "4b4b269e68",
+                "value": "a2a63482-8f38-451d-acc0-98b2d327c50b"
+            },
+            {
+                "key": "6a62b2a558",
+                "value": "df45d93b7883fed1e47dedac58c1d924"
+            },
+            {
+                "key": "is_keyless",
+                "value": false
+            },
+            {
+                "key": "c2d2015",
+                "value": "29d13b1af8803cb86c2697345d7ea9eb"
+            },
+            {
+                "key": "43f2d94",
+                "value": []
+            },
+            {
+                "key": "20c15922",
+                "value": true
+            },
+            {
+                "key": "4f59ca8",
+                "value": null
+            },
+            {
+                "key": "3ea7194",
+                "value": {
+                    "supported": false,
+                    "formats": [],
+                    "isHDR": false
+                }
+            },
+            {
+                "key": "05d3d24",
+                "value": "9250cfd67d85f99fe54603f792d00437"
+            },
+            {
+                "key": "speech_default_voice",
+                "value": "Eddy || en-GB"
+            },
+            {
+                "key": "speech_voices_hash",
+                "value": "52cd4e12efb1bcb419669d74e056d60b"
+            },
+            {
+                "key": "83eb055",
+                "value": "d41d8cd98f00b204e9800998ecf8427e"
+            },
+            {
+                "key": "4ca87df3d1",
+                "value": "Ow=="
+            },
+            {
+                "key": "867e25e5d4",
+                "value": "Ow=="
+            },
+            {
+                "key": "d4a306884c",
+                "value": "Ow=="
+            }
+        ]
+    },
+    {
+        "key": "fb",
+        "value": 1
+    },
+    {
+        "key": "fe",
+        "value": [
+            "DNT:unknown",
+            "L:en",
+            "D:24",
+            "PR:2",
+            "S:796,414",
+            "AS:796,414",
+            "TO:420",
+            "SS:true",
+            "LS:true",
+            "IDB:true",
+            "B:false",
+            "ODB:false",
+            "CPUC:unknown",
+            "PK:iPhone",
+            "CFP:107978392",
+            "FR:false",
+            "FOS:false",
+            "FB:true",
+            "JSF:Arial,Arial Black,Arial Narrow,Courier,Courier New,Georgia,Helvetica,Impact,Times,Times New Roman,Trebuchet MS,Verdana",
+            "P:",
+            "T:5,true,true",
+            "H:4",
+            "SWF:false"
+        ]
+    },
+    {
+        "key": "ife_hash",
+        "value": "40edec54078ea0c820dc28a01743e6ad"
+    },
+    {
+        "key": "jsbd",
+        "value": "{\"HL\":4,\"NCE\":true,\"DT\":\"Coming Soon - Bloxgen\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
+    }
+]
