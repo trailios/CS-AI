@@ -55,7 +55,12 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 
+	http2 := "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p"
 	
+	if err := session.ApplyHTTP2(http2); err != nil {
+		return 0, "", fmt.Errorf("failed to send request: %w", err)
+	}
+
 	http3 := "1:65536;6:262144;7:100;51:1;GREASE|m,a,s,p"
 	if err := session.ApplyHTTP3(http3); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
@@ -80,14 +85,14 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	encodedParams := strings.Join(parts, "&")
 
+	resp, err := session.Post(surl, encodedParams)
 
-
-	resp, err := session.Do(&azuretls.Request{
-		Method:     "POST",
-		Url:        surl,
-		Body:       encodedParams,
-		ForceHTTP3: true,
-	})
+	// resp, err := session.Do(&azuretls.Request{
+	// 	Method:     "POST",
+	// 	Url:        surl,
+	// 	Body:       encodedParams,
+	// 	ForceHTTP3: true,
+	// })
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
