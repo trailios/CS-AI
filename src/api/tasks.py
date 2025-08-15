@@ -2,6 +2,8 @@
 from typing     import Dict, Any
 from celery     import Celery
 from logging    import getLogger
+from itertools  import cycle
+from os         import listdir
 
 from src                                import proxyHelper, key_service, logger
 from src.helpers.ClassificationHelper   import XEvilClient
@@ -11,7 +13,6 @@ from src.utils.utils                    import Utils
 from src.utils.presets                  import Preset
 from src.arkose.game                    import Game
 
-import random
 
 for logger_name in [
     "celery",
@@ -27,6 +28,10 @@ celery_app = Celery(
     backend="redis://149.50.108.43:6379/0",
 )
 
+fpiter = cycle(listdir("db/fingerprints"))
+BDA_Handler = BDA("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36", fpiter)
+# static for now the ua
+# nigger on your fp shit you still using the next() WHICH IS GOING TO SWITCH TO NEXT FP
 
 celery_app.conf.update(
     task_serializer='json',
@@ -116,10 +121,14 @@ def solve(type: str, **kwargs) -> str:
         'x-ark-esync-value': Utils.short_esync(),
     }
 
-            bda = BDA(proxy, action, headers['user-agent'], headers['accept-language'])
-            bda.update_fingerprint()
+            bda = BDA_Handler.update_fingerprint(
+                proxy,
+                action,
+                accept_lang
+            ) # tell me wouldnt this work?
+            # less see
 
-            settings["bda"] = bda.encryptedfingerprint
+            settings["bda"] = bda
 
             try:
                 challenge: Challenge = Challenge(headers, proxy, settings, browser)

@@ -23,6 +23,32 @@ type RequestData struct {
 	AL    string `json:"accept_language"`
 }
 
+
+func randomChoicesWithReplacementThenDedup(values []string, min, max int) []string {
+	// Python's randint(a, b) is inclusive for both ends
+	randCount := rand.Intn(max-min+1) + min
+
+	// Pick with replacement
+	picks := make([]string, randCount)
+	for i := 0; i < randCount; i++ {
+		picks[i] = values[rand.Intn(len(values))]
+	}
+
+	// Deduplicate like Python's set()
+	unique := make(map[string]struct{})
+	for _, v := range picks {
+		unique[v] = struct{}{}
+	}
+
+	// Convert back to slice
+	result := make([]string, 0, len(unique))
+	for k := range unique {
+		result = append(result, k)
+	}
+	return result
+}
+
+
 func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
 
 	now := time.Now().Unix()
@@ -50,7 +76,22 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"priority", "u=1, i"},
 		{"referer", "https://www.roblox.com/"},
 	}
-	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,5-65281-23-45-35-11-13-65037-51-27-16-17613-43-0-10-18,4588-29-23-24,0"
+
+	rand.Seed(time.Now().UnixNano())
+
+	groupsList := []string{"29", "23", "24", "25"}
+	cipherList := []string{
+		"47", "53", "60", "61", "140", "141", "156", "157",
+		"49161", "49162", "49171", "49172", "49187", "49188",
+		"49191", "49192", "49195", "49196", "49199", "49200",
+		"49205", "49206", "52392", "52393", "52396",
+		"4865", "4866", "4867",
+	}
+
+	supportedGroups := strings.Join(randomChoicesWithReplacementThenDedup(groupsList, 1, 3), "-")
+	ciphers := strings.Join(randomChoicesWithReplacementThenDedup(cipherList, 12, 28), "-")
+
+	ja3 := fmt.Sprintf("771,%s,0-23-65281-10-11-16-51-43-13-45,%s,0", ciphers, supportedGroups)
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
