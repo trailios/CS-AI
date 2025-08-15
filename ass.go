@@ -64,7 +64,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	params := []struct{ Key, Value string }{
 		{"public_key", pkey},
 		{"capi_version", "3.7.0"},
-		{"capi_mode", "inline"},
+		{"capi_mode", "lightbox"},
 		{"style_theme", "default"},
 		{"rnd", randomFloat},
 		{"bda", bda},

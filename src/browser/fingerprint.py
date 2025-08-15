@@ -14,6 +14,8 @@ from src.utils.crypto           import AES_Crypto
 
 fps = listdir("db/fingerprints")
 
+badfps = []
+
 class BDA:
     def __init__(self, 
                  proxy: Proxy, 
@@ -30,8 +32,9 @@ class BDA:
         self.info:    Dict[str, str]
 
         self.options, self.info = Preset.get_options(self.action)
+        self.filename = choice(list(set(fps) - set(badfps)))
         
-        self.fingerprint:          List = loads(open(f"db/fingerprints/{choice(fps)}", encoding="utf-8").read())
+        self.fingerprint:          List = loads(open(f"db/fingerprints/{self.filename}", encoding="utf-8").read())
         self.fingerprintDict:      Dict = {}
         self.enhancedFingerprint:  Dict = {}
         self.encryptedfingerprint: str = ""
@@ -75,7 +78,7 @@ class BDA:
         }
         feDict["L"] = self.accept_lang.split("-")[0]
         feDict["TO"] = str(timeOffset)
-        feDict["JSF"] = "" # None # not sure if its the same still for brolxo
+        #feDict["JSF"] = "" # None # not sure if its the same still for brolxo
         feList = [
             f"{key}:{value}"
             for key, value in feDict.items()
@@ -126,3 +129,6 @@ class BDA:
                 self.userbrowser + str(int(t := timestamp) - int(t) % 21600)
             ).encode("utf-8")
         ).decode("utf-8")
+
+    def set_badBda(self):
+        badfps.append(self.filename)

@@ -159,6 +159,7 @@ def solve(type: str, **kwargs) -> str:
                     print(f"waves: {game.waves} - vairant: {game.variant}")
 
                     if game.waves >= 6:
+                        bda.set_badBda()
                         return dict({"error": "Captcha was to difficult.", "solution": None})
 
                     game.get_images()
