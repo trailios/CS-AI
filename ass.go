@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -51,8 +52,9 @@ func randomChoicesWithReplacementThenDedup(values []string, min, max int) []stri
 
 func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
 
-	now := time.Now().Unix()
-	esync := strconv.FormatInt(now-(now%21600), 10)
+	now := time.Now().UnixMilli()
+    rounded := int64(math.Round(float64(now)/100) * 100)
+    esync :=strconv.FormatInt(rounded, 10)
 
 	session := azuretls.NewSession()
 	err := session.SetProxy(proxy)
@@ -63,8 +65,9 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	session.OrderedHeaders = azuretls.OrderedHeaders{
 		{"sec-ch-ua-platform", `"Windows"`},
 		{"x-ark-esync-value", string(esync)},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
-		{"sec-ch-ua", `"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"`},
+		{"ark-build-id", "c1e346ea-955c-4367-98a1-4029e512358f"},
+		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"},
+		{"sec-ch-ua", `"Google Chrome";v="141", "Not)A;Brand";v="8", "Chromium";v="141"`},
 		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
 		{"sec-ch-ua-mobile", "?0"},
 		{"accept", "*/*"},
@@ -108,14 +111,14 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	randomFloat := strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
 	params := []struct{ Key, Value string }{
+		{"c", bda},
 		{"public_key", pkey},
-		{"capi_version", "3.7.0"},
-		{"capi_mode", "lightbox"},
-		{"style_theme", "default"},
-		{"rnd", randomFloat},
-		{"bda", bda},
 		{"site", "https://www.roblox.com"},
-		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"},
+		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"},
+		{"capi_version", "4.0.10"},
+		{"capi_mode", "lightbox"},
+		{"style_theme", "modal"},
+		{"rnd", randomFloat},
 		{"data[blob]", string(blob)},
 	}
 	var parts []string
@@ -126,14 +129,14 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	encodedParams := strings.Join(parts, "&")
 
-	resp, err := session.Post(surl, encodedParams)
+	// resp, err := session.Post(surl, encodedParams)
 
-	// resp, err := session.Do(&azuretls.Request{
-	// 	Method:     "POST",
-	// 	Url:        surl,
-	// 	Body:       encodedParams,
-	// 	ForceHTTP3: true,
-	// })
+	resp, err := session.Do(&azuretls.Request{
+		Method:     "POST",
+		Url:        surl,
+		Body:       encodedParams,
+		ForceHTTP3: true,
+	})
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}

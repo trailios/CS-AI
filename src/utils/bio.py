@@ -3,46 +3,26 @@ import math
 import json
 import base64
 from typing import List, Dict, Tuple, Optional
-import matplotlib.pyplot as plt
-import numpy as np  # Using numpy for easier vector math and linspace
-
-# --- Perlin Noise (Slightly improved for potential 2D use later) ---
-# Using a class to hold state for seeded randomness if needed,
-# but keeping it simple for now.
-
+import numpy as np
 
 class PerlinNoise:
     def __init__(self, seed: Optional[int] = None):
-        # Basic pseudo-random gradients based on integer coords
-        # For true Perlin, you'd use a permutation table, etc.
-        # This is a simpler stand-in.
         self.rand_eng = random.Random(seed)
-        self.gradients = {}  # Store gradients for integer coordinates
+        self.gradients = {}
 
     def _get_gradient(self, ix: int) -> float:
         if ix not in self.gradients:
-            # Generate a pseudo-random gradient (simple sin for now)
-            # A better approach would use hashed coordinates and lookup tables
             angle = self.rand_eng.uniform(0, 2 * math.pi)
-            # For 1D, gradient is just -1 or 1, or a slope value.
-            # Let's use a simpler noise function directly like the original
-            # but make it instance-specific if seeded.
             self.gradients[ix] = (
                 self.rand_eng.uniform(-1.0, 1.0) * 0.5
-            )  # Reduced amplitude
-            # Original smooth_noise: return math.sin(x * 0.1) * random.uniform(-0.5, 0.5)
+            )
         return self.gradients[ix]
 
     def _smooth_noise(self, x: int) -> float:
-        # Simpler periodic noise source for demo
-        # return math.sin(x * 0.2) * 0.4 + math.cos(x * 0.7) * 0.2
-        # Let's use a more standard random approach per integer
-        # Hash the integer coord to get a reproducible pseudo-random value
-        # Simple hash function
         x = int(x)
         x = (x << 13) ^ x
         x = (x * (x * x * 15731 + 789221) + 1376312589) & 0x7FFFFFFF
-        return 1.0 - (x / 1073741824.0)  # Value between -1.0 and 1.0 roughly
+        return 1.0 - (x / 1073741824.0)
 
     def _cosine_interpolate(self, a: float, b: float, x: float) -> float:
         ft = x * math.pi
@@ -57,27 +37,19 @@ class PerlinNoise:
         return self._cosine_interpolate(v1, v2, fractional_x)
 
     def noise(self, x: float, persistence: float = 0.5, octaves: int = 3) -> float:
-        """Generate 1D Perlin-like noise."""
         total = 0.0
         frequency = 1.0
         amplitude = 1.0
-        max_value = 0.0  # Used for normalization
+        max_value = 0.0
         for _ in range(octaves):
             total += self._interpolated_noise(x * frequency) * amplitude
             max_value += amplitude
             frequency *= 2
             amplitude *= persistence
-        # Normalize to roughly [-1, 1], though depends on smooth_noise range
         if max_value == 0:
             return 0
-        # The smooth_noise gives range roughly -1 to 1, so total can exceed 1
-        # Clamp or normalize as needed. Normalizing is often better.
-        # return total / max_value # Normalize to [-1, 1]
-        # Let's keep it closer to original output scale, maybe clamp
-        return clamp(total, -0.8, 0.8)  # Clamp to a reasonable range
+        return clamp(total, -0.8, 0.8)
 
-
-# Global noise instance
 perlin = PerlinNoise()
 
 
@@ -85,7 +57,6 @@ def clamp(x: float, lowerlimit: float, upperlimit: float) -> float:
     return max(lowerlimit, min(x, upperlimit))
 
 
-# --- Vector/Point Operations ---
 def point_subtract(p1: Dict[str, float], p2: Dict[str, float]) -> Dict[str, float]:
     return {"x": p1["x"] - p2["x"], "y": p1["y"] - p2["y"]}
 
@@ -102,28 +73,24 @@ def magnitude(p: Dict[str, float]) -> float:
     return math.sqrt(p["x"] ** 2 + p["y"] ** 2)
 
 
-# --- Bézier Curve Functions ---
 def get_bezier_point(t: float, points: List[Dict[str, float]]) -> Dict[str, float]:
-    """Calculates a point on a Bézier curve (any order)."""
     n = len(points) - 1
     if n < 0:
         raise ValueError("Need at least one point for Bézier curve")
     if n == 0:
         return points[0]
 
-    # Use numpy for potentially faster calculations if many points
-    # For quadratic (n=2) or cubic (n=3), direct formula is faster
-    if n == 1:  # Linear
+    if n == 1:
         p0, p1 = points
         x = (1 - t) * p0["x"] + t * p1["x"]
         y = (1 - t) * p0["y"] + t * p1["y"]
         return {"x": x, "y": y}
-    if n == 2:  # Quadratic
+    if n == 2:
         p0, p1, p2 = points
         x = (1 - t) ** 2 * p0["x"] + 2 * (1 - t) * t * p1["x"] + t**2 * p2["x"]
         y = (1 - t) ** 2 * p0["y"] + 2 * (1 - t) * t * p1["y"] + t**2 * p2["y"]
         return {"x": x, "y": y}
-    if n == 3:  # Cubic
+    if n == 3:
         p0, p1, p2, p3 = points
         x = (
             (1 - t) ** 3 * p0["x"]
@@ -138,8 +105,7 @@ def get_bezier_point(t: float, points: List[Dict[str, float]]) -> Dict[str, floa
             + t**3 * p3["y"]
         )
         return {"x": x, "y": y}
-
-    # General Bernstein polynomial form (slower for low orders)
+    
     x, y = 0.0, 0.0
     for i in range(n + 1):
         bernstein = math.comb(n, i) * (1 - t) ** (n - i) * t**i
@@ -149,13 +115,10 @@ def get_bezier_point(t: float, points: List[Dict[str, float]]) -> Dict[str, floa
 
 
 def get_bezier_derivative(t: float, points: List[Dict[str, float]]) -> Dict[str, float]:
-    """Calculates the derivative (velocity vector) of a Bézier curve."""
     n = len(points) - 1
     if n < 1:
-        return {"x": 0.0, "y": 0.0}  # Derivative of a point is zero
-
-    # De Casteljau algorithm property: derivative is a Bézier curve of order n-1
-    # with control points n * (P_{i+1} - P_i)
+        return {"x": 0.0, "y": 0.0}
+    
     derivative_points = []
     for i in range(n):
         dp = point_subtract(points[i + 1], points[i])
@@ -165,7 +128,6 @@ def get_bezier_derivative(t: float, points: List[Dict[str, float]]) -> Dict[str,
 
 
 def approx_arc_length(points: List[Dict[str, float]], n_segments: int = 50) -> float:
-    """Approximates the arc length of a Bézier curve by summing linear segments."""
     length = 0.0
     prev_point = get_bezier_point(0, points)
     for i in range(1, n_segments + 1):
@@ -175,24 +137,14 @@ def approx_arc_length(points: List[Dict[str, float]], n_segments: int = 50) -> f
         prev_point = current_point
     return length
 
-
-# --- Kinematic Model (Velocity Profile) ---
 def log_normal_velocity_profile(
     t: float, duration: float, mu: float, sigma: float
 ) -> float:
-    """
-    Generates a value from the log-normal Probability Density Function (PDF).
-    This represents the *instantaneous* velocity proportion at time t.
-    mu and sigma are parameters of the underlying normal distribution (log space).
-    Adjust mu, sigma to control the peak time and shape.
-    Commonly: mu ≈ log(peak_time), sigma controls spread (e.g., 0.3-0.7).
-    """
     if t <= 0 or duration <= 0:
         return 0
-    # Ensure t is within duration for sensible use, although PDF is defined for t>0
+    
     t = min(t, duration)
 
-    # PDF: (1 / (t * sigma * sqrt(2*pi))) * exp(-(ln(t) - mu)^2 / (2 * sigma^2))
     try:
         log_t = math.log(t)
     except ValueError:
@@ -202,9 +154,8 @@ def log_normal_velocity_profile(
     denominator = t * sigma * math.sqrt(2 * math.pi)
 
     if denominator == 0:
-        return 0  # Avoid division by zero
-
-    # The raw PDF value can be very large or small. We need to scale it later.
+        return 0
+    
     pdf_val = (1.0 / denominator) * math.exp(exponent)
     return pdf_val
 
@@ -213,32 +164,30 @@ class EnhancedDataGenerator:
     def __init__(self):
         self.dPoints: List[Tuple[int, int]] = []
         self.timestamp: int = 0
-        self.perlin_noise = PerlinNoise()  # Instance for noise generation
+        self.perlin_noise = PerlinNoise()
 
-        # --- Movement Parameters (Tunable) ---
-        # Time step for simulation (ms)
-        self.TARGET_DT: int = 15  # Lower = smoother, more points
-        # Base duration factor: scales with distance^power
+        self.TARGET_DT: int = 15
+        
         self.BASE_DURATION_FACTOR: float = 25.0
-        # Power for distance scaling (Fitts' law suggests log, 0.5 is common for sqrt)
+        
         self.DISTANCE_POWER: float = 0.45
-        # Min/Max duration for a single stroke (ms)
+        
         self.MIN_STROKE_DURATION: int = 80
         self.MAX_STROKE_DURATION: int = 1500
-        # Pause between strokes (ms)
+        
         self.MIN_PAUSE_DURATION: int = 40
         self.MAX_PAUSE_DURATION: int = 250
-        # Log-normal profile parameters (tune these for desired speed profile)
-        self.VELOCITY_SIGMA: float = 0.45  # Controls spread (lower=sharper peak)
+        
+        self.VELOCITY_SIGMA: float = 0.45
         self.PEAK_TIME_RATIO: float = (
-            0.25  # Peak velocity % into stroke duration (lower=faster accel)
+            0.25
         )
-        # Control point deviation factor (relative to distance)
+        
         self.CONTROL_POINT_DEVIATION_FACTOR: float = 0.35
-        # Noise parameters
-        self.PERLIN_NOISE_SCALE: float = 0.8  # Amplitude of Perlin noise offset
+        
+        self.PERLIN_NOISE_SCALE: float = 0.8
         self.PERLIN_NOISE_FREQ: float = (
-            0.05  # How quickly noise changes over time/space
+            0.05
         )
 
     def random_value(self, min_value: float, max_value: float) -> float:
@@ -247,11 +196,10 @@ class EnhancedDataGenerator:
     def generate_d_points(
         self, num_points_range: Tuple[int, int] = (3, 6)
     ) -> List[Tuple[int, int]]:
-        """Generates the main destination points for the mouse path."""
         self.dPoints = []
         num_points = int(self.random_value(num_points_range[0], num_points_range[1]))
-        # Ensure points are somewhat spaced out - simple check
-        last_x, last_y = 700, 200  # Start near previous example
+        
+        last_x, last_y = 700, 200
         min_dist_sq = 150**2
         for i in range(num_points):
             while True:
@@ -264,12 +212,11 @@ class EnhancedDataGenerator:
         return self.dPoints
 
     def _calculate_stroke_duration(self, distance: float) -> int:
-        """Calculate stroke duration based on distance (Fitts' Law inspired)."""
         if distance < 1:
             return self.MIN_STROKE_DURATION
 
         duration = self.BASE_DURATION_FACTOR * (distance**self.DISTANCE_POWER)
-        # Add randomness
+        
         duration *= self.random_value(0.85, 1.15)
 
         return int(clamp(duration, self.MIN_STROKE_DURATION, self.MAX_STROKE_DURATION))
@@ -277,7 +224,7 @@ class EnhancedDataGenerator:
     def _generate_control_points(
         self, start_pt: Dict[str, float], end_pt: Dict[str, float]
     ) -> List[Dict[str, float]]:
-        """Generates control points for a Bézier curve between start and end."""
+
         # Using Cubic Bézier for potentially smoother curves
         dist_vec = point_subtract(end_pt, start_pt)
         dist = magnitude(dist_vec)

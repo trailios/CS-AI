@@ -10,8 +10,8 @@ from src.helpers.SessionHelper  import (
     Session, 
     HttpVersion
 )
+from src.utils.parser           import version_info, get_vm_key
 from src                        import internal_session
-from src.utils.versionInfo      import get_version_info
 from src.helpers.ProxyHelper    import Proxy
 
 
@@ -41,7 +41,7 @@ class Challenge:
         HTTPVersion: Optional[int] = HttpVersion.V2_0,
         Impersonate: Optional[str] = "chrome136"
     ) -> None:
-        self.session: Session = Session(impersonate="safari260_ios")
+        self.session: Session = Session(impersonate=Impersonate)
         self.session.http_version = HTTPVersion
 
         self.session.headers = Headers
@@ -53,7 +53,7 @@ class Challenge:
         self.proxy :    Any            = Proxy
 
         self.base_url:  str = Settings["service_url"]
-        self.version, self.hash = get_version_info(
+        self.version, self.hash, self.cbid = version_info(
             Settings["service_url"], Settings["public_key"]
         )
 
@@ -107,21 +107,21 @@ class Challenge:
     def gt2(self) -> None:
 
         payload = {
+            "c": self.settings["bda"],
             "public_key": self.settings["public_key"],
-            "capi_version": self.version,
-            "capi_mode": self.settings["cmode"],
-            "style_theme": "default",
-            "rnd": str("a"),
-            "bda": self.settings["bda"],
             "site": self.settings["site"],
             "userbrowser": self.session.headers["user-agent"],
+            "capi_version": self.version,
+            "capi_mode": self.settings["cmode"],
+            "style_theme": "modal",
+            "rnd": "",
         }
 
         if self.settings["blob"]:
             payload["data[blob]"] = self.settings["blob"]
 
         try:
-            gt2r: str = internal_session.post("http://localhost:19222/send-request", json={
+            gt2r = internal_session.post("http://localhost:19222/send-request", json={
                 "proxy": self.proxy.__str__(),
                 "bda": self.settings["bda"],
                 "blob": self.settings["blob"],

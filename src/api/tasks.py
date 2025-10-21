@@ -1,26 +1,27 @@
 
 from typing     import Dict, Any
-from celery     import Celery
 from logging    import getLogger
-from itertools  import cycle
 from os         import listdir
+from celery     import Celery
+from itertools  import cycle
 
 from src                                import proxyHelper, key_service, logger
+from src.utils.parser                   import get_vm_key, version_info
 from src.helpers.ClassificationHelper   import XEvilClient
-from src.browser.fingerprint            import BDA
 from src.arkose.challenge               import Challenge
-from src.utils.utils                    import Utils
 from src.utils.presets                  import Preset
+from src.utils.utils                    import Utils
 from src.arkose.game                    import Game
+from src.browser.fingerprint            import BDA
 
 
-for logger_name in [
-    "celery",
-    "celery.task",
-    "kombu",
-    "amqp",
-]:
-    getLogger(logger_name).disabled = True
+# for logger_name in [
+#     "celery",
+#     "celery.task",
+#     "kombu",
+#     "amqp",
+# ]:
+#     getLogger(logger_name).disabled = True
 
 celery_app = Celery(
     "src.api.tasks",
@@ -99,34 +100,37 @@ def solve(type: str, **kwargs) -> str:
 
             browser["language"] = info["lang"]
 
-            version = 138
+            version = 141
 
             headers = {
-        'accept': '*/*',
-        'accept-language': accept_lang,
-        'cache-control': 'no-cache',
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'origin': site_url,
-        'pragma': 'no-cache',
-        'priority': 'u=1, i',
-        'referer': site_url + "/",
-        'sec-ch-ua': f'"Not/A)Brand";v="8", "Google Chrome";v="{version}", "Chromium";v="{version}"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-site',
-        'sec-gpc': '1',
-        'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36',
-        'x-ark-esync-value': Utils.short_esync(),
-    }
+                'accept': '*/*',
+                'accept-language': accept_lang,
+                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'origin': site_url,
+                'priority': 'u=1, i',
+                'referer': site_url + "/",
+                'sec-ch-ua': f'"Google Chrome";v="{version}", "Not/A)Brand";v="8", "Chromium";v="{version}"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'empty',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-site': 'same-site',
+                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36',
+                'x-ark-esync-value': str(Utils.short_esync()),
+            }
+
+            vm_key = get_vm_key(info["surl"], info["pkey"])
+
+            if not vm_key:
+                raise Exception("Could not fetch VM key.")
 
             bda = BDA_Handler.update_fingerprint(
                 proxy,
                 action,
-                accept_lang
-            ) # tell me wouldnt this work?
-            # less see
+                accept_lang,
+                vm_key,
+                version_info(info["surl"], info["pkey"])[2]
+            )
 
             settings["bda"] = bda
 
@@ -168,7 +172,6 @@ def solve(type: str, **kwargs) -> str:
                     print(f"waves: {game.waves} - vairant: {game.variant}")
 
                     if game.waves >= 6:
-                        bda.set_badBda()
                         return dict({"error": "Captcha was to difficult.", "solution": None})
 
                     game.get_images()

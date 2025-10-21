@@ -11,7 +11,8 @@ from src                        import Proxy
 from src.utils.utils            import Utils
 from src.utils.presets          import Preset
 from src.utils.ipIntelligence   import getIpInfo
-from src.utils.crypto           import AES_Crypto
+from src.utils.crypto           import rsa_encrypt
+from src.utils.vm               import transform_payload
 
 fps = listdir("db/fingerprints")
 badfps = []
@@ -30,7 +31,7 @@ class BDA:
 
     def _background_run(self):
         while True:
-            sleep(randint(20-60))
+            sleep(randint(20,60))
             self.fingerprint: List = loads(open(f"db/fingerprints/{next(self.fp_iter)}", encoding="utf-8").read())
 
     def _start(self):
@@ -56,7 +57,9 @@ class BDA:
             self,
             proxy: Proxy,
             action: str,
-            accept_lang: str 
+            accept_lang: str,
+            encryption_key: str,
+            cbid: str
         ) -> str:
         timestamp = time()
 
@@ -68,12 +71,12 @@ class BDA:
         options, info = Preset.get_options(action)
         fingerprintDict, enhancedFingerprint = self._preprocess(fingerprint)
 
-        self.fingerprintDict["n"] = str(
+        fingerprintDict["n"] = str(
             b64encode(
                 str(int(timestamp)).encode()
             ).decode()
         )
-        fingerprintDict["wh"] = f"{urandom(16).hex()}|cc7fecdd5c8bec57541ae802c7648eed"
+        fingerprintDict["wh"] = f"{urandom(16).hex()}|79169737225f825ee428975a81c22b8f"
         enhancedFingerprint["1l2l5234ar2"] = str(int(timestamp * 1000)) + "\u2063"
         enhancedFingerprint["6a62b2a558"] = info["hash"]
         enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327\u2063"
@@ -88,7 +91,7 @@ class BDA:
 
         feDict = {
             item.split(":")[0]: item.split(":")[1]
-            for item in self.fingerprintDict["fe"]
+            for item in fingerprintDict["fe"]
         }
         feDict["L"] = accept_lang.split("-")[0]
         feDict["TO"] = str(timeOffset)
@@ -116,12 +119,14 @@ class BDA:
         )
 
         fingerprintDict["jsbd"] = dumps( # thats what he does, HE DOES THAT 
-            {"HL":str(randint(3,12)),"NCE":"true","DT":"Log into Roblox","NWD":"false","DMTO":1,"DOTO":1} # i put nce as string cause that's what he does 
+            {"HL":str(randint(3,4)),"NCE":True,"DT":"Log in to Roblox","NWD":False,"DMTO":1,"DOTO":1}, # i put nce as string cause that's what he does
+            separators=(",", ":")
         ) # dc
 
         for key, value in options.items():
             enhancedFingerprint[key] = value
 
+        enhancedFingerprint["window__location_href"] = "https://www.roblox.com/login"
 
         fingerprintDict["enhanced_fp"] = [
             {"key": key, "value": value}
@@ -131,17 +136,22 @@ class BDA:
             {"key": key, "value": value}
             for key, value in fingerprintDict.items()
         ]
-        
-        fingerprint = dumps(
+
+        fingerprint = transform_payload(
             fingerprint,
+            cbid
         )
 
-        encryptedfingerprint = b64encode(
-            AES_Crypto.encrypt_data(
+        fingerprint = dumps(
+            fingerprint,
+            separators=(",", ":"),
+            ensure_ascii=False
+        )
+
+        encryptedfingerprint = rsa_encrypt(
                 fingerprint,
-                self.userbrowser + str(int(t := timestamp) - int(t) % 21600)
-            ).encode("utf-8")
-        ).decode("utf-8")
+                encryption_key
+        )
 
         return encryptedfingerprint
         

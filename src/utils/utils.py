@@ -34,9 +34,9 @@ class Utils:
 
     @staticmethod
     def short_esync() -> str:
-        current_time = time()
+        current_time = time() * 1000
         
-        return str(int(current_time - (current_time % 21600)))
+        return int(round(current_time, -2))
 
     @staticmethod
     def x_newrelic_timestamp() -> str:

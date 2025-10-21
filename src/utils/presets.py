@@ -1,7 +1,7 @@
 from typing            import Optional, Dict, Any
 from hashlib           import md5
 
-from src.utils.versionInfo import get_version_info
+from src.utils.parser import version_info
 
 
 class Preset:
@@ -180,7 +180,7 @@ class Preset:
         
         for key, data in Preset.method_data.items():
             if key == method:
-                capi_version, enforcement_hash = get_version_info(data["service_url"], data["public_key"])
+                capi_version, enforcement_hash, cbid = version_info(data["service_url"], data["public_key"])
                 
                 options: dict = {
                     "document__referrer": data["site_url"] + "/" if not method == "roblox_support" else data["site_url"] + "/support",

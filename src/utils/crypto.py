@@ -1,3 +1,5 @@
+import base64
+from os                     import urandom
 from json                   import loads, dumps
 from base64                 import b64decode, b64encode
 from hashlib                import md5
@@ -7,6 +9,49 @@ from Crypto.Cipher          import AES
 from Crypto.Util.Padding    import pad, unpad
 from typing                 import Dict, Any
 
+
+from cryptography.hazmat.backends                       import default_backend
+from cryptography.hazmat.primitives.ciphers             import Cipher, algorithms, modes
+from cryptography.hazmat.primitives                     import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric.padding  import OAEP, MGF1
+
+def b64encode(content: bytes) -> str:
+    return base64.b64encode(content).decode("utf-8")
+
+
+def rsa_encrypt(content: str, pubkey: str = None) -> str:
+    pubkey = pubkey
+    key = urandom(32)
+    iv = urandom(12)
+    encoded_fingerprint = content.encode("utf-8")
+
+    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())
+    encryptor = cipher.encryptor()
+    ciphertext = encryptor.update(encoded_fingerprint) + encryptor.finalize()
+    tag = encryptor.tag
+
+    raw_aes_key = key
+
+    pki_key_der = base64.b64decode(pubkey)
+    public_key = serialization.load_der_public_key(
+        pki_key_der, backend=default_backend()
+    )
+
+    encrypted_key = public_key.encrypt(
+        raw_aes_key,
+        OAEP(
+            mgf=MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None,
+        ),
+    )
+
+    iv_encode = b64encode(iv)
+    tag_encode = b64encode(tag)
+    encrypted_key_encode = b64encode(encrypted_key)
+    encrypted_body_encode = b64encode(ciphertext)
+
+    return f"{iv_encode}{tag_encode}{encrypted_key_encode}{encrypted_body_encode}"
 
 class AES_Crypto:
     def __init__(self):

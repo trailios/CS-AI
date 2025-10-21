@@ -53,71 +53,6 @@ class TopUp(BaseModel):
 class KeyAuth(BaseModel):
     key: str
 
-r = Redis(host="149.50.108.43", port=6379, decode_responses=True)
-
-def webhook_stats():
-    import requests
-    r = Redis(host="149.50.108.43", port=6379, decode_responses=True)
-    TIME = 0
-    url = "https://discord.com/api/webhooks/..."
-
-    last_message_id = None
-
-    while True:
-        allKeys = key_service.get_all_keys()
-        total_requests = sum(k.total_requests for k in allKeys.values())
-        total_solves = sum(k.solved for k in allKeys.values())
-        total_failed = sum(k.failed for k in allKeys.values())
-
-        solves_hourly = int(r.get("stats:solves_hourly") or 0)
-        requests_hourly = int(r.get("stats:requests_hourly") or 0)
-
-        if TIME >= 3600:
-            r.set("stats:solves_hourly", 0)
-            r.set("stats:requests_hourly", 0)
-            TIME = 0
-
-        payload = {
-            "content": None,
-            "embeds": [
-                {
-                    "color": None,
-                    "fields": [
-                        {"name": "Requests / H", "value": str(requests_hourly), "inline": True},
-                        {"name": "Solves / H", "value": str(solves_hourly), "inline": True},
-                        {"name": "--------------------------------", "value": "⠀"},
-                        {"name": "Total Requests", "value": str(total_requests), "inline": True},
-                        {"name": "Total Solves", "value": str(total_solves), "inline": True},
-                        {"name": "--------------------------------", "value": "⠀"}
-                    ],
-                    "footer": {
-                        "text": "Updates every 60 seconds",
-                        "icon_url": "https://cdn.discordapp.com/icons/1394451215261241414/f2deb3eb048e06140d2ecd43352aa2d5.webp?size=16"
-                    },
-                    "timestamp": datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace("+00:00", "Z"),
-                    "thumbnail": {
-                        "url": "https://cdn.discordapp.com/icons/1394451215261241414/f2deb3eb048e06140d2ecd43352aa2d5.webp?size=1024"
-                    }
-                }
-            ],
-            "username": "Captchasolver.ai",
-            "avatar_url": "https://cdn.discordapp.com/icons/1394451215261241414/f2deb3eb048e06140d2ecd43352aa2d5.webp?size=1024",
-            "attachments": []
-        }
-
-        try:
-            if last_message_id:
-                requests.delete(f"{url}/messages/{last_message_id}")
-            resp = requests.post(url, json=payload)
-            if resp.status_code in (200, 201):
-                last_message_id = resp.json()['id']
-        except Exception as e:
-            print(e)
-            pass
-
-        sleep(60)
-        TIME += 60
-
 
 def role_from_user_agent(user_agent: Optional[str]) -> Optional[str]:
     if not user_agent:
@@ -172,22 +107,9 @@ def task_exists(task_id: str) -> bool:
         pass
     return False
 
-def start_webhook_if_leader():
-    r = Redis(host="149.50.108.43", port=6379)
-    got_lock = r.set("webhook_stats_lock", 1, nx=True, ex=3600)
-    if got_lock:
-        print("running stats")
-        Thread(target=webhook_stats, daemon=True).start()
-    else:
-        pass
-
-@app.on_event("startup")
-def startup_event():
-    start_webhook_if_leader()
 
 @app.post("/createTask", response_model=TaskOutput)
 def create_task(data: TaskInput) -> TaskOutput:
-    global REQUESTS
     extra = data.task.extraData or {}
     task = solve.delay(
         type=data.task.type,
@@ -198,14 +120,12 @@ def create_task(data: TaskInput) -> TaskOutput:
         proxy=data.task.proxy,
         key=data.key,
     )
-    r.incr("stats:requests_hourly")
     logger.info(f"<{task.id}> Created successfully.")
     return TaskOutput(task_id=task.id, status="created", result=None)
 
 
 @app.get("/getTaskResult/{task_id}", response_model=TaskOutput)
 def get_task_result(task_id: str) -> TaskOutput:
-    global SOLVES
     if not task_exists(task_id):
         raise HTTPException(status_code=404, detail="task not found")
     result = celery_app.AsyncResult(task_id)
@@ -213,8 +133,6 @@ def get_task_result(task_id: str) -> TaskOutput:
     status = status_map.get(result.state, result.state)
     output_result: Optional[Dict[str, Any]] = None
     if result.state == "SUCCESS":
-        if result.result:
-            r.incr("stats:solves_hourly")
         output_result = result.result if isinstance(result.result, dict) else {"result": result.result}
     elif result.state == "FAILURE":
         info = getattr(result, "info", None)
