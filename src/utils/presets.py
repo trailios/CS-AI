@@ -60,7 +60,7 @@ class Preset:
             "origin": "https://www.roblox.com/login",
             "location": "https://www.roblox.com/login",
             "tree_index": [],
-            "structure": "[]"
+            "structure": "[[],[[]]]"
         },
         "roblox_join": {
             "public_key": "63E4117F-E727-42B4-6DAA-C8448E9B137F",
@@ -183,7 +183,7 @@ class Preset:
                 capi_version, enforcement_hash, cbid = version_info(data["service_url"], data["public_key"])
                 
                 options: dict = {
-                    "document__referrer": data["site_url"] + "/" if not method == "roblox_support" else data["site_url"] + "/support",
+                    "document__referrer": data["site_url"] + "/home" if not method == "roblox_support" else data["site_url"] + "/support",
                     "window__ancestor_origins": [],
                     "window__tree_index": data["tree_index"],
                     "window__tree_structure": data["structure"],

@@ -55,6 +55,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	now := time.Now().UnixMilli()
     rounded := int64(math.Round(float64(now)/100) * 100)
     esync :=strconv.FormatInt(rounded, 10)
+	fmt.Printf("esync: %v\n", esync)
 
 	session := azuretls.NewSession()
 	err := session.SetProxy(proxy)
@@ -82,19 +83,19 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 
 	rand.Seed(time.Now().UnixNano())
 
-	groupsList := []string{"29", "23", "24", "25"}
-	cipherList := []string{
-		"47", "53", "60", "61", "140", "141", "156", "157",
-		"49161", "49162", "49171", "49172", "49187", "49188",
-		"49191", "49192", "49195", "49196", "49199", "49200",
-		"49205", "49206", "52392", "52393", "52396",
-		"4865", "4866", "4867",
-	}
+	// groupsList := []string{"29", "23", "24", "25"}
+	// cipherList := []string{
+	// 	"47", "53", "60", "61", "140", "141", "156", "157",
+	// 	"49161", "49162", "49171", "49172", "49187", "49188",
+	// 	"49191", "49192", "49195", "49196", "49199", "49200",
+	// 	"49205", "49206", "52392", "52393", "52396",
+	// 	"4865", "4866", "4867",
+	// }
 
-	supportedGroups := strings.Join(randomChoicesWithReplacementThenDedup(groupsList, 1, 3), "-")
-	ciphers := strings.Join(randomChoicesWithReplacementThenDedup(cipherList, 12, 28), "-")
+	// supportedGroups := strings.Join(randomChoicesWithReplacementThenDedup(groupsList, 1, 3), "-")
+	// ciphers := strings.Join(randomChoicesWithReplacementThenDedup(cipherList, 12, 28), "-")
 
-	ja3 := fmt.Sprintf("771,%s,0-23-65281-10-11-16-51-43-13-45,%s,0", ciphers, supportedGroups)
+	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,16-11-13-23-10-51-43-27-18-5-17613-45-35-0-65281-65037,4588-29-23-24,0"
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}

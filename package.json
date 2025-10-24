@@ -3,6 +3,7 @@
     "babel": "^6.23.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.4"
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.5"
   }
 }
