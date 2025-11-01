@@ -44,7 +44,7 @@ class TimeZoneOffsets:
 def getIpInfo(proxy: Proxy) -> int:
     try:
         response = get(
-            "https://api.ipify.org/?format=json", proxies=proxy.dict(), timeout=10
+            "https://pro.ip-api.com/json/?key=5mRuJtQYJhXOX8a", proxies=proxy.dict(), timeout=10
         ).json()
 
         timezone_str = response.get("timezone", "America/New_York")
