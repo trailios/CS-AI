@@ -1,0 +1,406 @@
+[
+  {
+    "key": "api_type",
+    "value": "js"
+  },
+  {
+    "key": "f",
+    "value": "c91fa68e9d87a832710ec663208848a0"
+  },
+  {
+    "key": "n",
+    "value": "MTc2MDkxNjM0Mw=="
+  },
+  {
+    "key": "wh",
+    "value": "2fab1c8f5a1992224669c75c298f9e1f|79169737225f825ee428975a81c22b8f"
+  },
+  {
+    "key": "enhanced_fp",
+    "value": [
+      {
+        "key": "webgl_extensions",
+        "value": "ANGLE_instanced_arrays;EXT_blend_minmax;EXT_clip_control;EXT_color_buffer_half_float;EXT_depth_clamp;EXT_disjoint_timer_query;EXT_float_blend;EXT_frag_depth;EXT_polygon_offset_clamp;EXT_shader_texture_lod;EXT_texture_compression_bptc;EXT_texture_compression_rgtc;EXT_texture_filter_anisotropic;EXT_texture_mirror_clamp_to_edge;EXT_sRGB;KHR_parallel_shader_compile;OES_element_index_uint;OES_fbo_render_mipmap;OES_standard_derivatives;OES_texture_float;OES_texture_float_linear;OES_texture_half_float;OES_texture_half_float_linear;OES_vertex_array_object;WEBGL_blend_func_extended;WEBGL_color_buffer_float;WEBGL_compressed_texture_s3tc;WEBGL_compressed_texture_s3tc_srgb;WEBGL_debug_renderer_info;WEBGL_debug_shaders;WEBGL_depth_texture;WEBGL_draw_buffers;WEBGL_lose_context;WEBGL_multi_draw;WEBGL_polygon_mode"
+      },
+      {
+        "key": "webgl_extensions_hash",
+        "value": "7300c23f4e6fa34e534fc99c1b628588"
+      },
+      {
+        "key": "webgl_renderer",
+        "value": "WebKit WebGL"
+      },
+      {
+        "key": "webgl_vendor",
+        "value": "WebKit"
+      },
+      {
+        "key": "webgl_version",
+        "value": "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+      },
+      {
+        "key": "webgl_shading_language_version",
+        "value": "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+      },
+      {
+        "key": "webgl_aliased_line_width_range",
+        "value": "[1, 1]"
+      },
+      {
+        "key": "webgl_aliased_point_size_range",
+        "value": "[1, 1024]"
+      },
+      {
+        "key": "webgl_antialiasing",
+        "value": "yes"
+      },
+      {
+        "key": "webgl_bits",
+        "value": "8,8,24,8,8,0"
+      },
+      {
+        "key": "webgl_max_params",
+        "value": "16,32,16384,1024,16384,16,16384,30,16,16,4096"
+      },
+      {
+        "key": "webgl_max_viewport_dims",
+        "value": "[32767, 32767]"
+      },
+      {
+        "key": "webgl_unmasked_vendor",
+        "value": "Google Inc. (AMD)"
+      },
+      {
+        "key": "webgl_unmasked_renderer",
+        "value": "ANGLE (AMD, AMD Radeon (TM) Graphics (0x000015E7) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+      },
+      {
+        "key": "webgl_vsf_params",
+        "value": "23,127,127,23,127,127,23,127,127"
+      },
+      {
+        "key": "webgl_vsi_params",
+        "value": "0,31,30,0,31,30,0,31,30"
+      },
+      {
+        "key": "webgl_fsf_params",
+        "value": "23,127,127,23,127,127,23,127,127"
+      },
+      {
+        "key": "webgl_fsi_params",
+        "value": "0,31,30,0,31,30,0,31,30"
+      },
+      {
+        "key": "webgl_hash_webgl",
+        "value": "f5dc21a606cbac2fea55579f0281eef0"
+      },
+      {
+        "key": "user_agent_data_brands",
+        "value": "Google Chrome,Not?A_Brand,Chromium"
+      },
+      {
+        "key": "user_agent_data_mobile",
+        "value": false
+      },
+      {
+        "key": "navigator_connection_downlink",
+        "value": 10
+      },
+      {
+        "key": "navigator_connection_downlink_max",
+        "value": null
+      },
+      {
+        "key": "network_info_rtt",
+        "value": 100
+      },
+      {
+        "key": "network_info_save_data",
+        "value": false
+      },
+      {
+        "key": "network_info_rtt_type",
+        "value": null
+      },
+      {
+        "key": "screen_pixel_depth",
+        "value": 24
+      },
+      {
+        "key": "navigator_device_memory",
+        "value": 8
+      },
+      {
+        "key": "navigator_languages",
+        "value": "en-IN,as-IN,as,en-GB,en-US,en"
+      },
+      {
+        "key": "window_inner_width",
+        "value": 0
+      },
+      {
+        "key": "window_inner_height",
+        "value": 0
+      },
+      {
+        "key": "window_outer_width",
+        "value": 1280
+      },
+      {
+        "key": "window_outer_height",
+        "value": 720
+      },
+      {
+        "key": "browser_detection_firefox",
+        "value": false
+      },
+      {
+        "key": "browser_detection_brave",
+        "value": false
+      },
+      {
+        "key": "f58835f",
+        "value": "6681f2144d3d1ceb383fe87f7aad9600"
+      },
+      {
+        "key": "browser_object_checks",
+        "value": "554838a8451ac36cb977e719e9d6623c"
+      },
+      {
+        "key": "29s83ih9",
+        "value": "68934a3e9455fa72420237eb05902327⁣"
+      },
+      {
+        "key": "audio_codecs",
+        "value": "{\"ogg\":\"probably\",\"mp3\":\"probably\",\"wav\":\"probably\",\"m4a\":\"maybe\",\"aac\":\"probably\"}"
+      },
+      {
+        "key": "audio_codecs_extended_hash",
+        "value": "805036349642e2569ec299baed02315b"
+      },
+      {
+        "key": "video_codecs",
+        "value": "{\"ogg\":\"\",\"h264\":\"probably\",\"webm\":\"probably\",\"mpeg4v\":\"\",\"mpeg4a\":\"\",\"theora\":\"\"}"
+      },
+      {
+        "key": "video_codecs_extended_hash",
+        "value": "67b509547efe3423d32a3a70a2553c16"
+      },
+      {
+        "key": "media_query_dark_mode",
+        "value": true
+      },
+      {
+        "key": "f9bf2db",
+        "value": "{\"pc\":\"no-preference\",\"ah\":\"hover\",\"ap\":\"fine\",\"p\":\"fine\",\"h\":\"hover\",\"u\":\"fast\",\"prm\":\"no-preference\",\"prt\":\"reduce\",\"s\":\"enabled\",\"fc\":\"none\"}"
+      },
+      {
+        "key": "headless_browser_phantom",
+        "value": false
+      },
+      {
+        "key": "headless_browser_selenium",
+        "value": false
+      },
+      {
+        "key": "headless_browser_nightmare_js",
+        "value": false
+      },
+      {
+        "key": "862f2c1",
+        "value": 4
+      },
+      {
+        "key": "1l2l5234ar2",
+        "value": "1760916342906⁣"
+      },
+      {
+        "key": "document__referrer",
+        "value": "https://leakdrop.net/"
+      },
+      {
+        "key": "window__ancestor_origins",
+        "value": [
+          "https://leakdrop.net"
+        ]
+      },
+      {
+        "key": "window__tree_index",
+        "value": [
+          0
+        ]
+      },
+      {
+        "key": "window__tree_structure",
+        "value": "[[]]"
+      },
+      {
+        "key": "window__location_href",
+        "value": "https://xn--80a7adb.xn--h1aaf0ab0e.xn--e1a4c/client-api.arkoselabs.com/v2/enforcement.html"
+      },
+      {
+        "key": "client_config__sitedata_location_href",
+        "value": "https://leakdrop.net/"
+      },
+      {
+        "key": "client_config__language",
+        "value": "en-IN"
+      },
+      {
+        "key": "client_config__surl",
+        "value": "https://xn--80a7adb.xn--h1aaf0ab0e.xn--e1a4c/client-api.arkoselabs.com"
+      },
+      {
+        "key": "c8480e29a",
+        "value": "18aa6c2a74df99fa658083bb95bb39df⁢"
+      },
+      {
+        "key": "client_config__triggered_inline",
+        "value": false
+      },
+      {
+        "key": "mobile_sdk__is_sdk",
+        "value": false
+      },
+      {
+        "key": "audio_fingerprint",
+        "value": "124.04347527516074"
+      },
+      {
+        "key": "navigator_battery_charging",
+        "value": false
+      },
+      {
+        "key": "7541c2s",
+        "value": "199eba60310b53c200cc783906883c67"
+      },
+      {
+        "key": "1f220c9",
+        "value": "d99a347770ecf166460560b1c06f8e42"
+      },
+      {
+        "key": "math_fingerprint",
+        "value": "0ce80c69b75667d69baedc0a70c82da7"
+      },
+      {
+        "key": "supported_math_functions",
+        "value": "67d1759d7e92844d98045708c0a91c2f"
+      },
+      {
+        "key": "3f76dd27",
+        "value": "landscape-primary"
+      },
+      {
+        "key": "5dd48ca0",
+        "value": 5
+      },
+      {
+        "key": "4b4b269e68",
+        "value": "2366fea3-28f7-414d-9156-3823b7c021b9"
+      },
+      {
+        "key": "6a62b2a558",
+        "value": "f845a08949c076f42e09da2c4b7496a6"
+      },
+      {
+        "key": "is_keyless",
+        "value": false
+      },
+      {
+        "key": "c2d2015",
+        "value": "29d13b1af8803cb86c2697345d7ea9eb"
+      },
+      {
+        "key": "43f2d94",
+        "value": []
+      },
+      {
+        "key": "20c15922",
+        "value": true
+      },
+      {
+        "key": "4f59ca8",
+        "value": null
+      },
+      {
+        "key": "3ea7194",
+        "value": {
+          "isHDR": false,
+          "formats": [
+            "HDR10",
+            "HLG"
+          ],
+          "supported": true
+        }
+      },
+      {
+        "key": "05d3d24",
+        "value": "89ebc4e1800d4ce97525e3772699432d"
+      },
+      {
+        "key": "speech_default_voice",
+        "value": "Microsoft David - English (United States) || en-US"
+      },
+      {
+        "key": "speech_voices_hash",
+        "value": "9e7d06ebf03faf8062f48a8f2a1eab47"
+      },
+      {
+        "key": "83eb055",
+        "value": "68934a3e9455fa72420237eb05902327"
+      },
+      {
+        "key": "4ca87df3d1",
+        "value": "NTQxLDAsOTg1LDUwMTs5NjAsMCw5NzQsNzg3OzEwMjMsMCw5NjUsNzg3OzEwNDAsMCw5NTcsNzg5OzEwNTcsMCw5MzIsNzkzOzEwNzMsMCw4OTYsNzk0OzEwOTAsMCw4NTAsNzk0OzExMDcsMCw4MDgsNzk0OzExMjMsMCw3NzAsNzkzOzExNDAsMCw3MzgsNzkzOzExNTcsMCw3MzEsNzk1OzE2OTYsMCw3MzEsNzU3OzE3MzEsMCw3MzIsNzIzOzE3NjYsMCw3MzIsNjgyOzI2MDksMCw3MzMsNjAwOzI3NzcsMCw3MzgsNTk5OzM0MzgsMCw3NDMsNTk2OzM3NzMsMCw3NTAsNTk1OzM3OTIsMCw3NTcsNTk1OzM4NDAsMCw3NjYsNTk2OzM4NTYsMCw3ODYsNTk4OzM4NzMsMCw4MjIsNjAxOzM4OTUsMCw4NzQsNjAyOzM5MDYsMCw5MDAsNjAyOzM5MjMsMCw5MDYsNjAyOzQwMDYsMCw5MTAsNTk3OzQwNTYsMCw5MDgsNTkyOzQwODksMCw4OTgsNTg3OzQxMDYsMCw4ODIsNTgzOzQxMjMsMCw4NjksNTgxOzQxMzksMCw4NTQsNTgxOzQxNTYsMCw4NDMsNTc5OzQxNzMsMCw4MzQsNTc5OzQyMDYsMCw4MjQsNTc5OzQyNDAsMCw4MTgsNTc5OzQzNDAsMCw4MTEsNTczOzQzNzMsMCw4MDQsNTYzOzQ0MDYsMCw3OTQsNTU1OzQ0NDAsMCw3ODgsNTUxOzQ0NzMsMCw3ODMsNTQ5OzQ1MDYsMCw3NzgsNTQ4OzQ1NDAsMCw3NzMsNTQ3OzQ4NDMsMSw3NjksNTQ1OzQ5MjgsMiw3NjksNTQ1OzUzNDAsMCw3NzcsNTUxOzUzNjAsMCw3ODIsNTUzOzU0MDYsMCw3OTIsNTYwOzU0MjMsMCw4MDAsNTY1OzU0MzksMCw4MDYsNTY5OzU0NTYsMCw4MTYsNTcyOzU0NzMsMCw4MjEsNTczOzY2NDksMCw4MjIsNzY5OzY3MTMsMCw4MjIsNzExOzc0NDgsMCw4MjIsNTcxOw=="
+      },
+      {
+        "key": "867e25e5d4",
+        "value": "Ow=="
+      },
+      {
+        "key": "d4a306884c",
+        "value": "Ow=="
+      }
+    ]
+  },
+  {
+    "key": "fe",
+    "value": [
+      "DNT:unknown",
+      "L:en-IN",
+      "D:24",
+      "PR:1.5",
+      "S:1280,720",
+      "AS:1280,720",
+      "TO:-330",
+      "SS:true",
+      "LS:true",
+      "IDB:true",
+      "B:false",
+      "ODB:false",
+      "CPUC:unknown",
+      "PK:Win32",
+      "CFP:-275137287",
+      "FR:false",
+      "FOS:false",
+      "FB:false",
+      "JSF:Arial,Arial Black,Arial Narrow,Book Antiqua,Bookman Old Style,Calibri,Cambria,Cambria Math,Century,Century Gothic,Century Schoolbook,Comic Sans MS,Consolas,Courier,Courier New,Garamond,Georgia,Helvetica,Impact,Lucida Bright,Lucida Calligraphy,Lucida Console,Lucida Fax,Lucida Handwriting,Lucida Sans,Lucida Sans Typewriter,Lucida Sans Unicode,Microsoft Sans Serif,Monotype Corsiva,MS Gothic,MS PGothic,MS Reference Sans Serif,MS Sans Serif,MS Serif,Palatino Linotype,Segoe Print,Segoe Script,Segoe UI,Segoe UI Light,Segoe UI Semibold,Segoe UI Symbol,Tahoma,Times,Times New Roman,Trebuchet MS,Verdana,Wingdings,Wingdings 2,Wingdings 3",
+      "P:Chrome PDF Viewer,Chromium PDF Viewer,Microsoft Edge PDF Viewer,PDF Viewer,WebKit built-in PDF",
+      "T:0,false,false",
+      "H:16",
+      "SWF:false"
+    ]
+  },
+  {
+    "key": "ife_hash",
+    "value": "3c23b4075de99244c7b2a0bbad021e5c"
+  },
+  {
+    "key": "jsbd",
+    "value": "{\"HL\":1,\"NCE\":true,\"DT\":\"\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
+  },
+  {
+    "key": "user_agent",
+    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+  }
+]

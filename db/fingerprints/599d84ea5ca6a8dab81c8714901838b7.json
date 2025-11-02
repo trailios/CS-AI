@@ -1,0 +1,403 @@
+[
+  {
+    "key": "api_type",
+    "value": "js"
+  },
+  {
+    "key": "f",
+    "value": "599d84ea5ca6a8dab81c8714901838b7"
+  },
+  {
+    "key": "n",
+    "value": "MTc2MDM2NDY3Nw=="
+  },
+  {
+    "key": "wh",
+    "value": "44538a345a841f7fedac28f334c2b8e9|79169737225f825ee428975a81c22b8f"
+  },
+  {
+    "key": "enhanced_fp",
+    "value": [
+      {
+        "key": "webgl_extensions",
+        "value": null
+      },
+      {
+        "key": "webgl_extensions_hash",
+        "value": null
+      },
+      {
+        "key": "webgl_renderer",
+        "value": null
+      },
+      {
+        "key": "webgl_vendor",
+        "value": null
+      },
+      {
+        "key": "webgl_version",
+        "value": null
+      },
+      {
+        "key": "webgl_shading_language_version",
+        "value": null
+      },
+      {
+        "key": "webgl_aliased_line_width_range",
+        "value": null
+      },
+      {
+        "key": "webgl_aliased_point_size_range",
+        "value": null
+      },
+      {
+        "key": "webgl_antialiasing",
+        "value": null
+      },
+      {
+        "key": "webgl_bits",
+        "value": null
+      },
+      {
+        "key": "webgl_max_params",
+        "value": null
+      },
+      {
+        "key": "webgl_max_viewport_dims",
+        "value": null
+      },
+      {
+        "key": "webgl_unmasked_vendor",
+        "value": null
+      },
+      {
+        "key": "webgl_unmasked_renderer",
+        "value": null
+      },
+      {
+        "key": "webgl_vsf_params",
+        "value": null
+      },
+      {
+        "key": "webgl_vsi_params",
+        "value": null
+      },
+      {
+        "key": "webgl_fsf_params",
+        "value": null
+      },
+      {
+        "key": "webgl_fsi_params",
+        "value": null
+      },
+      {
+        "key": "webgl_hash_webgl",
+        "value": null
+      },
+      {
+        "key": "user_agent_data_brands",
+        "value": "Google Chrome,Not?A_Brand,Chromium"
+      },
+      {
+        "key": "user_agent_data_mobile",
+        "value": false
+      },
+      {
+        "key": "navigator_connection_downlink",
+        "value": 10
+      },
+      {
+        "key": "navigator_connection_downlink_max",
+        "value": null
+      },
+      {
+        "key": "network_info_rtt",
+        "value": 100
+      },
+      {
+        "key": "network_info_save_data",
+        "value": false
+      },
+      {
+        "key": "network_info_rtt_type",
+        "value": null
+      },
+      {
+        "key": "screen_pixel_depth",
+        "value": 24
+      },
+      {
+        "key": "navigator_device_memory",
+        "value": 8
+      },
+      {
+        "key": "navigator_languages",
+        "value": "fr-FR,fr,en-US,en"
+      },
+      {
+        "key": "window_inner_width",
+        "value": 0
+      },
+      {
+        "key": "window_inner_height",
+        "value": 0
+      },
+      {
+        "key": "window_outer_width",
+        "value": 1600
+      },
+      {
+        "key": "window_outer_height",
+        "value": 984
+      },
+      {
+        "key": "browser_detection_firefox",
+        "value": false
+      },
+      {
+        "key": "browser_detection_brave",
+        "value": false
+      },
+      {
+        "key": "f58835f",
+        "value": "6681f2144d3d1ceb383fe87f7aad9600"
+      },
+      {
+        "key": "browser_object_checks",
+        "value": "554838a8451ac36cb977e719e9d6623c"
+      },
+      {
+        "key": "29s83ih9",
+        "value": "68934a3e9455fa72420237eb05902327⁣"
+      },
+      {
+        "key": "audio_codecs",
+        "value": "{\"ogg\":\"probably\",\"mp3\":\"probably\",\"wav\":\"probably\",\"m4a\":\"maybe\",\"aac\":\"probably\"}"
+      },
+      {
+        "key": "audio_codecs_extended_hash",
+        "value": "805036349642e2569ec299baed02315b"
+      },
+      {
+        "key": "video_codecs",
+        "value": "{\"ogg\":\"\",\"h264\":\"probably\",\"webm\":\"probably\",\"mpeg4v\":\"\",\"mpeg4a\":\"\",\"theora\":\"\"}"
+      },
+      {
+        "key": "video_codecs_extended_hash",
+        "value": "cb2c967d0cd625019556b39c63f7d435"
+      },
+      {
+        "key": "media_query_dark_mode",
+        "value": false
+      },
+      {
+        "key": "f9bf2db",
+        "value": "{\"pc\":\"no-preference\",\"ah\":\"hover\",\"ap\":\"fine\",\"p\":\"fine\",\"h\":\"hover\",\"u\":\"fast\",\"prm\":\"reduce\",\"prt\":\"no-preference\",\"s\":\"enabled\",\"fc\":\"none\"}"
+      },
+      {
+        "key": "headless_browser_phantom",
+        "value": false
+      },
+      {
+        "key": "headless_browser_selenium",
+        "value": false
+      },
+      {
+        "key": "headless_browser_nightmare_js",
+        "value": false
+      },
+      {
+        "key": "862f2c1",
+        "value": 4
+      },
+      {
+        "key": "1l2l5234ar2",
+        "value": "1760364677409⁣"
+      },
+      {
+        "key": "document__referrer",
+        "value": "https://megaleakz.net/"
+      },
+      {
+        "key": "window__ancestor_origins",
+        "value": [
+          "https://megaleakz.net"
+        ]
+      },
+      {
+        "key": "window__tree_index",
+        "value": [
+          0
+        ]
+      },
+      {
+        "key": "window__tree_structure",
+        "value": "[[]]"
+      },
+      {
+        "key": "window__location_href",
+        "value": "https://xn--80a7adb.xn--h1aaf0ab0e.xn--e1a4c/client-api.arkoselabs.com/v2/enforcement.html"
+      },
+      {
+        "key": "client_config__sitedata_location_href",
+        "value": "https://megaleakz.net/"
+      },
+      {
+        "key": "client_config__language",
+        "value": "fr-FR"
+      },
+      {
+        "key": "client_config__surl",
+        "value": "https://xn--80a7adb.xn--h1aaf0ab0e.xn--e1a4c/client-api.arkoselabs.com"
+      },
+      {
+        "key": "c8480e29a",
+        "value": "18aa6c2a74df99fa658083bb95bb39df⁢"
+      },
+      {
+        "key": "client_config__triggered_inline",
+        "value": false
+      },
+      {
+        "key": "mobile_sdk__is_sdk",
+        "value": false
+      },
+      {
+        "key": "audio_fingerprint",
+        "value": "124.04347527516074"
+      },
+      {
+        "key": "navigator_battery_charging",
+        "value": true
+      },
+      {
+        "key": "7541c2s",
+        "value": "eba8b0db4bf7d1f1bfb964d48f6c1784"
+      },
+      {
+        "key": "1f220c9",
+        "value": "d99a347770ecf166460560b1c06f8e42"
+      },
+      {
+        "key": "math_fingerprint",
+        "value": "0ce80c69b75667d69baedc0a70c82da7"
+      },
+      {
+        "key": "supported_math_functions",
+        "value": "67d1759d7e92844d98045708c0a91c2f"
+      },
+      {
+        "key": "3f76dd27",
+        "value": "landscape-primary"
+      },
+      {
+        "key": "5dd48ca0",
+        "value": 5
+      },
+      {
+        "key": "4b4b269e68",
+        "value": "e63928d6-111c-490b-aba5-d3a1ab363025"
+      },
+      {
+        "key": "6a62b2a558",
+        "value": "f845a08949c076f42e09da2c4b7496a6"
+      },
+      {
+        "key": "is_keyless",
+        "value": false
+      },
+      {
+        "key": "c2d2015",
+        "value": "29d13b1af8803cb86c2697345d7ea9eb"
+      },
+      {
+        "key": "43f2d94",
+        "value": []
+      },
+      {
+        "key": "20c15922",
+        "value": true
+      },
+      {
+        "key": "4f59ca8",
+        "value": null
+      },
+      {
+        "key": "3ea7194",
+        "value": {
+          "isHDR": false,
+          "formats": [],
+          "supported": false
+        }
+      },
+      {
+        "key": "05d3d24",
+        "value": "ab77dc7ca26f868960ff6340cce29973"
+      },
+      {
+        "key": "speech_default_voice",
+        "value": "Microsoft Hortense - French (France) || fr-FR"
+      },
+      {
+        "key": "speech_voices_hash",
+        "value": "454fcd9268dcabe2bbed64359fff08b1"
+      },
+      {
+        "key": "83eb055",
+        "value": "68934a3e9455fa72420237eb05902327"
+      },
+      {
+        "key": "4ca87df3d1",
+        "value": "MTcsMCw2MzMsNzI2OzE1MywwLDY0Niw3MDQ7MjE0LDAsNjUxLDY5ODsyNDIsMCw2NTcsNjkzOzI3NywwLDY2Niw2ODc7MjkzLDAsNjcwLDY4MzszMjcsMCw2NzYsNjc5OzM2MCwwLDY4Miw2NzU7Mzc2LDAsNjg2LDY3MTszOTMsMCw2OTAsNjY3OzQxMCwwLDY5Niw2NjI7NDI3LDAsNzAwLDY1Nzs0NjAsMCw3MDUsNjUwOzQ5MywwLDcxMiw2NDU7NTEwLDAsNzE2LDY0MTs1MjcsMCw3MjQsNjM2OzU0MywwLDczMSw2MzA7NTU5LDAsNzQzLDYyMzs1NzYsMCw3NTQsNjE0OzU5MywwLDc2Myw2MDg7NjEzLDAsNzc3LDYwMDs2MzIsMCw3ODUsNTk1OzY3NywwLDc5NCw1OTA7NzMyLDAsODEyLDU3NDs3NDgsMCw4MTksNTY3Ozc1OSwwLDgyNCw1NjM7Nzc3LDAsODM2LDU1NTs3OTQsMCw4NDMsNTQ5OzgxMSwwLDg1MSw1NDM7ODI4LDAsODYxLDUzNzs4NjAsMCw4NjcsNTM0Ozg3NiwwLDg3Myw1MzE7ODkzLDAsODc3LDUyNzs5MTAsMCw4ODgsNTE5OzkyOSwwLDg5Niw1MTQ7OTQ0LDAsOTA3LDUwNTs5NTksMCw5MTcsNDk4Ozk3NiwwLDkzMCw0OTI7OTk0LDAsOTQwLDQ4NzsxMDEwLDAsOTQ5LDQ4MTsxMDI3LDAsOTU3LDQ3NzsxMDQzLDAsOTY1LDQ3MjsxMDYwLDAsOTczLDQ2NzsxMDc4LDAsOTg3LDQ1Njs="
+      },
+      {
+        "key": "867e25e5d4",
+        "value": "Ow=="
+      },
+      {
+        "key": "d4a306884c",
+        "value": "Ow=="
+      }
+    ]
+  },
+  {
+    "key": "fe",
+    "value": [
+      "DNT:unknown",
+      "L:fr-FR",
+      "D:24",
+      "PR:1",
+      "S:1600,1024",
+      "AS:1600,984",
+      "TO:-120",
+      "SS:true",
+      "LS:true",
+      "IDB:true",
+      "B:false",
+      "ODB:false",
+      "CPUC:unknown",
+      "PK:Win32",
+      "CFP:645643453",
+      "FR:false",
+      "FOS:false",
+      "FB:false",
+      "JSF:Arial,Arial Black,Arial Narrow,Calibri,Cambria,Cambria Math,Comic Sans MS,Consolas,Courier,Courier New,Georgia,Helvetica,Impact,Lucida Console,Lucida Sans Unicode,Microsoft Sans Serif,MS Gothic,MS PGothic,MS Sans Serif,MS Serif,Palatino Linotype,Segoe Print,Segoe Script,Segoe UI,Segoe UI Light,Segoe UI Semibold,Segoe UI Symbol,Tahoma,Times,Times New Roman,Trebuchet MS,Verdana,Wingdings",
+      "P:Chrome PDF Viewer,Chromium PDF Viewer,Microsoft Edge PDF Viewer,PDF Viewer,WebKit built-in PDF",
+      "T:0,false,false",
+      "H:4",
+      "SWF:false"
+    ]
+  },
+  {
+    "key": "ife_hash",
+    "value": "9825d11cf30903dd2b00e5a18023e251"
+  },
+  {
+    "key": "jsbd",
+    "value": "{\"HL\":1,\"NCE\":true,\"DT\":\"\",\"NWD\":\"false\",\"DMTO\":1,\"DOTO\":1}"
+  },
+  {
+    "key": "user_agent",
+    "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+  }
+]
