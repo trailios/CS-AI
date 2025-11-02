@@ -208,5 +208,5 @@ def get_vm_key(api_url: str, sitekey: str):
     return key
 
 api_url = "https://arkoselabs.roblox.com/"
-sitekey = "A2A14B1D-1AF3-C791-9BBC-EE33CC7A0A6F"
+sitekey = "476068BF-9607-4799-B53D-966BE98E2B81"
 print(get_vm_key(api_url, sitekey))
