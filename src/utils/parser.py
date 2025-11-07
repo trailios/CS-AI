@@ -193,6 +193,7 @@ def _brute_xor_keys(encoded: str):
     return results
 
 def get_vm_key(api_url: str, sitekey: str):
+    return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk61iAIh8KZ8gxpbFQxTjEzkSRhzDfI+9woCzXZ5+lXNZNRi/w6s6rWKaSeWNs9WJ0QZIh9Jm0knLHJ4bZfeNninERKInvHw7TbUZFZj8fLORoQoY3Pij2iuhLhRUHoRjSlQCNSFu0UQegX/5X2p9hQYQI0dfqZLAPcKSNqDjqyhf2ahqJO6IGKEKubCY9kjYmNJiO3DTyJAnCU1enpE0weFieI1+qILsJhcT22+z7JkgFlgeCgOd5lZhQfC7/aEBANTacsZA4b7f/H6+uL1ZoM1NRKjIdtzzXTRtX5/ayDK/hwlNesaO4b2RUdhJogc9xmK7x7RJm+Vk9UcFdtIGnQIDAQAB"
     cached = _get_cached(api_url, sitekey)
     if cached and "vm_key" in cached and isinstance(cached["vm_key"], str) and cached["vm_key"]:
         return cached["vm_key"]

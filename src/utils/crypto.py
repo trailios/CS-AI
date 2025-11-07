@@ -15,43 +15,30 @@ from cryptography.hazmat.primitives.ciphers             import Cipher, algorithm
 from cryptography.hazmat.primitives                     import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric.padding  import OAEP, MGF1
 
-def b64encode(content: bytes) -> str:
-    return base64.b64encode(content).decode("utf-8")
-
-
-def rsa_encrypt(content: str, pubkey: str = None) -> str:
-    pubkey = pubkey
-    key = urandom(32)
+def rsa_encrypt(data: str, public_key_b64: str) -> str:
+    aes_key = urandom(32)
     iv = urandom(12)
-    encoded_fingerprint = content.encode("utf-8")
-
-    cipher = Cipher(algorithms.AES(key), modes.GCM(iv), backend=default_backend())
+    cipher = Cipher(algorithms.AES(aes_key), modes.GCM(iv), backend=default_backend())
     encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(encoded_fingerprint) + encryptor.finalize()
+    ciphertext = encryptor.update(data.encode()) + encryptor.finalize()
     tag = encryptor.tag
-
-    raw_aes_key = key
-
-    pki_key_der = base64.b64decode(pubkey)
-    public_key = serialization.load_der_public_key(
-        pki_key_der, backend=default_backend()
-    )
-
-    encrypted_key = public_key.encrypt(
-        raw_aes_key,
+    pubkey_bytes = base64.b64decode(public_key_b64)
+    rsa_pubkey = serialization.load_der_public_key(pubkey_bytes, backend=default_backend())
+    encrypted_key = rsa_pubkey.encrypt(
+        aes_key,
         OAEP(
             mgf=MGF1(algorithm=hashes.SHA256()),
             algorithm=hashes.SHA256(),
-            label=None,
-        ),
+            label=None
+        )
     )
-
-    iv_encode = b64encode(iv)
-    tag_encode = b64encode(tag)
-    encrypted_key_encode = b64encode(encrypted_key)
-    encrypted_body_encode = b64encode(ciphertext)
-
-    return f"{iv_encode}{tag_encode}{encrypted_key_encode}{encrypted_body_encode}"
+    parts = {
+        "iv": base64.b64encode(iv).decode(),
+        "tag": base64.b64encode(tag).decode(),
+        "key": base64.b64encode(encrypted_key).decode(),
+        "cipher": base64.b64encode(ciphertext).decode(),
+    }
+    return f"{parts['iv']}{parts['tag']}{parts['key']}{parts['cipher']}"
 
 class AES_Crypto:
     def __init__(self):
@@ -112,3 +99,5 @@ class AES_Crypto:
             }
 
         return dumps(encrypted_data)
+    
+    

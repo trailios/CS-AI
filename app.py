@@ -30,6 +30,7 @@ class TaskOutput(BaseModel):
 class ExtraTaskData(BaseModel):
     blob:               Optional[str]
     accept_language:    Optional[str]
+    cookies:            Optional[Dict[str, str]]
 
 class TaskInformation(BaseModel):
     type:       str
@@ -112,13 +113,14 @@ def task_exists(task_id: str) -> bool:
 def create_task(data: TaskInput) -> TaskOutput:
     extra = data.task.extraData or {}
     task = solve.delay(
-        type=data.task.type,
-        blob=extra.blob,
-        accept_lang=extra.accept_language,
-        site_url=data.task.site_url,
-        action=data.task.action,
-        proxy=data.task.proxy,
-        key=data.key,
+        accept_lang=    extra.accept_language or None,
+        cookies=        extra.cookies or None,
+        blob=           extra.blob or None,
+        site_url=       data.task.site_url,
+        action=         data.task.action,
+        proxy=          data.task.proxy,
+        type=           data.task.type,
+        key=            data.key,
     )
     logger.info(f"<{task.id}> Created successfully.")
     return TaskOutput(task_id=task.id, status="created", result=None)
@@ -128,15 +130,19 @@ def create_task(data: TaskInput) -> TaskOutput:
 def get_task_result(task_id: str) -> TaskOutput:
     if not task_exists(task_id):
         raise HTTPException(status_code=404, detail="task not found")
+    
     result = celery_app.AsyncResult(task_id)
     status_map = {"PENDING": "pending", "SUCCESS": "success", "FAILURE": "failure"}
     status = status_map.get(result.state, result.state)
     output_result: Optional[Dict[str, Any]] = None
+
     if result.state == "SUCCESS":
         output_result = result.result if isinstance(result.result, dict) else {"result": result.result}
+
     elif result.state == "FAILURE":
         info = getattr(result, "info", None)
         output_result = info if isinstance(info, dict) else {"error": str(info)}
+
     return TaskOutput(task_id=result.id, status=status, result=output_result)
 
 
@@ -145,6 +151,7 @@ def generate_key(data: NewKey, user_agent: Optional[str] = Header(None)):
     role = role_from_user_agent(user_agent)
     if role is None:
         return "?"
+    
     if role == "staff":
         try:
             bought = data.bought * COIN_MULTIPLIER
@@ -152,18 +159,23 @@ def generate_key(data: NewKey, user_agent: Optional[str] = Header(None)):
             return {"key": key, "bought": bought, "error": None}
         except Exception as e:
             return {"key": None, "bought": None, "error": str(e)}
+        
     if role == "sb":
         return {"error": "NOT IMPLEMENTED"}
+    
     if role == "ufc":
         try:
             bought = data.bought * COIN_MULTIPLIER
             if bought > key_service.get_balance(RESELLER_KEY):
                 return {"key": None, "bought": None, "error": "You don't have enough balance, ask traili for refill."}
+            
             key = key_service.generate_new_key(bought, "STRIKE")
             key_service.add_solved_request(RESELLER_KEY, bought)
             return {"key": key, "bought": bought, "error": None}
+        
         except Exception as e:
             return {"key": None, "bought": None, "error": str(e)}
+        
     return "?"
 
 

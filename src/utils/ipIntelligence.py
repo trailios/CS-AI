@@ -48,7 +48,8 @@ def getIpInfo(proxy: Proxy) -> int:
             "https://pro.ip-api.com/json/?key=5mRuJtQYJhXOX8a", proxies=proxy.dict(), timeout=10
         ).json()
 
-        timezone_str = response.get("timezone", "America/New_York")
+        timezone_str = response.get("timezone", "")
+        print(timezone_str)
 
         utc_offset = TimeZoneOffsets.get_offset(timezone_str)
 

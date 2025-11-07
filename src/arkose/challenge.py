@@ -117,8 +117,19 @@ class Challenge:
             "rnd": "",
         }
 
+        cookiestring = ""
+
         if self.settings["blob"]:
-            payload["data[blob]"] = self.settings["blob"]
+                payload["data[blob]"] = self.settings["blob"]
+
+        if self.browser["cookies"]:
+            for key, value in self.browser["cookies"].items():
+                cookiestring += key + "=" + value + "; "
+
+            cookiestring[:-2]
+            
+        else:
+            cookiestring = None
 
         try:
             gt2r = internal_session.post("http://localhost:19222/send-request", json={
@@ -127,7 +138,8 @@ class Challenge:
                 "blob": self.settings["blob"],
                 "accept_language": self.session.headers.get("accept-language"),
                 "public_key": self.settings["public_key"],
-                "url": f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}" #https://arkoselabs.roblox.com/fc/gt2/public_key/476068BF-9607-4799-B53D-966BE98E2B81
+                "url": f"{self.base_url}/fc/gt2/public_key/{self.settings["public_key"]}",
+                "cookies": cookiestring #https://arkoselabs.roblox.com/fc/gt2/public_key/476068BF-9607-4799-B53D-966BE98E2B81
             }).json()["body"]
 
             if "denied" in gt2r.lower() or "cloudfront" in gt2r.lower():

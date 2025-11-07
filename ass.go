@@ -16,12 +16,13 @@ import (
 )
 
 type RequestData struct {
-	Blob  string `json:"blob"`
-	Proxy string `json:"proxy"`
-	BDA   string `json:"bda"`
-	SURL  string `json:"url"`
-	Pkey  string `json:"public_key"`
-	AL    string `json:"accept_language"`
+	Blob  	string `json:"blob"`
+	Proxy 	string `json:"proxy"`
+	BDA   	string `json:"bda"`
+	SURL  	string `json:"url"`
+	Pkey  	string `json:"public_key"`
+	AL    	string `json:"accept_language"`
+	Cookie 	string `json:"cookies"`
 }
 
 
@@ -50,7 +51,7 @@ func randomChoicesWithReplacementThenDedup(values []string, min, max int) []stri
 }
 
 
-func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string) (int, string, error) {
+func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string, cookie string) (int, string, error) {
 
 	now := time.Now().UnixMilli()
     rounded := int64(math.Round(float64(now)/100) * 100)
@@ -64,21 +65,23 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 
 	session.OrderedHeaders = azuretls.OrderedHeaders{
+		{"ark-build-id", "4e0e9770-e252-4758-8751-980278702a08"},
 		{"sec-ch-ua-platform", `"Windows"`},
 		{"x-ark-esync-value", string(esync)},
-		{"ark-build-id", "c1e346ea-955c-4367-98a1-4029e512358f"},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"},
-		{"sec-ch-ua", `"Google Chrome";v="141", "Not)A;Brand";v="8", "Chromium";v="141"`},
+		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"},
+		{"sec-ch-ua", `"Chromium";v="142", "Brave";v="142", "Not_A Brand";v="99"`},
 		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
 		{"sec-ch-ua-mobile", "?0"},
 		{"accept", "*/*"},
 		{"origin", "https://www.roblox.com"},
-		{"accept-language", al},
 		{"sec-fetch-site", "same-site"},
 		{"sec-fetch-mode", "cors"},
 		{"sec-fetch-dest", "empty"},
-		{"priority", "u=1, i"},
 		{"referer", "https://www.roblox.com/"},
+		{"accept-encoding", "gzip, deflate, br, zstd"},
+		{"accept-language", al},
+		{"priority", "u=1, i"},
+		{"cookie", cookie},
 	}
 
 	rand.Seed(time.Now().UnixNano())
@@ -95,7 +98,7 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	// supportedGroups := strings.Join(randomChoicesWithReplacementThenDedup(groupsList, 1, 3), "-")
 	// ciphers := strings.Join(randomChoicesWithReplacementThenDedup(cipherList, 12, 28), "-")
 
-	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,16-11-13-23-10-51-43-27-18-5-17613-45-35-0-65281-65037,4588-29-23-24,0"
+	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,65281-45-23-16-43-17613-13-27-35-10-11-0-18-65037-5-51,4588-29-23-24,0"
 	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
@@ -115,8 +118,8 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		{"c", bda},
 		{"public_key", pkey},
 		{"site", "https://www.roblox.com"},
-		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"},
-		{"capi_version", "4.0.10"},
+		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"},
+		{"capi_version", "4.0.11"},
 		{"capi_mode", "lightbox"},
 		{"style_theme", "modal"},
 		{"rnd", randomFloat},
@@ -130,14 +133,14 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 	}
 	encodedParams := strings.Join(parts, "&")
 
-	// resp, err := session.Post(surl, encodedParams)
+	resp, err := session.Post(surl, encodedParams)
 
-	resp, err := session.Do(&azuretls.Request{
-		Method:     "POST",
-		Url:        surl,
-		Body:       encodedParams,
-		ForceHTTP3: true,
-	})
+	// resp, err := session.Do(&azuretls.Request{
+	// 	Method:     "POST",
+	// 	Url:        surl,
+	// 	Body:       encodedParams,
+	// 	ForceHTTP3: true,
+	// })
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
@@ -165,7 +168,7 @@ func sendRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	statusCode, respBody, err := startProcess(data.BDA, data.Proxy, data.Blob, data.SURL, data.Pkey, data.AL)
+	statusCode, respBody, err := startProcess(data.BDA, data.Proxy, data.Blob, data.SURL, data.Pkey, data.AL, data.Cookie)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Internal Error: %v", err), http.StatusInternalServerError)
 		return

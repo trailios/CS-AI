@@ -76,7 +76,7 @@ class BDA:
                 str(int(timestamp)).encode()
             ).decode()
         )
-        fingerprintDict["wh"] = f"{urandom(16).hex()}|79169737225f825ee428975a81c22b8f"
+        #fingerprintDict["wh"] = f"{urandom(16).hex()}|79169737225f825ee428975a81c22b8f"
         enhancedFingerprint["1l2l5234ar2"] = str(int(timestamp * 1000)) + "\u2063"
         enhancedFingerprint["6a62b2a558"] = info["hash"]
         enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327\u2063"
@@ -87,16 +87,15 @@ class BDA:
         enhancedFingerprint["4ca87df3d1"] = "Ow=="
         enhancedFingerprint["867e25e5d4"] = "Ow=="
 
-        timeOffset = getIpInfo(proxy)
+        # timeOffset = getIpInfo(proxy)
 
         feDict = {
             item.split(":")[0]: item.split(":")[1]
             for item in fingerprintDict["fe"]
         }
-        feDict["L"] = accept_lang.split("-")[0]
-        feDict["TO"] = str(timeOffset)
+        feDict["L"] = "de-DE" #accept_lang.split(";")[0]
+        feDict["TO"] = "-120"
         #feDict["JSF"] = ""
-        feDict["H"] = choice([8,12,16,24,32])
         feList = [
             f"{key}:{value}"
             for key, value in feDict.items()
@@ -137,10 +136,10 @@ class BDA:
             for key, value in fingerprintDict.items()
         ]
 
-        fingerprint = transform_payload(
-            fingerprint,
-            cbid
-        )
+        # fingerprint = transform_payload(
+        #     fingerprint,
+        #     cbid
+        # )
 
         fingerprint = dumps(
             fingerprint,
@@ -148,12 +147,14 @@ class BDA:
             ensure_ascii=False
         )
 
+        #print(fingerprint)
+
         encryptedfingerprint = rsa_encrypt(
                 fingerprint,
                 encryption_key
         )
 
-        return encryptedfingerprint
+        return encryptedfingerprint, fingerprint
         
     def set_badBda(self):
         ...

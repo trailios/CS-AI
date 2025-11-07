@@ -78,9 +78,10 @@ def solve(type: str, **kwargs) -> str:
 
         if type == "FunCaptcha":
             blob = kwargs.get("blob", None)
-            accept_lang = kwargs.get("accept_lang", "")
+            accept_lang = "de-DE,de;q=0.7" #kwargs.get("accept_lang", "de-DE,de;q=0.7")
             site_url = kwargs.get("site_url")
             action = kwargs.get("action")
+            cookies = kwargs.get("cookies", None)
             try:
                 proxy = proxyHelper.parse(kwargs.get("proxy", None))
             except Exception as e:
@@ -99,8 +100,9 @@ def solve(type: str, **kwargs) -> str:
             settings["public_key"] = info["pkey"]
 
             browser["language"] = info["lang"]
+            browser["cookies"] = cookies
 
-            version = 141
+            version = 142
 
             headers = {
                 'accept': '*/*',
@@ -124,7 +126,7 @@ def solve(type: str, **kwargs) -> str:
             if not vm_key:
                 raise Exception("Could not fetch VM key.")
 
-            bda = BDA_Handler.update_fingerprint(
+            bda, fp = BDA_Handler.update_fingerprint(
                 proxy,
                 action,
                 accept_lang,
@@ -227,7 +229,7 @@ def solve(type: str, **kwargs) -> str:
                     0.0006
                 )
                 key_service.add_solved_request(key)
-                print(challenge.full_token)
+                print(challenge.full_token.split("|")[0])
                 return dict({"solution": challenge.full_token})
             
             except Exception as e:
