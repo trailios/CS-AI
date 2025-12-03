@@ -8,12 +8,12 @@ from json       import dumps
 from src.utils.bio              import EnhancedDataGenerator
 from src.helpers.SessionHelper  import HTTPError, ProxyError
 from src.utils.crypto           import AES_Crypto
-from src                        import Session
 from src.utils.utils            import Utils
 from src.arkose.challenge       import (
     Challenge,
     ProxyConnectionFailed,
     Http3NotSupported,
+    Session,
     parse
 )
 
@@ -298,3 +298,4 @@ class Game:
 # - Unknown Developer
 
 # bro shut the fuck up - Traili
+#skull

@@ -36,7 +36,7 @@ class Utils:
     def short_esync() -> str:
         current_time = time() * 1000
         
-        return int(round(current_time, -2))
+        return int(round(int(current_time), -2))
 
     @staticmethod
     def x_newrelic_timestamp() -> str:
@@ -53,3 +53,21 @@ class Utils:
         ]
         form_data: str = "&".join(encoded_data)
         return form_data
+    
+    @staticmethod
+    def encode(input_str: str) -> str:
+        safe_chars = set(
+            b"!'()*-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~"
+        )
+
+        hex_table = [f"%{i:02X}" for i in range(256)]
+
+        result = []
+        for ch in input_str:
+            b = ord(ch)
+            if b in safe_chars:
+                result.append(chr(b))
+            else:
+                result.append(hex_table[b])
+
+        return "".join(result)

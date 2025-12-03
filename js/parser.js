@@ -279,3 +279,4 @@ console.log(array);
 }
 
 decodeScript(process.argv[2])
+

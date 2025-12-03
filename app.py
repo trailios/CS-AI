@@ -113,9 +113,9 @@ def task_exists(task_id: str) -> bool:
 def create_task(data: TaskInput) -> TaskOutput:
     extra = data.task.extraData or {}
     task = solve.delay(
-        accept_lang=    extra.accept_language or None,
-        cookies=        extra.cookies or None,
-        blob=           extra.blob or None,
+        accept_lang=    extra.accept_language   or None,
+        cookies=        extra.cookies           or None,
+        blob=           extra.blob              or None,
         site_url=       data.task.site_url,
         action=         data.task.action,
         proxy=          data.task.proxy,

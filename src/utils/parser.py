@@ -193,7 +193,10 @@ def _brute_xor_keys(encoded: str):
     return results
 
 def get_vm_key(api_url: str, sitekey: str):
-    return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAk61iAIh8KZ8gxpbFQxTjEzkSRhzDfI+9woCzXZ5+lXNZNRi/w6s6rWKaSeWNs9WJ0QZIh9Jm0knLHJ4bZfeNninERKInvHw7TbUZFZj8fLORoQoY3Pij2iuhLhRUHoRjSlQCNSFu0UQegX/5X2p9hQYQI0dfqZLAPcKSNqDjqyhf2ahqJO6IGKEKubCY9kjYmNJiO3DTyJAnCU1enpE0weFieI1+qILsJhcT22+z7JkgFlgeCgOd5lZhQfC7/aEBANTacsZA4b7f/H6+uL1ZoM1NRKjIdtzzXTRtX5/ayDK/hwlNesaO4b2RUdhJogc9xmK7x7RJm+Vk9UcFdtIGnQIDAQAB"
+    return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyAoGUKHuNGFlVJqAhq+m8iJ7FUY0E89CFU/nhpt6/WVuWhqux8360qqlGJzG6RqnCxwG3CFrw9KqUhVJ7OEncdiZ8HDWx3+GJcMLWghLH7nQ3MsvtwfNkYuxZP/Em72+rC8fVchbGkR52E5CSLIsCuwzMM5EFMEBM6hOxMW/mJaLjEzx6hBJBBsotQB/+NXSJHBFDY3v1wgww9j2BZvXs2vbELSuT2aYBVP7ZP53ra7zYevVQMnU57+m2Ndm+/xGr+7XQPIVUxCouzPKCOSx7+gipUscaIiWGO8tXETyuuzyhGwNOp4vyTbHOdBmxQK/DX3M8g9/Awqq3UGFq7cvzQIDAQAB"
+    
+    # bla bla parser broke, manual key
+    
     cached = _get_cached(api_url, sitekey)
     if cached and "vm_key" in cached and isinstance(cached["vm_key"], str) and cached["vm_key"]:
         return cached["vm_key"]

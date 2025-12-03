@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -12,119 +11,57 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Noooste/azuretls-client"
+	azuretls "github.com/Noooste/azuretls-client"
 )
 
 type RequestData struct {
-	Blob  	string `json:"blob"`
-	Proxy 	string `json:"proxy"`
-	BDA   	string `json:"bda"`
-	SURL  	string `json:"url"`
-	Pkey  	string `json:"public_key"`
-	AL    	string `json:"accept_language"`
-	Cookie 	string `json:"cookies"`
+	Blob   string `json:"blob"`
+	Proxy  string `json:"proxy"`
+	BDA    string `json:"bda"`
+	SURL   string `json:"url"`
+	Pkey   string `json:"public_key"`
+	AL     string `json:"accept_language"`
+	Cookie string `json:"cookies"`
 }
 
-
-func randomChoicesWithReplacementThenDedup(values []string, min, max int) []string {
-	// Python's randint(a, b) is inclusive for both ends
-	randCount := rand.Intn(max-min+1) + min
-
-	// Pick with replacement
-	picks := make([]string, randCount)
-	for i := 0; i < randCount; i++ {
-		picks[i] = values[rand.Intn(len(values))]
-	}
-
-	// Deduplicate like Python's set()
-	unique := make(map[string]struct{})
-	for _, v := range picks {
-		unique[v] = struct{}{}
-	}
-
-	// Convert back to slice
-	result := make([]string, 0, len(unique))
-	for k := range unique {
-		result = append(result, k)
-	}
-	return result
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
 
-
-func startProcess(bda string, proxy string, blob string, surl string, pkey string, al string, cookie string) (int, string, error) {
-
+func startProcess(bda, proxy, blob, surl, pkey, al, cookie string) (int, string, error) {
 	now := time.Now().UnixMilli()
-    rounded := int64(math.Round(float64(now)/100) * 100)
-    esync :=strconv.FormatInt(rounded, 10)
-	fmt.Printf("esync: %v\n", esync)
+	rounded := (now / 100) * 100
+	esync := strconv.FormatInt(rounded, 10)
 
 	session := azuretls.NewSession()
-	err := session.SetProxy(proxy)
-	if err != nil {
-		return 0, "", fmt.Errorf("failed to send request: %w", err)
+	if err := session.SetProxy(proxy); err != nil {
+		return 0, "", fmt.Errorf("failed to set proxy: %w", err)
 	}
+	defer session.Close()
 
-	session.OrderedHeaders = azuretls.OrderedHeaders{
-		{"ark-build-id", "4e0e9770-e252-4758-8751-980278702a08"},
-		{"sec-ch-ua-platform", `"Windows"`},
-		{"x-ark-esync-value", string(esync)},
-		{"user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"},
-		{"sec-ch-ua", `"Chromium";v="142", "Brave";v="142", "Not_A Brand";v="99"`},
-		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
-		{"sec-ch-ua-mobile", "?0"},
-		{"accept", "*/*"},
-		{"origin", "https://www.roblox.com"},
-		{"sec-fetch-site", "same-site"},
-		{"sec-fetch-mode", "cors"},
-		{"sec-fetch-dest", "empty"},
-		{"referer", "https://www.roblox.com/"},
-		{"accept-encoding", "gzip, deflate, br, zstd"},
-		{"accept-language", al},
-		{"priority", "u=1, i"},
-		{"cookie", cookie},
-	}
+	//session.Browser = azuretls.Safari
 
-	rand.Seed(time.Now().UnixNano())
+	session.ApplyJa3("771,4865-4866-4867-49196-49195-52393-49200-49199-52392-49162-49161-49172-49171-157-156-53-47-49160-49170-10,0-23-65281-10-11-16-5-13-18-51-45-43-27-21,29-23-24-25,0", azuretls.Safari)
+	session.ApplyHTTP2("2:0;4:4194304;3:100|10485760|0|m,s,p,a")
 
-	// groupsList := []string{"29", "23", "24", "25"}
-	// cipherList := []string{
-	// 	"47", "53", "60", "61", "140", "141", "156", "157",
-	// 	"49161", "49162", "49171", "49172", "49187", "49188",
-	// 	"49191", "49192", "49195", "49196", "49199", "49200",
-	// 	"49205", "49206", "52392", "52393", "52396",
-	// 	"4865", "4866", "4867",
-	// }
 
-	// supportedGroups := strings.Join(randomChoicesWithReplacementThenDedup(groupsList, 1, 3), "-")
-	// ciphers := strings.Join(randomChoicesWithReplacementThenDedup(cipherList, 12, 28), "-")
-
-	ja3 := "771,4865-4866-4867-49195-49199-49196-49200-52393-52392-49171-49172-156-157-47-53,65281-45-23-16-43-17613-13-27-35-10-11-0-18-65037-5-51,4588-29-23-24,0"
-	if err := session.ApplyJa3(ja3, azuretls.Chrome); err != nil {
-		return 0, "", fmt.Errorf("failed to send request: %w", err)
-	}
-
-	http2 := "1:65536;2:0;4:6291456;6:262144|15663105|0|m,a,s,p"
-	
-	if err := session.ApplyHTTP2(http2); err != nil {
-		return 0, "", fmt.Errorf("failed to send request: %w", err)
-	}
-
-	http3 := "1:65536;6:262144;7:100;51:1;GREASE|m,a,s,p"
-	if err := session.ApplyHTTP3(http3); err != nil {
-		return 0, "", fmt.Errorf("failed to send request: %w", err)
-	}
 	randomFloat := strconv.FormatFloat(rand.Float64(), 'f', -1, 64)
-	params := []struct{ Key, Value string }{
+
+	params := []struct {
+		Key   string
+		Value string
+	}{
 		{"c", bda},
 		{"public_key", pkey},
 		{"site", "https://www.roblox.com"},
-		{"userbrowser", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"},
+		{"userbrowser", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15"},
 		{"capi_version", "4.0.11"},
 		{"capi_mode", "lightbox"},
 		{"style_theme", "modal"},
 		{"rnd", randomFloat},
-		{"data[blob]", string(blob)},
+		{"data[blob]", blob},
 	}
+
 	var parts []string
 	for _, p := range params {
 		key := url.QueryEscape(p.Key)
@@ -132,38 +69,48 @@ func startProcess(bda string, proxy string, blob string, surl string, pkey strin
 		parts = append(parts, key+"="+value)
 	}
 	encodedParams := strings.Join(parts, "&")
+	contentLength := strconv.Itoa(len(encodedParams))
+
+	acceptLanguage := al
+	if acceptLanguage == "" {
+		acceptLanguage = "de-DE,de;q=0.9"
+	}
+
+	session.OrderedHeaders = azuretls.OrderedHeaders{
+		{"content-type", "application/x-www-form-urlencoded; charset=UTF-8"},
+		{"x-ark-esync-value", esync},
+		{"accept", "*/*"},
+		{"sec-fetch-site", "same-site"},
+		{"accept-language", acceptLanguage},
+		{"accept-encoding", "gzip, deflate, br"},
+		{"sec-fetch-mode", "cors"},
+		{"origin", "https://www.roblox.com"},
+		{"content-length", contentLength},
+		{"user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15"},
+		{"ark-build-id", "4e0e9770-e252-4758-8751-980278702a08"},
+		{"referer", "https://www.roblox.com/"},
+		{"sec-fetch-dest", "empty"},
+		{"cookie", cookie},
+	}
 
 	resp, err := session.Post(surl, encodedParams)
-
-	// resp, err := session.Do(&azuretls.Request{
-	// 	Method:     "POST",
-	// 	Url:        surl,
-	// 	Body:       encodedParams,
-	// 	ForceHTTP3: true,
-	// })
 	if err != nil {
 		return 0, "", fmt.Errorf("failed to send request: %w", err)
 	}
 
-	fmt.Println(resp.StatusCode)
-	fmt.Println(string(resp.Body))
-	
-	session.Close()
+	fmt.Printf("resp.Body: %v\n", string(resp.Body))
+
 	return resp.StatusCode, string(resp.Body), nil
 }
 
 func sendRequestHandler(w http.ResponseWriter, r *http.Request) {
-	// Ensure it's a POST request
 	if r.Method != http.MethodPost {
 		http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
 	var data RequestData
-
-	// Parse JSON body
-	err := json.NewDecoder(r.Body).Decode(&data)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
@@ -173,9 +120,11 @@ func sendRequestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("Internal Error: %v", err), http.StatusInternalServerError)
 		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
-	json.NewEncoder(w).Encode(map[string]interface{}{
+
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":  "success",
 		"message": "Request completed",
 		"body":    respBody,
@@ -183,9 +132,6 @@ func sendRequestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("Starting Server on port 8080...")
-
 	http.HandleFunc("/send-request", sendRequestHandler)
-
 	log.Fatal(http.ListenAndServe(":19222", nil))
 }

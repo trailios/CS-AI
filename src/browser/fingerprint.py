@@ -14,7 +14,7 @@ from src.utils.ipIntelligence   import getIpInfo
 from src.utils.crypto           import rsa_encrypt
 from src.utils.vm               import transform_payload
 
-fps = listdir("db/fingerprints")
+fps = listdir("db/safari")
 badfps = []
 
 class BDA:
@@ -25,14 +25,15 @@ class BDA:
         self.userbrowser: str = userbrowser
 
         self.fp_iter = fp_iter
-        self.fingerprint:          List = loads(open(f"db/fingerprints/{next(self.fp_iter)}", encoding="utf-8").read()) # this is still moving fingerpint to next one every call btw
+        self.fingerprint:          List = loads(open(f"db/safari/{next(self.fp_iter)}", encoding="utf-8").read()) # this is still moving fingerpint to next one every call btw
 
         self._start()
 
     def _background_run(self):
-        while True:
-            sleep(randint(20,60))
-            self.fingerprint: List = loads(open(f"db/fingerprints/{next(self.fp_iter)}", encoding="utf-8").read())
+        pass
+        # while True:
+        #     sleep(randint(0.01,2))
+        #     self.fingerprint: List = loads(open(f"db/fingerprints/{next(self.fp_iter)}", encoding="utf-8").read())
 
     def _start(self):
         Thread(target=self._background_run, daemon=True).start()
@@ -61,6 +62,7 @@ class BDA:
             encryption_key: str,
             cbid: str
         ) -> str:
+        self.fingerprint: List = loads(open(f"db/safari/{next(self.fp_iter)}", encoding="utf-8").read())
         timestamp = time()
 
         fingerprint = self.fingerprint.copy()
@@ -76,16 +78,22 @@ class BDA:
                 str(int(timestamp)).encode()
             ).decode()
         )
-        #fingerprintDict["wh"] = f"{urandom(16).hex()}|79169737225f825ee428975a81c22b8f"
+        #fingerprintDict["wh"] = f"{urandom(16).hex()}|1d99c2530fa1a96e676f9b1a1a9bcb58" #why do u do ts
         enhancedFingerprint["1l2l5234ar2"] = str(int(timestamp * 1000)) + "\u2063"
         enhancedFingerprint["6a62b2a558"] = info["hash"]
-        enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327\u2063"
-        enhancedFingerprint["navigator_languages"] = accept_lang.split(";")[0]
-        enhancedFingerprint["4b4b269e68"] = str(uuid4())
+        enhancedFingerprint["29s83ih9"] = "68934a3e9455fa72420237eb05902327" + "\u2063"  # md5 of action
+        # enhancedFingerprint["navigator_languages"] = "de-DE"
+        # enhancedFingerprint["4b4b269e68"] = str(uuid4())
+        # enhancedFingerprint["speech_voices_hash"] = "a0c90ca98043f0489c1e731e233b937e"
+        # enhancedFingerprint["speech_default_voice"] = "Google Deutsch || de-DE"
+        # enhancedFingerprint["4ca87df3d1"] = "Ow=="
+        # enhancedFingerprint["7541c2s"] = None
+        # enhancedFingerprint["05d3d24"] = "40e14a53f514b3d6792e2d8072aa5c37"
 
-        enhancedFingerprint["d4a306884c"] = "Ow=="
-        enhancedFingerprint["4ca87df3d1"] = "Ow=="
-        enhancedFingerprint["867e25e5d4"] = "Ow=="
+        try:
+            fingerprintDict.pop("fb")
+        except KeyError:
+            pass
 
         # timeOffset = getIpInfo(proxy)
 
@@ -93,39 +101,41 @@ class BDA:
             item.split(":")[0]: item.split(":")[1]
             for item in fingerprintDict["fe"]
         }
-        feDict["L"] = "de-DE" #accept_lang.split(";")[0]
-        feDict["TO"] = "-120"
-        #feDict["JSF"] = ""
-        feList = [
-            f"{key}:{value}"
-            for key, value in feDict.items()
-        ]
+        #1s
+        # feDict["L"] = "de-DE" #accept_lang.split(";")[0]
+        # feDict["TO"] = "-60" 
+        # #feDict["JSF"] = ""
+        # feList = [
+        #     f"{key}:{value}"
+        #     for key, value in feDict.items()
+        # ]
 
-        fingerprintDict["fe"] = feList
-        fingerprintDict["f"] = Utils.x64hash128(
-            ";".join(
-                ",".join(
-                    map(
-                        str, v
-                    ) if isinstance(v, list) else str(v)
-                    for v in feDict
-                )
-            )
-        )
-        fingerprintDict["ife_hash"] = Utils.x64hash128(
-            ", ".join(feList),
-            38
-        )
+        # fingerprintDict["fe"] = feList
+        # fingerprintDict["f"] = Utils.x64hash128(
+        #     ";".join(
+        #         ",".join(
+        #             map(
+        #                 str, v
+        #             ) if isinstance(v, list) else str(v)
+        #             for v in feDict
+        #         )
+        #     )
+        # )
+        # fingerprintDict["ife_hash"] = Utils.x64hash128(
+        #     ", ".join(feList),
+        #     38
+        # )
 
         fingerprintDict["jsbd"] = dumps( # thats what he does, HE DOES THAT 
-            {"HL":str(randint(3,4)),"NCE":True,"DT":"Log in to Roblox","NWD":False,"DMTO":1,"DOTO":1}, # i put nce as string cause that's what he does
+            {"HL":3,"NCE":True,"DT":"Log in to Roblox","NWD":"false","DMTO":1,"DOTO":1}, # i put nwd as string cause that's what he does
             separators=(",", ":")
         ) # dc
 
         for key, value in options.items():
             enhancedFingerprint[key] = value
 
-        enhancedFingerprint["window__location_href"] = "https://www.roblox.com/login"
+        enhancedFingerprint["window__location_href"] = "https://www.roblox.com/Login"
+        enhancedFingerprint["client_config__sitedata_location_href"] = "https://www.roblox.com/Login"
 
         fingerprintDict["enhanced_fp"] = [
             {"key": key, "value": value}
@@ -146,8 +156,6 @@ class BDA:
             separators=(",", ":"),
             ensure_ascii=False
         )
-
-        #print(fingerprint)
 
         encryptedfingerprint = rsa_encrypt(
                 fingerprint,

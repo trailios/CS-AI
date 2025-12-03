@@ -16,7 +16,7 @@ class Preset:
             "origin": "https://www.roblox.com/",
             "location": "https://www.roblox.com",
             "tree_index": [],
-            "structure": "[]"
+            "structure": "[[]]"
         },
         "roblox_login": {
             "public_key": "476068BF-9607-4799-B53D-966BE98E2B81",
@@ -39,7 +39,18 @@ class Preset:
             "location": "https://www.roblox.com/arkose/iframe",
             "tree_index": [1, 0],
             "structure": "[[],[[]]]"
-        }
+        },
+        "twitter":{
+            "public_key": "63E4117F-E727-42B4-6DAA-C8448E9B137F",
+            "service_url": "https://client-api.arkoselabs.com",
+            "site_url": "https://www.roblox.com",
+            "capi_mode": "inline",
+            "language": None,
+            "origin": "https://www.roblox.com",
+            "location": "https://www.roblox.com/arkose/iframe",
+            "tree_index": [0],
+            "structure": "[[]]"
+        },
     }
     
     @staticmethod
@@ -57,12 +68,12 @@ class Preset:
                 capi_version, enforcement_hash, cbid = version_info(data["service_url"], data["public_key"])
                 
                 options: dict = {
-                    "document__referrer": data["site_url"] + "/",
+                    "document__referrer": "",
                     "window__ancestor_origins": [],
                     "window__tree_index": data["tree_index"],
                     "window__tree_structure": data["structure"],
-                    "window__location_href": data["location"],
-                    "client_config__sitedata_location_href": data["location"],
+                    "window__location_href": "https://www.roblox.com/de",
+                    "client_config__sitedata_location_href": "https://www.roblox.com/de",
                     "client_config__language": data["language"],
                     "client_config__surl": data["service_url"],
                     "c8480e29a": str(Preset.hash(data["service_url"])) + "\u2062",

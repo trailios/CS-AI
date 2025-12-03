@@ -28,6 +28,7 @@ celery_cmd = [
     "celery",
     "-A", "src.api.tasks",
     "worker",
+    "-E",
     "--pool=threads",
     f"--concurrency={cores}",
     "--without-gossip",      

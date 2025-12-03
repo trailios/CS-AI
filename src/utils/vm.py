@@ -17,9 +17,9 @@ def transform_payload(payload: list, cbid: str) -> list:
 
         target[26] = {"key": val26["key"], "value": val26["value"] * 3}
 
-        # target.append({"key": "vsadsa", "value": 12})
-        # target.append({"key": "basfas", "value": [0,4294705152]})
-        # target.append({"key": "lfasdgs", "value": cbid})
+        target.append({"key": "vsadsa", "value": 12})
+        target.append({"key": "basfas", "value": [0,4294705152]})
+        target.append({"key": "lfasdgs", "value": cbid})
 
 
 

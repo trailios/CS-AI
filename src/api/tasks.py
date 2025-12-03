@@ -1,9 +1,10 @@
 
+from os         import listdir, makedirs
 from typing     import Dict, Any
 from logging    import getLogger
-from os         import listdir
 from celery     import Celery
 from itertools  import cycle
+from uuid       import uuid4
 
 from src                                import proxyHelper, key_service, logger
 from src.utils.parser                   import get_vm_key, version_info
@@ -13,6 +14,7 @@ from src.utils.presets                  import Preset
 from src.utils.utils                    import Utils
 from src.arkose.game                    import Game
 from src.browser.fingerprint            import BDA
+import time
 
 
 # for logger_name in [
@@ -29,7 +31,7 @@ celery_app = Celery(
     backend="redis://149.50.108.43:6379/0",
 )
 
-fpiter = cycle(listdir("db/fingerprints"))
+fpiter = cycle(listdir("db/safari"))
 BDA_Handler = BDA("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36", fpiter)
 # static for now the ua
 # nigger on your fp shit you still using the next() WHICH IS GOING TO SWITCH TO NEXT FP
@@ -78,7 +80,8 @@ def solve(type: str, **kwargs) -> str:
 
         if type == "FunCaptcha":
             blob = kwargs.get("blob", None)
-            accept_lang = "de-DE,de;q=0.7" #kwargs.get("accept_lang", "de-DE,de;q=0.7")
+            accept_lang = "de-DE,de;q=0.7" #kwargs.get("accept_lang", "de-DE,de;q=0.7") 
+            
             site_url = kwargs.get("site_url")
             action = kwargs.get("action")
             cookies = kwargs.get("cookies", None)
@@ -104,21 +107,39 @@ def solve(type: str, **kwargs) -> str:
 
             version = 142
 
+
+            # headers = {
+            #     "ark-build-id": "4e0e9770-e252-4758-8751-980278702a08", 
+            #     'sec-ch-ua-platform': '"Windows"',
+            #     'x-ark-esync-value': str(Utils.short_esync()),
+            #     'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36',
+            #     'sec-ch-ua': f'"Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"',
+            #     'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            #     'sec-ch-ua-mobile': '?0',
+            #     'accept': '*/*',
+            #     'origin': site_url, 
+            #     'sec-fetch-site': 'same-site',
+            #     'sec-fetch-mode': 'cors',
+            #     'sec-fetch-dest': 'empty', 
+            #     'referer': site_url + "/", 
+            #     "accept-encoding": "gzip, deflate, br, zstd",
+            #     'accept-language': accept_lang,
+            #     'priority': 'u=1, i', 
+            # }
+
             headers = {
-                'accept': '*/*',
-                'accept-language': accept_lang,
-                'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                'origin': site_url,
-                'priority': 'u=1, i',
-                'referer': site_url + "/",
-                'sec-ch-ua': f'"Google Chrome";v="{version}", "Not/A)Brand";v="8", "Chromium";v="{version}"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'empty',
-                'sec-fetch-mode': 'cors',
-                'sec-fetch-site': 'same-site',
-                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version}.0.0.0 Safari/537.36',
-                'x-ark-esync-value': str(Utils.short_esync()),
+                "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                "x-ark-esync-value": str(int(time.time() / 21600) * 21600),# not sure if it changed or not, but many solver have it differnet..??
+                "accept": "*/*",
+                "sec-fetch-site": "same-site",
+                "accept-language": "de-DE,de;q=0.9",
+                "accept-encoding": "gzip, deflate, br",
+                "sec-fetch-mode": "cors",
+                "origin": "https://www.roblox.com",
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.6 Safari/605.1.15",
+                "ark-build-id": "df48e82b-5d6a-43b9-b50a-738e595c6ec0",
+                "referer": "https://www.roblox.com/",
+                "sec-fetch-dest": "empty",
             }
 
             vm_key = get_vm_key(info["surl"], info["pkey"])
@@ -172,6 +193,10 @@ def solve(type: str, **kwargs) -> str:
                     game._user_callback()
 
                     print(f"waves: {game.waves} - vairant: {game.variant}")
+                    makedirs(f"db/fps/{game.variant}/{game.waves}", exist_ok=True)
+
+                    with open(f"db/fps/{game.variant}/{game.waves}/{uuid4()}.json", "w", encoding="utf-8") as f:
+                        f.write(fp)
 
                     if game.waves >= 6:
                         return dict({"error": "Captcha was to difficult.", "solution": None})
@@ -230,10 +255,19 @@ def solve(type: str, **kwargs) -> str:
                 )
                 key_service.add_solved_request(key)
                 print(challenge.full_token.split("|")[0])
+                with open(f"db/fps/sup/{uuid4()}.json", "w", encoding="utf-8") as f:
+                    f.write(fp)
                 return dict({"solution": challenge.full_token})
             
             except Exception as e:
+                e = str(e)
+                makedirs("db/fps/pow", exist_ok=True)
+                if "POW" in e:
+                    with open(f"db/fps/pow/{uuid4()}.json", "w", encoding="utf-8") as f:
+                        f.write(fp)
+                key_service.increment_failed(key)
                 return dict({"error": str(e), "solution": None})
             
     except Exception as e:
-        return dict({"error": str(e), "solution": None})
+        return dict({"error": str(e.with_traceback()), "solution": None})
+    
