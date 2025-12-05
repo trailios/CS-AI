@@ -269,7 +269,7 @@ class Challenge:
 
             for resp in (api_js_response, settings_response):
                 if resp:
-                    resp.raise_for_status()
+                    pass
 
             self._sync_rnet_cookies(api_js_response, settings_response)
 

@@ -1,10 +1,12 @@
 
-from os         import listdir, makedirs
-from typing     import Dict, Any
-from logging    import getLogger
-from celery     import Celery
-from itertools  import cycle
-from uuid       import uuid4
+from os             import getenv, listdir, makedirs, name as os_name
+from typing         import Dict, Any
+from logging        import getLogger
+from celery         import Celery
+from itertools      import cycle
+from uuid           import uuid4
+from multiprocessing import cpu_count
+from threading      import local
 
 from src                                import proxyHelper, key_service, logger
 from src.utils.parser                   import get_vm_key, version_info
@@ -25,14 +27,48 @@ import time
 # ]:
 #     getLogger(logger_name).disabled = True
 
+BROKER_URL = getenv("CELERY_BROKER_URL", "redis://127.0.0.1:6379/0")
+BACKEND_URL = getenv("CELERY_RESULT_BACKEND", BROKER_URL)
+
+DEFAULT_POOL = getenv("CELERY_POOL", "threads" if os_name == "nt" else "prefork")
+
+
+def _default_concurrency(pool: str) -> int:
+    env_value = getenv("CELERY_WORKER_CONCURRENCY")
+    if env_value is not None:
+        try:
+            return max(1, int(env_value))
+        except ValueError:
+            pass
+
+    cores = cpu_count() or 1
+    if pool == "threads":
+        return max(4, min(64, cores * 4))
+    return max(2, min(32, cores * 2))
+
+
+CELERY_CONCURRENCY = _default_concurrency(DEFAULT_POOL)
+
 celery_app = Celery(
     "src.api.tasks",
-    broker="redis://149.50.108.43:6379/0",
-    backend="redis://149.50.108.43:6379/0",
+    broker=BROKER_URL,
+    backend=BACKEND_URL,
 )
 
-fpiter = cycle(listdir("db/safari"))
-BDA_Handler = BDA("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36", fpiter)
+_fingerprint_files = listdir("db/safari")
+_thread_local = local()
+
+
+def _get_bda_handler() -> BDA:
+    handler = getattr(_thread_local, "bda_handler", None)
+    if handler is None:
+        handler = BDA(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+            cycle(_fingerprint_files),
+        )
+        _thread_local.bda_handler = handler
+    return handler
+
 # static for now the ua
 # nigger on your fp shit you still using the next() WHICH IS GOING TO SWITCH TO NEXT FP
 
@@ -45,6 +81,9 @@ celery_app.conf.update(
     worker_prefetch_multiplier=1,
     task_acks_late=True,
     worker_hijack_root_logger=False,
+    worker_pool=DEFAULT_POOL,
+    worker_concurrency=CELERY_CONCURRENCY,
+    broker_connection_retry_on_startup=True,
 )
 
 
@@ -147,7 +186,7 @@ def solve(type: str, **kwargs) -> str:
             if not vm_key:
                 raise Exception("Could not fetch VM key.")
 
-            bda, fp = BDA_Handler.update_fingerprint(
+            bda, fp = _get_bda_handler().update_fingerprint(
                 proxy,
                 action,
                 accept_lang,
