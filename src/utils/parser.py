@@ -11,6 +11,8 @@ import hashlib
 import requests
 import esprima
 
+# i have no idea, this was ai
+
 CACHE_PATH = Path.home() / ".cache" / "vm_key_cache.json"
 CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
